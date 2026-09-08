@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cronograma — PROMOVILIDAD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f8f9fb;
+      --white: #ffffff;
+      --border: #e8eaed;
+      --text: #0f1117;
+      --muted: #6b7280;
+      --accent: #0057B8;
+      --signal: #00C17C;
+      --amber: #F5A623;
+      --red: #E53E3E;
+      --blue: #3B6FFF;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* HEADER */
+    .header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .header-logo { display: flex; align-items: center; gap: 10px; margin-right: 8px; }
+    .header-logo img { height: 32px; object-fit: contain; }
+    .header-title { font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .header-sep { width: 1px; height: 28px; background: var(--border); }
+    .btn-back {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 8px;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); font-family: inherit; font-size: 13px;
+      cursor: pointer; transition: all .15s; text-decoration: none;
+    }
+    .btn-back:hover { background: var(--bg); color: var(--text); }
+    select, .btn-ctrl {
+      padding: 7px 12px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--white);
+      color: var(--text); font-family: inherit; font-size: 13px;
+      cursor: pointer; outline: none; transition: border-color .15s;
+    }
+    select:focus, .btn-ctrl:focus { border-color: var(--accent); }
+    .btn-ctrl {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--white); transition: background .15s;
+    }
+    .btn-ctrl:hover { background: var(--bg); }
+    .btn-ctrl.active { background: #eff6ff; border-color: var(--accent); color: var(--accent); font-weight: 600; }
+    .zoom-group { display: flex; align-items: center; gap: 4px; }
+    .zoom-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--white);
+      color: var(--text); font-size: 18px; font-weight: 300;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .zoom-btn:hover { background: var(--bg); }
+    .zoom-val { font-size: 12px; color: var(--muted); min-width: 36px; text-align: center; }
+    .spacer { flex: 1; }
+
+    /* LEYENDA */
+    .legend {
+      display: flex; gap: 16px; padding: 8px 20px;
+      background: var(--white); border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* LAYOUT */
+    .gantt-wrap { display: flex; height: calc(100vh - 97px); overflow: hidden; }
+
+    /* PANEL IZQUIERDO — lista de ejes */
+    .eje-panel {
+      width: 160px; flex-shrink: 0;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 12px 8px;
+    }
+    .eje-panel-title {
+      font-size: 10px; font-weight: 700; color: var(--muted);
+      letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 4px 8px 8px;
+    }
+    .eje-item {
+      padding: 8px 10px; border-radius: 8px; cursor: pointer;
+      font-size: 12px; font-weight: 500; color: var(--muted);
+      transition: background .15s, color .15s; margin-bottom: 2px;
+      line-height: 1.4;
+    }
+    .eje-item:hover { background: var(--bg); color: var(--text); }
+    .eje-item.active { background: #eff6ff; color: var(--accent); font-weight: 600; }
+    .eje-pct { font-size: 10px; font-weight: 600; margin-top: 2px; }
+
+    /* GANTT AREA — dos paneles independientes */
+    .gantt-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    .gantt-body  { flex: 1; display: flex; overflow: hidden; }
+
+    /* Panel de labels — ancho fijo, nunca crece */
+    .label-panel {
+      width: 340px; min-width: 340px; max-width: 340px; flex-shrink: 0;
+      overflow: hidden;
+      border-right: 2px solid var(--border);
+      box-shadow: 2px 0 6px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column;
+      background: var(--white);
+    }
+    .label-header {
+      height: 56px; min-height: 56px;
+      background: #f1f3f5;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 12px;
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      letter-spacing: .5px; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .label-rows { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+    .label-rows::-webkit-scrollbar { display: none; }
+    .label-table {
+      border-collapse: collapse; width: 100%; table-layout: fixed;
+    }
+    .label-cell {
+      width: 340px; min-width: 340px; max-width: 340px;
+      padding: 0 12px 0 16px;
+      font-size: 12px; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+      border-bottom: 1px solid #f0f0f0;
+      background: var(--white);
+      vertical-align: middle;
+    }
+    .label-cell.group-row {
+      background: #f8f9fb;
+      font-weight: 700; color: var(--text);
+      border-bottom: 1px solid var(--border);
+      box-shadow: inset 3px 0 0 var(--accent);
+      padding-left: 10px;
+    }
+    .label-cell.task-row { color: var(--muted); padding-left: 20px; cursor: pointer; }
+    .label-cell.task-row:hover { background: #f0f7ff; color: var(--accent); }
+    .label-cell.group-row:hover { background: #e8f0fe; }
+
+    /* Panel del gantt — scroll horizontal invisible */
+    .gantt-scroll-wrap { flex: 1; overflow-x: auto; overflow-y: auto; position: relative; }
+    .gantt-scroll-wrap::-webkit-scrollbar { height: 0px; width: 0px; }
+    .gantt-scroll-wrap { scrollbar-width: none; }
+
+    /* GANTT GRID — solo datos, sin columna de labels */
+    .ganttGrid {
+      border-collapse: collapse;
+      font-size: 12px;
+      table-layout: fixed;
+    }
+    .ganttGrid td, .ganttGrid th { padding: 0; border: none; }
+    .ganttMonth {
+      background: #f8f9fb;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5px 8px;
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      overflow: hidden; white-space: nowrap;
+      text-align: left; vertical-align: middle;
+      position: sticky; top: 0; z-index: 15;
+    }
+    .ganttTick {
+      background: var(--white);
+      border-right: 1px solid #f0f0f0;
+      border-bottom: 1px solid var(--border);
+      padding: 4px 2px;
+      font-size: 10px; color: var(--muted);
+      text-align: center; overflow: hidden;
+      position: sticky; top: 28px; z-index: 15;
+    }
+    .gantt-cell { border-bottom: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; position: relative; overflow: visible; }
+    .gantt-cell.group-row { background: #f8f9fb; border-bottom: 1px solid var(--border); border-right: 1px solid #e8eaed; }
+    .gantt-cell.weekend { background: rgba(0,0,0,0.015); }
+    .gantt-cell.alt-month { background: rgba(180,210,230,0.25); }
+    .ganttToday {
+      display: none; /* reemplazado por overlay global */
+    }
+    .today-overlay {
+      position: absolute; top: 0; bottom: 0; width: 2px;
+      background: var(--red); opacity: .75; pointer-events: none;
+      z-index: 20; will-change: transform;
+    }
+    .gbar-wrap { position: relative; width: 100%; height: 100%; overflow: visible; z-index: 2; }
+    .gbar {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      height: 26px; border-radius: 6px;
+      display: flex; align-items: center; padding: 0 8px;
+      font-size: 10px; font-weight: 600; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      cursor: pointer; transition: opacity .15s, filter .15s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    .gbar:hover { opacity: .88; filter: brightness(1.05); }
+    .gbar.hito-mode {
+      height: 20px; border-radius: 4px;
+    }
+    .ganttLegend { display: none; }
+
+    /* ESTADO COLORES */
+    .bar-done    { background: linear-gradient(90deg, #00a86b, #00C17C); }
+    .bar-process { background: linear-gradient(90deg, #2563eb, #3B6FFF); }
+    .bar-pending { background: linear-gradient(90deg, #d97706, #F5A623); }
+    .bar-blocked { background: linear-gradient(90deg, #dc2626, #E53E3E); }
+
+    /* EMPTY */
+    .empty-gantt {
+      display: flex; align-items: center; justify-content: center;
+      height: 200px; color: var(--muted); font-size: 14px;
+    }
+  </style>
+</head>
+<body style="opacity:0">
+<style>
+  #appLoaderGantt {
+    position:fixed;inset:0;z-index:9999;background:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    transition:opacity .3s ease;
+  }
+  #appLoaderGantt.fade-out { opacity:0;pointer-events:none; }
+  .gantt-spinner {
+    width:40px;height:40px;border:3px solid #e5e7eb;
+    border-top-color:#00a651;border-radius:50%;
+    animation:ganttSpin .7s linear infinite;
+  }
+  @keyframes ganttSpin { to { transform:rotate(360deg); } }
+  .gantt-loader-text { font-size:13px;color:#6b7280;font-family:inherit;letter-spacing:.3px; }
+</style>
+
+<div id="appLoaderGantt">
+  <img src="assets/logopmv.png" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
+  <div class="gantt-spinner"></div>
+  <div class="gantt-loader-text">Cargando cronograma...</div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="index.html" class="btn-back">◀ Volver</a>
+  <div class="header-sep"></div>
+  <div class="header-logo">
+    <img src="assets/logopmv.png" alt="PMV" onerror="this.style.display='none'"/>
+  </div>
+  <div class="header-title">Cronograma de Proyecto</div>
+  <div class="header-sep"></div>
+
+  <select id="ganttCategoria">
+    <option value="Planificación">Planificación</option>
+    <option value="Fortalecimiento">Fortalecimiento</option>
+    <option value="Asistencia Técnica">Asistencia Técnica</option>
+    <option value="Administrativo">Administrativo</option>
+  </select>
+
+  <!-- Vista -->
+  <select id="ganttView">
+    <option value="weeks">Semanas</option>
+    <option value="months">Meses</option>
+    <option value="days">Días</option>
+  </select>
+
+  <!-- Toggle solo hitos -->
+  <button class="btn-ctrl" id="btnSoloHitos" onclick="toggleSoloHitos()">
+    📌 Solo hitos
+  </button>
+
+  <!-- Zoom -->
+  <div class="zoom-group">
+    <button class="zoom-btn" onclick="changeZoom(-1)">−</button>
+    <span class="zoom-val" id="zoomVal">100%</span>
+    <button class="zoom-btn" onclick="changeZoom(1)">＋</button>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Navegación horizontal -->
+  <div class="zoom-group">
+    <button class="zoom-btn" title="Ir al inicio" onclick="scrollGantt('start')" style="font-size:13px">⏮</button>
+    <button class="zoom-btn" title="Desplazar izquierda" onclick="scrollGantt('left')" style="font-size:13px">◀</button>
+    <button class="zoom-btn" title="Ir a hoy" onclick="scrollGantt('today')" style="font-size:11px;width:auto;padding:0 8px">Hoy</button>
+    <button class="zoom-btn" title="Desplazar derecha" onclick="scrollGantt('right')" style="font-size:13px">▶</button>
+    <button class="zoom-btn" title="Ir al final" onclick="scrollGantt('end')" style="font-size:13px">⏭</button>
+  </div>
+
+  <div class="header-sep"></div>
+
+  <!-- Docs -->
+  <a id="btnAyudaMemoria" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none">📋 Ayuda Memoria</a>
+  <a id="btnFichaActividad" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none">📄 Ficha Actividad</a>
+</div>
+
+<!-- LEYENDA -->
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:#00C17C"></div> Completado</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#3B6FFF"></div> En proceso</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#F5A623"></div> Pendiente</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#E53E3E"></div> Bloqueado</div>
+  <div class="leg-item">🚨 Vencida</div>
+  <div class="leg-item">⚠️ Por vencer</div>
+
+</div>
+
+<!-- LAYOUT -->
+<div class="gantt-wrap">
+  <!-- Panel izquierdo ejes -->
+  <div class="eje-panel" id="ejePanel">
+    <div class="eje-panel-title">Ejes de Trabajo</div>
+    <div id="ejeList"></div>
+  </div>
+
+  <!-- Gantt — dos paneles independientes -->
+  <div class="gantt-area">
+    <div class="gantt-body">
+      <!-- Columna de labels: ancho fijo, nunca se toca -->
+      <div class="label-panel">
+        <div class="label-header">Actividades</div>
+        <div class="label-rows" id="labelRows"></div>
+      </div>
+      <!-- Gantt data: scroll horizontal arriba, vertical sincronizado -->
+      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+        <div class="gantt-scroll-wrap" id="ganttScroll">
+          <div id="ganttChart" style="position:relative"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALLE -->
+<div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px 32px;width:90%;max-width:480px;box-shadow:0 24px 60px rgba(0,0,0,0.2);position:relative;max-height:85vh;overflow-y:auto">
+    <button onclick="closeDetail()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL  = 'https://lnjfnknciydxfgnyhfnf.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuamZua25jaXlkeGZnbnloZm5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDcxMjQsImV4cCI6MjA4OTYyMzEyNH0.HRkZcoDpAbzO8U36Lo_5E1_i6aA7oWEX5lg4PO6SjlQ';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let rawData   = [];
+let ejesData  = [];
+let ejeActual = '';
+let soloHitos = false;
+let zoomLevel = 100; // porcentaje
+let baseZoom  = { days: 16, weeks: 40, months: 90 };
+
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function fmtMonthEs(d) {
+  const m = d.toLocaleString('es-PE', { month:'short' });
+  return (m.charAt(0).toUpperCase() + m.slice(1)).replace('.','');
+}
+
+function estadoColor(e) {
+  const n = (e||'').toLowerCase();
+  if (n.includes('bloque'))  return 'var(--red)';
+  if (n.includes('complet')) return 'var(--signal)';
+  if (n.includes('proceso')) return 'var(--blue)';
+  return 'var(--amber)';
+}
+
+function barClass(e) {
+  const n = (e||'').toLowerCase();
+  if (n.includes('bloque'))  return 'bar-blocked';
+  if (n.includes('complet')) return 'bar-done';
+  if (n.includes('proceso')) return 'bar-process';
+  return 'bar-pending';
+}
+
+function pctAvg(rows) {
+  const activas = rows.filter(r => !(r.estado||'').toLowerCase().includes('bloqueado'));
+  if (!activas.length) return 0;
+  return Math.round(activas.reduce((s,r)=>s+(r.avance||0),0)/activas.length);
+}
+
+// ── Zoom ──
+function changeZoom(dir) {
+  const steps = [50,75,100,125,150,175,200];
+  const idx = steps.indexOf(zoomLevel);
+  const newIdx = Math.max(0, Math.min(steps.length-1, idx + dir));
+  zoomLevel = steps[newIdx];
+  document.getElementById('zoomVal').textContent = zoomLevel + '%';
+  renderGantt();
+}
+
+// ── Toggle solo hitos ──
+function toggleSoloHitos() {
+  soloHitos = !soloHitos;
+  const btn = document.getElementById('btnSoloHitos');
+  btn.classList.toggle('active', soloHitos);
+  renderGantt();
+}
+
+// ── Cargar datos ──
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  const [{ data: acts }, { data: ejes }] = await Promise.all([
+    sb.from('actividades').select('*').order('id'),
+    sb.from('ejes').select('*').order('nombre'),
+  ]);
+
+  rawData  = acts  || [];
+  ejesData = ejes  || [];
+
+  buildEjePanel();
+
+  // Todo listo — ocultar loader y mostrar página
+  const loader = document.getElementById('appLoaderGantt');
+  if (loader) {
+    loader.classList.add('fade-out');
+    setTimeout(() => { loader.style.display = 'none'; }, 300);
+  }
+  document.body.style.opacity = '1';
+  document.body.style.transition = 'opacity .2s ease';
+
+  // Realtime
+  sb.channel('gantt-cambios')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'actividades' }, async () => {
+      const { data } = await sb.from('actividades').select('*').order('id');
+      rawData = data || [];
+      buildEjePanel();
+      renderGantt();
+    })
+    .subscribe();
+}
+
+// ── Panel de ejes ──
+function buildEjePanel() {
+  const list = document.getElementById('ejeList');
+  const cat = (document.getElementById('ganttCategoria')?.value || '').trim();
+  const acts = [...new Set(rawData.filter(r=>r.subactividad).map(r=>(r.actividad_general||'').trim()))]
+      .filter(Boolean)
+      .filter(nombre => {
+        if (!cat) return true;
+        const eje = ejesData.find(e => e.nombre === nombre);
+        return (eje?.tipo || 'Planificación') === cat;
+      })
+      .sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+
+  // Si el eje actual no pertenece a la categoría filtrada, limpiar
+  if (!acts.includes(ejeActual)) ejeActual = acts.length ? acts[0] : null;
+
+  list.innerHTML = acts.map(a => {
+    const rows = rawData.filter(r => r.actividad_general === a && r.subactividad);
+    const pct  = pctAvg(rows);
+    const isActive = a === ejeActual;
+    return `<div class="eje-item ${isActive?'active':''}" onclick="selectEje('${esc(a).replace(/'/g,"\\'")}')">
+      ${esc(a)}
+      <div class="eje-pct" style="color:${isActive?'var(--accent)':'var(--muted)'}">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  // Actualizar doc buttons
+  updateDocButtons(ejeActual);
+  renderGantt();
+}
+
+window.selectEje = function(nombre) {
+  ejeActual = nombre;
+  buildEjePanel();
+};
+
+// ── Doc buttons ──
+function updateDocButtons(actName) {
+  const btnAM = document.getElementById('btnAyudaMemoria');
+  const btnFA = document.getElementById('btnFichaActividad');
+  const eje = ejesData.find(e => e.nombre === actName);
+  const urlAM = eje?.url_ayuda || '';
+  const urlFA = eje?.url_ficha || '';
+  if (urlAM?.startsWith('http')) {
+    btnAM.href = urlAM; btnAM.style.opacity='1'; btnAM.style.pointerEvents='';
+  } else {
+    btnAM.href = '#'; btnAM.style.opacity='0.4'; btnAM.style.pointerEvents='none';
+  }
+  if (urlFA?.startsWith('http')) {
+    btnFA.href = urlFA; btnFA.style.opacity='1'; btnFA.style.pointerEvents='';
+  } else {
+    btnFA.href = '#'; btnFA.style.opacity='0.4'; btnFA.style.pointerEvents='none';
+  }
+}
+
+// ── Render Gantt ──
+function renderGantt() {
+  const container = document.getElementById('ganttChart');
+  const view = document.getElementById('ganttView').value;
+
+  if (!ejeActual) {
+    container.innerHTML = '<div class="empty-gantt">Selecciona un eje de trabajo</div>';
+    document.getElementById('labelRows').innerHTML = '';
+    return;
+  }
+
+  const data = rawData.filter(r => r.subactividad && (r.actividad_general||'').trim() === ejeActual);
+  if (!data.length) {
+    container.innerHTML = '<div class="empty-gantt">Sin actividades para este eje</div>';
+    return;
+  }
+
+  const tasks = data.map(r => ({
+    row: r, name: r.subactividad||'',
+    hito: r.hito||'—', estado: r.estado||'Pendiente',
+    pct: r.avance||0,
+    start: r.fecha_inicio ? new Date(r.fecha_inicio+'T00:00:00') : null,
+    end:   r.fecha_fin    ? new Date(r.fecha_fin   +'T00:00:00') : null,
+  })).filter(t => t.start && t.end && !isNaN(t.start) && !isNaN(t.end));
+
+  if (!tasks.length) {
+    container.innerHTML = '<div class="empty-gantt">Sin fechas válidas para mostrar</div>';
+    return;
+  }
+
+  const startOfDay = d => { const x=new Date(d); x.setHours(0,0,0,0); return x; };
+  const daysBetween = (a,b) => Math.round((startOfDay(b)-startOfDay(a))/86400000);
+
+  const allDates = tasks.flatMap(t=>[t.start,t.end]);
+  let minD = startOfDay(new Date(Math.min(...allDates)));
+  let maxD = startOfDay(new Date(Math.max(...allDates)));
+
+  if (view==='days') { minD.setDate(minD.getDate()-7); maxD.setDate(maxD.getDate()+7); }
+  else if (view==='weeks') { minD.setDate(minD.getDate()-14); maxD.setDate(maxD.getDate()+14); }
+  else { minD.setMonth(minD.getMonth()-1); maxD.setMonth(maxD.getMonth()+1); }
+
+  const totalDays   = daysBetween(minD,maxD)+1;
+  const totalWeeks  = Math.ceil(totalDays/7);
+  const totalMonths = (maxD.getFullYear()-minD.getFullYear())*12 + maxD.getMonth()-minD.getMonth()+1;
+
+  let colCount;
+  if (view==='days') colCount=totalDays;
+  else if (view==='weeks') colCount=totalWeeks;
+  else colCount=totalMonths;
+
+  const base = baseZoom[view];
+  const zoom = Math.round(base * zoomLevel / 100);
+  const labelW = 340;
+
+  // Ticks y spans
+  const ticks=[], monthSpans=[];
+  if (view==='days') {
+    let curM=null, mStart=1;
+    for (let i=0;i<totalDays;i++) {
+      const d=new Date(minD.getTime()+i*86400000);
+      ticks.push({col:i+2, label:d.getDate(), weekend: d.getDay()===0||d.getDay()===6, altMonth: Math.floor(i/7)%2===0});
+      const mk=d.getFullYear()+'-'+d.getMonth();
+      if (mk!==curM) {
+        if (curM!==null) monthSpans.push({startCol:mStart+1,span:i-mStart+1,label:fmtMonthEs(new Date(minD.getTime()+(mStart-1)*86400000))+' '+new Date(minD.getTime()+(mStart-1)*86400000).getFullYear()});
+        curM=mk; mStart=i+1;
+      }
+    }
+    monthSpans.push({startCol:mStart+1,span:totalDays-mStart+1,label:fmtMonthEs(new Date(minD.getTime()+(mStart-1)*86400000))+' '+new Date(minD.getTime()+(mStart-1)*86400000).getFullYear()});
+  } else if (view==='weeks') {
+    for (let i=0;i<totalWeeks;i++) {
+      const d=new Date(minD.getTime()+i*7*86400000);
+      ticks.push({col:i+2,label:d.getDate()+'/'+String(d.getMonth()+1).padStart(2,'0'),altMonth:i%2===0});
+    }
+    let curM=null,mStart=1;
+    ticks.forEach((t,i)=>{
+      const d=new Date(minD.getTime()+i*7*86400000);
+      const mk=d.getFullYear()+'-'+d.getMonth();
+      if(mk!==curM){
+        if(curM!==null){const prev=new Date(minD.getTime()+(mStart-1)*7*86400000);monthSpans.push({startCol:mStart+1,span:i-mStart+1,label:fmtMonthEs(prev)+' '+prev.getFullYear()});}
+        curM=mk;mStart=i+1;
+      }
+    });
+    const last=new Date(minD.getTime()+(mStart-1)*7*86400000);
+    monthSpans.push({startCol:mStart+1,span:totalWeeks-mStart+1,label:fmtMonthEs(last)+' '+last.getFullYear()});
+  } else {
+    for (let i=0;i<totalMonths;i++) {
+      const d=new Date(minD.getFullYear(),minD.getMonth()+i,1);
+      ticks.push({col:i+2,label:fmtMonthEs(d),altMonth:i%2===0});
+    }
+    let curY=null,mStart=1;
+    ticks.forEach((t,i)=>{
+      const d=new Date(minD.getFullYear(),minD.getMonth()+i,1);
+      const yk=d.getFullYear();
+      if(yk!==curY){if(curY!==null)monthSpans.push({startCol:mStart+1,span:i-mStart+1,label:String(curY)});curY=yk;mStart=i+1;}
+    });
+    monthSpans.push({startCol:mStart+1,span:totalMonths-mStart+1,label:String(new Date(minD.getFullYear(),minD.getMonth()+(mStart-1),1).getFullYear())});
+  }
+
+  const getStartCol = t => {
+    if (view==='days') return 2+daysBetween(minD,t.start);
+    if (view==='weeks') return 2+Math.floor(daysBetween(minD,t.start)/7);
+    return 2+(t.start.getFullYear()-minD.getFullYear())*12+t.start.getMonth()-minD.getMonth();
+  };
+  const getDur = t => {
+    if (view==='days') return Math.max(1,daysBetween(t.start,t.end)+1);
+    if (view==='weeks') return Math.max(1,Math.ceil(daysBetween(t.start,t.end)/7));
+    return Math.max(1,(t.end.getFullYear()-t.start.getFullYear())*12+t.end.getMonth()-t.start.getMonth()+1);
+  };
+
+  // Agrupar por hito
+  const byHito=new Map();
+  tasks.forEach(t=>{const k=t.hito||'—';if(!byHito.has(k))byHito.set(k,[]);byHito.get(k).push(t);});
+  const hitoNum=h=>{const m=(h||'').match(/(\d+)/);return m?parseInt(m[1]):9999;};
+  const sortedHitos=[...byHito.keys()].sort((a,b)=>hitoNum(a)-hitoNum(b)||a.localeCompare(b,'es',{sensitivity:'base'}));
+  const actNum=s=>{const m=(s||'').match(/^[\s(]*(\d+)\.(\d+)/);return m?parseInt(m[1])*1000+parseInt(m[2]):(s||'').match(/^[\s(]*(\d+)/)?parseInt((s||'').match(/^[\s(]*(\d+)/)[1])*1000:9999000;};
+
+  let rows=[];
+  sortedHitos.forEach(h=>{
+    // Calcular rango del hito para la barra resumen
+    const hTasks = byHito.get(h).filter(t=>t.start&&t.end);
+    let hitoStart=null, hitoEnd=null, hitoPct=0;
+    if (hTasks.length) {
+      hitoStart = new Date(Math.min(...hTasks.map(t=>t.start)));
+      hitoEnd   = new Date(Math.max(...hTasks.map(t=>t.end)));
+      hitoPct   = Math.round(hTasks.reduce((s,t)=>s+t.pct,0)/hTasks.length);
+    }
+    rows.push({type:'group', label:h, hitoStart, hitoEnd, hitoPct, tasks: hTasks});
+    if (!soloHitos) {
+      byHito.get(h).sort((a,b)=>actNum(a.name)-actNum(b.name))
+        .forEach(t=>rows.push({type:'task',task:t}));
+    }
+  });
+
+  // Hoy
+  const today=startOfDay(new Date());
+  const todayDays=daysBetween(minD,today);
+  let todayCol=null;
+  if (view==='days') todayCol=todayDays;
+  else if (view==='weeks') todayCol=Math.floor(todayDays/7);
+  else todayCol=(today.getFullYear()-minD.getFullYear())*12+today.getMonth()-minD.getMonth();
+  const hasToday=todayCol>=1&&todayCol<colCount-1;
+
+  const rowH = soloHitos ? 36 : 32;
+  const headerH = 28;
+
+  // ── TABLA DE LABELS (panel fijo izquierdo) ──
+  let labelHtml = `<table class="label-table">`;
+  rows.forEach(row => {
+    const isGroup = row.type === 'group';
+    const cls = isGroup ? 'group-row' : 'task-row';
+    const labelText = isGroup ? row.label : (row.task?.name || '');
+    const clickAttr = !isGroup ? `onclick="showDetail(${row.task?.row?.id})"` : '';
+    labelHtml += `<tr><td class="label-cell ${cls}" ${clickAttr} title="${esc(labelText)}" style="height:${rowH}px">${esc(labelText)}</td></tr>`;
+  });
+  labelHtml += `</table>`;
+  document.getElementById('labelRows').innerHTML = labelHtml;
+
+  // ── TABLA DEL GANTT (solo datos, sin columna label) ──
+  let html = `<table class="ganttGrid">`;
+  html += `<colgroup>${Array(colCount).fill(`<col style="width:${zoom}px"/>`).join('')}</colgroup>`;
+
+  // THEAD: fila 1 meses, fila 2 ticks
+  html += `<thead><tr>`;
+  monthSpans.forEach(s => {
+    html += `<th class="ganttMonth" colspan="${s.span}" style="height:${headerH}px;min-width:${zoom*s.span}px">${esc(String(s.label))}</th>`;
+  });
+  html += `</tr><tr>`;
+  ticks.forEach(t => {
+    html += `<th class="ganttTick" style="width:${zoom}px;min-width:${zoom}px;height:${headerH}px">${esc(String(t.label))}</th>`;
+  });
+  html += `</tr></thead><tbody>`;
+
+  // TBODY: solo celdas de datos
+  rows.forEach(row => {
+    const isGroup = row.type === 'group';
+    const cls = isGroup ? 'group-row' : 'task-row';
+    html += `<tr>`;
+    for (let c = 0; c < colCount; c++) {
+      const col = c + 2;
+      const isWeekend = view === 'days' && ticks[c]?.weekend;
+      const isAltMonth = ticks[c]?.altMonth;
+      html += `<td class="gantt-cell ${cls} ${isWeekend?'weekend':''} ${isAltMonth?'alt-month':''}" style="height:${rowH}px;width:${zoom}px;min-width:${zoom}px;position:relative">`;
+
+      if (isGroup && soloHitos && row.hitoStart && row.hitoEnd) {
+        const sc = getStartCol({start:row.hitoStart});
+        const dur = getDur({start:row.hitoStart,end:row.hitoEnd});
+        if (col===sc) {
+          const w = (dur*zoom)-4;
+          html += `<div class="gbar-wrap"><div class="gbar hito-mode" style="left:2px;width:${w}px;background:linear-gradient(90deg,#0057B8,#00A3E0)" title="${esc(row.label)}">${row.hitoPct}% · ${esc(row.label)}</div></div>`;
+        }
+      } else if (!isGroup) {
+        const t = row.task;
+        const sc = getStartCol(t);
+        const dur = getDur(t);
+        if (col===sc) {
+          const w = dur*zoom-4;
+          const today2 = startOfDay(new Date());
+          const esBloq = (t.estado||'').toLowerCase().includes('bloqueado');
+          const isVencida = !esBloq && t.end<today2 && t.pct<100;
+          const isPorVencer = !esBloq && !isVencida && t.end>=today2 && daysBetween(today2,t.end)<=7 && t.pct<100;
+          const alertBorder = isVencida ? 'box-shadow:0 0 0 2px #E53E3E,0 1px 4px rgba(0,0,0,.15);' : isPorVencer ? 'box-shadow:0 0 0 2px #F5A623,0 1px 4px rgba(0,0,0,.15);' : '';
+          const alertBadge = isVencida
+            ? `<div style="position:absolute;top:-11px;left:2px;font-size:11px;line-height:1;pointer-events:none;z-index:5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">🚨</div>`
+            : isPorVencer
+            ? `<div style="position:absolute;top:-11px;left:2px;font-size:11px;line-height:1;pointer-events:none;z-index:5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))">⚠️</div>`
+            : '';
+          html += `<div class="gbar-wrap" style="overflow:visible">${alertBadge}<div class="gbar ${barClass(t.estado)}" style="left:2px;width:${w}px;cursor:pointer;${alertBorder}" title="${esc(t.name)} — ${t.estado} ${t.pct}%" onclick="showDetail(${t.row.id})">${t.pct}% · ${esc(t.name)}</div></div>`;
+        }
+      }
+      html += `</td>`;
+    }
+    html += `</tr>`;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+
+  // Overlay línea de hoy
+  if (hasToday) {
+    const overlayLeft = (todayCol * zoom) + (zoom / 2) - 1;
+    const overlay = document.createElement('div');
+    overlay.className = 'today-overlay';
+    overlay.style.left = overlayLeft + 'px';
+    container.style.position = 'relative';
+    container.appendChild(overlay);
+  }
+
+  // Sincronizar scroll vertical: labelRows es el master, ganttChart sigue
+  const ganttScroll = document.getElementById('ganttScroll');
+  const labelRowsEl = document.getElementById('labelRows');
+  
+  // Hacer label-rows scrollable verticalmente y ganttScroll también
+  labelRowsEl.style.overflowY = 'auto';
+  ganttScroll.style.overflowY = 'auto';
+  
+  let syncing = false;
+  labelRowsEl.onscroll = () => {
+    if (syncing) return; syncing = true;
+    ganttScroll.scrollTop = labelRowsEl.scrollTop;
+    syncing = false;
+  };
+  ganttScroll.onscroll = () => {
+    if (syncing) return; syncing = true;
+    labelRowsEl.scrollTop = ganttScroll.scrollTop;
+    syncing = false;
+  };
+
+  // Auto-scroll a hoy
+  if (hasToday) {
+    const scrollX = Math.max(0, todayCol*zoom - 300);
+    setTimeout(() => ganttScroll.scrollLeft = scrollX, 50);
+  }
+}
+
+// Cambio de vista
+document.getElementById('ganttView').addEventListener('change', renderGantt);
+document.getElementById('ganttCategoria').addEventListener('change', () => {
+  ejeActual = null;
+  buildEjePanel();
+});
+
+// ── Navegación horizontal del Gantt ──
+function scrollGantt(dir) {
+  const el = document.getElementById('ganttScroll');
+  if (!el) return;
+  const step = 300;
+  if (dir === 'left')  el.scrollLeft -= step;
+  if (dir === 'right') el.scrollLeft += step;
+  if (dir === 'start') el.scrollLeft = 0;
+  if (dir === 'end')   el.scrollLeft = el.scrollWidth;
+  if (dir === 'today') {
+    // Buscar la línea de hoy y scrollear hasta ella
+    const overlay = el.querySelector('.today-overlay');
+    if (overlay) {
+      const left = parseInt(overlay.style.left) || 0;
+      el.scrollLeft = Math.max(0, left - 300);
+    }
+  }
+}
+
+// Init
+init();
+
+// ── Detail Modal ──
+window.showDetail = function(id) {
+  const row = rawData.find(r => r.id === id);
+  if (!row) return;
+  const modal = document.getElementById('detailModal');
+  const content = document.getElementById('detailContent');
+
+  const estadoColor = e => {
+    const n=(e||'').toLowerCase();
+    if(n.includes('bloque')) return '#E53E3E';
+    if(n.includes('complet')) return '#00C17C';
+    if(n.includes('proceso')) return '#3B6FFF';
+    return '#F5A623';
+  };
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const end = row.fecha_fin ? new Date(row.fecha_fin+'T00:00:00') : null;
+  const esBloq2  = (row.estado||'').toLowerCase().includes('bloqueado');
+  const isVencida = !esBloq2 && end && end < today && (row.avance||0) < 100;
+  const isPorVencer = !esBloq2 && end && !isVencida && end >= today && Math.round((end-today)/86400000) <= 7 && (row.avance||0) < 100;
+
+  content.innerHTML = `
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${esc(row.hito||'Sin hito')}</div>
+      <h3 style="font-size:17px;font-weight:700;color:#0f1117;line-height:1.3">${esc(row.subactividad||'')}</h3>
+      ${isVencida ? '<div style="margin-top:6px;font-size:12px;color:#E53E3E;font-weight:600">🚨 Actividad vencida</div>' : ''}
+      ${isPorVencer ? '<div style="margin-top:6px;font-size:12px;color:#F5A623;font-weight:600">⚠️ Por vencer esta semana</div>' : ''}
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <span style="padding:4px 10px;border-radius:99px;background:${estadoColor(row.estado)}22;color:${estadoColor(row.estado)};font-size:12px;font-weight:600">${esc(row.estado||'Pendiente')}</span>
+      <span style="padding:4px 10px;border-radius:99px;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600">${row.avance||0}% avance</span>
+      ${row.prioridad ? `<span style="padding:4px 10px;border-radius:99px;background:#f3f4f6;color:#374151;font-size:12px">${esc(row.prioridad)}</span>` : ''}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+      ${row.responsable ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Responsable</div><div style="color:#0f1117">${esc(row.responsable)}</div></div>` : ''}
+      ${row.equipo_tecnico ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Equipo</div><div style="color:#0f1117">${esc(row.equipo_tecnico)}</div></div>` : ''}
+      ${row.ciudad ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Ciudad</div><div style="color:#0f1117">${esc(row.ciudad)}</div></div>` : ''}
+      ${row.fecha_inicio ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Fecha inicio</div><div style="color:#0f1117">${row.fecha_inicio}</div></div>` : ''}
+      ${row.fecha_fin ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Fecha fin</div><div style="color:#0f1117">${row.fecha_fin}</div></div>` : ''}
+      ${row.producto ? `<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Producto</div><div style="color:#0f1117">${esc(row.producto)}</div></div>` : ''}
+      ${row.comentarios ? `<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Comentarios</div><div style="color:#0f1117;white-space:pre-line">${esc(row.comentarios)}</div></div>` : ''}
+    </div>
+    ${row.evidencia ? `<div style="margin-top:16px"><a href="${esc(row.evidencia)}" target="_blank" style="color:var(--accent);font-size:13px">🔗 Ver evidencia</a></div>` : ''}
+  `;
+
+  modal.style.display = 'flex';
+};
+
+window.closeDetail = function() {
+  document.getElementById('detailModal').style.display = 'none';
+};
+
+// Cerrar con ESC o click fuera
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); });
+document.getElementById('detailModal').addEventListener('click', e => {
+  if(e.target === document.getElementById('detailModal')) closeDetail();
+});
+</script>
+</body>
+</html>
