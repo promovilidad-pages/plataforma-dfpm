@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PROMOVILIDAD — Acceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--white:#fff;--off:#f5f6f8;--border:#e8eaed;--text:#0f1117;--muted:#6b7280;--accent:#0057B8;--accent2:#00A3E0;--danger:#dc2626;--success:#16a34a}
+    body{font-family: 'Inter', sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+    .bg{position:fixed;inset:0;background-image:url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80');background-size:cover;background-position:center;filter:brightness(0.5) saturate(1.1);z-index:0}
+    .bg-overlay{position:fixed;inset:0;background:linear-gradient(135deg,rgba(0,30,80,.65) 0%,rgba(0,87,184,.25) 100%);z-index:1}
+    .card{position:relative;z-index:10;width:100%;max-width:420px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:24px;padding:48px 44px;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 24px 80px rgba(0,0,0,.25),0 4px 16px rgba(0,0,0,.1);animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both;margin:24px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .logo-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:32px;text-align:center}
+    .logo-img{width:80px;height:80px;object-fit:contain;margin-bottom:10px}
+    .logo-fallback{width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:26px;color:#fff;margin-bottom:10px;box-shadow:0 8px 24px rgba(0,87,184,.3)}
+    .logo-name{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--text);letter-spacing:.5px}
+    .logo-sub{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-top:3px}
+    h1{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;text-align:center}
+    .subtitle{font-size:13px;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:28px}
+    .field{margin-bottom:14px}
+    label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
+    input{width:100%;padding:13px 16px;background:var(--off);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
+    input:focus{border-color:var(--accent);background:var(--white);box-shadow:0 0 0 3px rgba(0,87,184,.08)}
+    input::placeholder{color:#c0c4cc}
+    .btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);border:none;border-radius:12px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:opacity .2s,transform .15s,box-shadow .2s;margin-top:10px;box-shadow:0 4px 16px rgba(0,87,184,.3)}
+    .btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,87,184,.35)}
+    .btn:active{transform:translateY(0)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+    .alert{padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;display:none;line-height:1.4}
+    .alert.error{background:#fef2f2;border:1px solid #fecaca;color:var(--danger)}
+    .alert.success{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success)}
+    .alert.show{display:block}
+    .footer-note{text-align:center;font-size:12px;color:var(--muted);margin-top:20px;line-height:1.5}
+    .bottom-badge{position:fixed;bottom:20px;left:0;right:0;text-align:center;z-index:10}
+    .bottom-badge span{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase}
+    @media(max-width:480px){.card{padding:36px 28px}}
+  </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="bg-overlay"></div>
+<div class="card">
+<div class="logo-wrap">
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px">
+    <img src="assets/logomtc.png" alt="MTC"
+      style="height:44px;width:auto;object-fit:contain"/>
+    <div style="width:1px;height:48px;background:#e8eaed"></div>
+    <img src="assets/logopmv.png" alt="PROMOVILIDAD"
+      style="height:44px;width:auto;object-fit:contain"/>
+  </div>
+</div>
+  <h1>PLATAFORMA DFPM</h1>
+  <p class="subtitle">Ingresa tus credenciales para acceder a la plataforma de gestión.</p>
+  <div class="alert error" id="alertError"></div>
+  <div class="alert success" id="alertSuccess"></div>
+  <div class="field">
+    <label>Correo electrónico</label>
+    <input type="email" id="email" placeholder="usuario@promovilidad.com" autocomplete="email"/>
+  </div>
+  <div class="field">
+    <label>Contraseña</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+  </div>
+  <button class="btn" id="btnLogin">Ingresar a la plataforma</button>
+  <p class="footer-note">¿Problemas para acceder?<br>Contacta al administrador del sistema.</p>
+</div>
+<div class="bottom-badge">
+  <span>Dirección de Fortalecimiento y Planificación de la Movilidad · DFPM</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL  = 'https://lnjfnknciydxfgnyhfnf.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuamZua25jaXlkeGZnbnloZm5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDcxMjQsImV4cCI6MjA4OTYyMzEyNH0.HRkZcoDpAbzO8U36Lo_5E1_i6aA7oWEX5lg4PO6SjlQ';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  sb.auth.getSession().then(async ({data})=>{
+    if(data.session){
+      const { data: pf } = await sb.from('perfiles').select('rol').eq('id', data.session.user.id).single();
+      window.location.href = pf?.rol === 'poi' ? 'reportes.html' : 'index.html';
+    }
+  });
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('msg')==='desactivado'){
+    const el=document.getElementById('alertError');
+    el.textContent='Tu cuenta ha sido desactivada. Contacta al administrador.';
+    el.classList.add('show');
+  }
+  const btnLogin=document.getElementById('btnLogin');
+  const alertError=document.getElementById('alertError');
+  const alertSuccess=document.getElementById('alertSuccess');
+  function showError(msg){alertError.textContent=msg;alertError.classList.add('show');alertSuccess.classList.remove('show')}
+  function showSuccess(msg){alertSuccess.textContent=msg;alertSuccess.classList.add('show');alertError.classList.remove('show')}
+  document.addEventListener('keydown',e=>{if(e.key==='Enter')btnLogin.click()});
+  btnLogin.addEventListener('click',async()=>{
+    const email=document.getElementById('email').value.trim();
+    const password=document.getElementById('password').value;
+    alertError.classList.remove('show');alertSuccess.classList.remove('show');
+    if(!email||!password){showError('Completa todos los campos.');return}
+    btnLogin.disabled=true;btnLogin.textContent='Verificando...';
+    const{data,error}=await sb.auth.signInWithPassword({email,password});
+    if(error){showError('Credenciales incorrectas. Verifica tu correo y contraseña.');btnLogin.disabled=false;btnLogin.textContent='Ingresar a la plataforma';return}
+    showSuccess('Acceso correcto. Redirigiendo...');
+    const { data: pf } = await sb.from('perfiles').select('rol').eq('id', data.user.id).single();
+    const destino = pf?.rol === 'poi' ? 'reportes.html' : 'index.html';
+    setTimeout(()=>window.location.href=destino, 800);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PROMOVILIDAD — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<style>body { opacity: 0; }</style>
+<style>
+  #appLoader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #fff;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+    transition: opacity .3s ease;
+  }
+  #appLoader.fade-out { opacity: 0; pointer-events: none; }
+  .loader-spinner {
+    width: 40px; height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #00a651;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { font-size: 13px; color: #6b7280; font-family: inherit; letter-spacing: .3px; }
+</style>
+<body>
+
+<div id="appLoader">
+  <img src="assets/logopmv.png" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Cargando plataforma...</div>
+</div>
+
+<div class="dashboard-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo-wrap">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <img src="assets/logopmv.png" alt="PROMOVILIDAD"
+            style="height:60px;width:auto;object-fit:contain"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-chip" id="userChip">
+      <div class="user-avatar" id="userAvatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="userName">Cargando...</div>
+        <div class="user-role" id="userRole">—</div>
+      </div>
+      <button class="btn-logout" id="btnLogout" title="Cerrar sesión">⏻</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="actividades">
+        <span class="nav-icon">📋</span> Ejes de Trabajo
+      </button>
+      <button class="nav-item" data-view="repositorio">
+        <span class="nav-icon">📁</span> Repositorio
+      </button>
+      <button class="nav-item" onclick="window.open('gantt.html','_blank')" id="navGantt">
+        <span class="nav-icon">📅</span> Cronograma
+      </button>
+      <button class="nav-item" onclick="window.open('reportes.html','_blank')">
+        <span class="nav-icon">📊</span> Reportes
+      </button>
+      <button class="nav-item admin-only hidden" data-view="usuarios">
+        <span class="nav-icon">👥</span> Usuarios
+      </button>
+      <button class="nav-item" data-view="auditoria">
+        <span class="nav-icon">🕓</span> Auditoría
+      </button>
+      <button class="nav-item" data-view="manual">
+        <span class="nav-icon">📖</span> Manual de uso
+      </button>
+      <button class="nav-item" id="btnCambiarClave">
+        <span class="nav-icon">🔑</span> Cambiar contraseña
+      </button>
+    </nav>
+
+    <div class="sidebar-filters" id="sidebarFilters">
+      <div class="filter-section">
+        <label class="filter-label">BUSCAR</label>
+        <input type="text" id="q" placeholder="Escribe para buscar..."/>
+      </div>
+      <div class="filter-section">
+        <label class="filter-label">FILTROS</label>
+        <select id="fEstado">
+          <option value="">Todos los estados</option>
+          <option value="Pendiente">🟡 Pendiente</option>
+          <option value="En proceso">🔵 En proceso</option>
+          <option value="Completado">🟢 Completado</option>
+          <option value="Bloqueado">🔴 Bloqueado</option>
+        </select>
+        <select id="fResp"><option value="">Responsable (Todos)</option></select>
+        <select id="fCiudad"><option value="">Ciudad (Todas)</option></select>
+        <select id="fActGen"><option value="">Actividad General (Todas)</option></select>
+      </div>
+      <div class="filter-section">
+        <label class="filter-label">FECHAS</label>
+        <div class="row-inputs">
+          <input type="date" id="fDesde"/>
+          <input type="date" id="fHasta"/>
+        </div>
+      </div>
+      <button class="btn-reset" id="btnReset">Limpiar filtros</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="top-header">
+      <div class="header-title">
+        <h2 id="viewTitle">Ejes de Trabajo</h2>
+        <span class="date-badge" id="dateBadge">Cargando...</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-ghost" id="btnRepo">📁 Repositorio</button>
+      </div>
+    </header>
+
+    <!-- VISTA: ACTIVIDADES -->
+    <div id="viewActividades">
+      <div class="category-tabs" id="categoryTabs">
+        <button class="cat-tab active" data-cat="Planificación">Planificación</button>
+        <button class="cat-tab" data-cat="Fortalecimiento">Fortalecimiento</button>
+        <button class="cat-tab" data-cat="Asistencia Técnica">Asistencia Técnica</button>
+        <button class="cat-tab" data-cat="Administrativo">Administrativo</button>
+      </div>
+      <div class="content-feed" style="padding:0">
+        <div class="feed-header" style="padding:12px 16px">
+          <span>Ejes de Trabajo</span>
+          <span class="count-badge" id="countBadge">Cargando...</span>
+        </div>
+        <div id="list"></div>
+      </div>
+    </div>
+
+    <!-- VISTA: REPOSITORIO -->
+    <div id="viewRepositorio" class="hidden">
+      <div class="content-feed">
+        <div class="feed-header">
+          <span>Repositorio de Documentos</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="repoFiltroTipo" class="select-small"><option value="">Tipo (Todos)</option></select>
+            <button class="btn-primary btn-sm" id="btnNuevoDoc">+ Agregar</button>
+          </div>
+        </div>
+        <div id="repoList"></div>
+      </div>
+    </div>
+
+    <!-- VISTA: CRONOGRAMA GANTT -->
+    <div id="viewGantt" class="hidden">
+      <div class="content-feed" style="margin-top:20px; min-height:calc(100vh - 160px);">
+        <div class="feed-header">
+          <span>Cronograma de Proyecto</span>
+          <div class="gantt-actions">
+            <a id="btnAyudaMemoria" class="btn-ghost btn-sm btn-doc-disabled" href="#" target="_blank" rel="noopener">📋 Ayuda Memoria</a>
+            <a id="btnFichaActividad" class="btn-ghost btn-sm btn-doc-disabled" href="#" target="_blank" rel="noopener">📄 Ficha de Actividad</a>
+            <select id="ganttActividad" class="select-small" title="Actividad general">
+              <option value="">Actividad general…</option>
+            </select>
+            <select id="ganttView" class="select-small" title="Vista">
+              <option value="days" selected>Días</option>
+              <option value="weeks">Semanas</option>
+              <option value="months">Meses</option>
+            </select>
+          </div>
+        </div>
+        <div id="ganttChart" class="gantt-container" style="height:calc(100vh - 220px);"></div>
+      </div>
+    </div>
+
+    <!-- VISTA: USUARIOS (solo admin) -->
+    <div id="viewUsuarios" class="hidden">
+      <div class="content-feed">
+        <div class="feed-header">
+          <span>Gestión de Usuarios</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn-ghost btn-sm" id="btnTabUsuarios" onclick="switchTabUsuarios('lista')">👥 Usuarios</button>
+            <button class="btn-ghost btn-sm" id="btnTabAgregar" onclick="switchTabUsuarios('agregar')">➕ Agregar usuario</button>
+          </div>
+        </div>
+        <div id="usuariosList"></div>
+        <div id="usuariosGuia" class="hidden" style="padding:24px">
+          <p style="font-size:14px;font-weight:600;margin-bottom:20px">Para crear un nuevo usuario sigue estos pasos:</p>
+
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;gap:14px">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">1</div>
+              <div>
+                <div style="font-weight:600;font-size:13px;margin-bottom:4px">Crear en Supabase Auth</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Ve a <strong>supabase.com</strong> → tu proyecto → <strong>Authentication → Users → Add user</strong>. Ingresa el email y contraseña y marca <em>"Auto Confirm User"</em>.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">2</div>
+              <div>
+                <div style="font-weight:600;font-size:13px;margin-bottom:4px">¡Listo! El perfil se crea automáticamente</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.6">El sistema crea el perfil automáticamente con rol <strong>Técnico</strong> por defecto. El usuario ya puede ingresar con su email y contraseña.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px">
+              <div style="width:28px;height:28px;border-radius:50%;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">3</div>
+              <div>
+                <div style="font-weight:600;font-size:13px;margin-bottom:4px">Opcional — Cambiar nombre o rol</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Si necesitas cambiar el nombre o asignar un rol distinto (Director, Admin), usa el ⚙️ del usuario en la lista de usuarios.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px">
+              <div style="width:28px;height:28px;border-radius:50%;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">4</div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:13px;margin-bottom:4px">Opcional — Cambiar contraseña de un usuario</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;line-height:1.6">Tu propia contraseña la puedes cambiar desde el ⚙️ de tu usuario. Para cambiar la de otro usuario, en <strong>SQL Editor</strong> ejecuta:</div>
+                <pre style="background:#0A0F1E;color:#7dd3a8;padding:14px 16px;border-radius:8px;font-size:12px;line-height:1.6;overflow-x:auto">UPDATE auth.users
+SET encrypted_password = crypt('<span style="color:#60a5fa">nuevaContraseña</span>', gen_salt('bf'))
+WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="76131b171f1a360604191b19001f1a1f1217125815191b">[email&#160;protected]</a></span>';</pre>
+              </div>
+            </div>
+
+            <div style="background:var(--signal-lt);border:1px solid rgba(0,193,124,0.2);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--signal-dk)">
+              ✅ Para <strong>eliminar</strong> un usuario ve a <strong>Supabase → Authentication → Users</strong> → selecciona el usuario → Delete.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA: AUDITORÍA (todos los usuarios) -->
+    <div id="viewAuditoria" class="hidden">
+      <div class="content-feed">
+        <div class="feed-header">
+          <span>Auditoría — Historial Global</span>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="date" id="auditDesde" class="select-small" title="Desde"/>
+            <input type="date" id="auditHasta" class="select-small" title="Hasta"/>
+            <select id="auditFiltroAccion" class="select-small">
+              <option value="">Todas las acciones</option>
+              <option value="creacion">➕ Creación</option>
+              <option value="edicion">✏️ Edición</option>
+              <option value="eliminacion">🗑️ Eliminación</option>
+            </select>
+            <select id="auditFiltroUsuario" class="select-small">
+              <option value="">Todos los usuarios</option>
+            </select>
+            <button class="btn-ghost btn-sm" id="btnAuditReset">Limpiar</button>
+          </div>
+        </div>
+        <div id="auditList"></div>
+      </div>
+    </div>
+
+    <!-- VISTA: MANUAL DE USO -->
+    <div id="viewManual" class="hidden">
+      <div class="content-feed" style="margin:0">
+
+        <div class="feed-header">
+          <span>📖 Manual de uso — Plataforma DFPM</span>
+          <span class="count-badge">v2.0</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:220px 1fr;height:calc(100vh - 140px)">
+
+          <!-- ÍNDICE LATERAL -->
+          <div style="border-right:1px solid var(--border);padding:20px 16px;overflow-y:auto;background:var(--ink-05)">
+            <div style="font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px">Contenido</div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <a href="#m1" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">1. Iniciar sesión</a>
+              <a href="#m2" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">2. Ejes, hitos y actividades</a>
+              <a href="#m3" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">3. Filtros y búsqueda</a>
+              <a href="#m4" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">4. Cronograma Gantt</a>
+              <a href="#m5" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">5. Repositorio</a>
+              <a href="#m6" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">6. Auditoría e historial</a>
+              <a href="#m7" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">7. Reportes</a>
+              <a href="#m8" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">8. POI</a>
+              <a href="#m9" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">9. Cambiar contraseña</a>
+              <a href="#m10" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">10. Gestión de usuarios</a>
+              <a href="#m11" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">11. Reuniones por estrategia</a>
+              <a href="#m12" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">12. Evidencias POI</a>
+              <a href="#m13" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">13. Viajes de comisión</a>
+            </div>
+          </div>
+
+          <!-- CONTENIDO -->
+          <div style="padding:28px 36px;overflow-y:auto;line-height:1.8;font-size:14px;color:var(--text-main)">
+
+            <!-- 1 -->
+            <div class="manual-section" id="m1">
+              <div class="manual-titulo">1. Iniciar sesión</div>
+              <p>Accede con tu correo institucional y contraseña asignada por el administrador.</p>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Abre la URL de la plataforma en tu navegador.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Escribe tu <strong>correo electrónico</strong> y <strong>contraseña</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>Ingresar a la plataforma</strong>.</span></div>
+              </div>
+              <div class="manual-tip">💡 Si no puedes ingresar, contacta al administrador para verificar que tu cuenta esté activa.</div>
+            </div>
+
+            <!-- 2 -->
+            <div class="manual-section" id="m2">
+              <div class="manual-titulo">2. Ejes, hitos y actividades</div>
+              <p>La plataforma organiza el trabajo en tres niveles: <strong>Ejes → Hitos → Actividades</strong>. Cada eje pertenece a una categoría: <em>Planificación, Fortalecimiento, Asistencia Técnica o Administrativo</em> — selecciona la pestaña correspondiente para verlos.</p>
+
+              <div class="manual-subtitulo">2.1 Crear un Eje de Trabajo</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona la pestaña de categoría (ej. Planificación) — el eje se creará automáticamente en esa categoría.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>＋ Nueva estrategia</strong> en el panel izquierdo.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Escribe el nombre y opcionalmente agrega URLs de Ayuda Memoria y Ficha de Actividad.</span></div>
+              </div>
+
+              <div class="manual-subtitulo">2.2 Crear un Hito</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona el eje en el panel izquierdo.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>＋ Hito</strong> en el panel derecho.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>El campo se pre-llena automáticamente con el número siguiente (ej. <strong>"3. "</strong>) — completa el texto después del número (ej. <strong>"3. Informe Etapa 1"</strong>).</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>Si el hito es un entregable del POI, marca <strong>📋 Este hito cuenta para el POI</strong>.</span></div>
+              </div>
+              <div class="manual-tip">⚠️ No borres ni cambies el número al inicio del nombre — ese número determina el orden y la numeración de sus actividades. Si necesitas reordenar, edita el hito con <strong>⚙️</strong> ajustando el número.</div>
+
+              <div class="manual-subtitulo">2.3 Crear una Actividad</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>＋</strong> al lado del hito correspondiente.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>El campo nombre se pre-llena automáticamente con el prefijo jerárquico (ej. <strong>"2.3 "</strong>) — completa el texto a continuación (ej. <strong>"2.3 Elaboración del informe"</strong>).</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Completa el formulario: responsable, ciudad, fechas y % de avance.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>El <strong>estado se calcula automáticamente</strong>: 0% = Pendiente · 1-99% = En proceso · 100% = Completado.</span></div>
+                <div class="manual-paso"><span class="paso-num">5</span><span>Si la actividad está pausada, marca <strong>🔴 Bloqueado</strong> — no contará en promedios ni alertas.</span></div>
+              </div>
+              <div class="manual-tip">⚠️ No borres el prefijo numérico al inicio — mantén siempre el formato <strong>"X.Y Nombre"</strong> para que el orden en pantalla sea correcto.</div>
+
+              <div class="manual-subtitulo">2.4 Editar o eliminar</div>
+              <p>Haz clic sobre cualquier actividad para ver su detalle. Solo puedes editar o eliminar las que tú creaste, salvo que seas administrador.</p>
+            </div>
+
+            <!-- 3 -->
+            <div class="manual-section" id="m3">
+              <div class="manual-titulo">3. Filtros y búsqueda</div>
+              <p>El sidebar contiene todos los filtros disponibles en la vista <strong>Ejes de Trabajo</strong>.</p>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">🔍</span><span><strong>Buscar:</strong> filtra por nombre, responsable, ciudad, comentarios, etc.</span></div>
+                <div class="manual-paso"><span class="paso-num">📌</span><span><strong>Estado:</strong> Pendiente, En proceso, Completado o Bloqueado.</span></div>
+                <div class="manual-paso"><span class="paso-num">👤</span><span><strong>Responsable:</strong> muestra solo sus actividades.</span></div>
+                <div class="manual-paso"><span class="paso-num">🏙️</span><span><strong>Ciudad:</strong> filtra por una de las 30 ciudades del ámbito PROMOVILIDAD.</span></div>
+                <div class="manual-paso"><span class="paso-num">📅</span><span><strong>Fechas:</strong> define un rango para acotar resultados.</span></div>
+              </div>
+              <div class="manual-tip">💡 Haz clic en <strong>Limpiar filtros</strong> para restablecer todo.</div>
+            </div>
+
+            <!-- 4 -->
+            <div class="manual-section" id="m4">
+              <div class="manual-titulo">4. Cronograma Gantt</div>
+              <p>Visualiza el cronograma de actividades con barras de progreso coloreadas por estado.</p>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>📅 Cronograma</strong> — se abre en nueva pestaña.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Filtra por <strong>categoría</strong> y selecciona el <strong>Eje de Trabajo</strong> a visualizar.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Elige la vista: <strong>Días, Semanas o Meses</strong>.</span></div>
+              </div>
+              <p>🟢 Completado · 🔵 En proceso · 🟡 Pendiente · 🔴 Bloqueado. Las actividades <strong>🚨 vencidas</strong> o <strong>⚠️ por vencer</strong> se marcan automáticamente (las bloqueadas no generan alertas).</p>
+              <div class="manual-tip">💡 Si el eje tiene documentos vinculados, los botones de Ayuda Memoria y Ficha de Actividad se activarán en la parte superior.</div>
+            </div>
+
+            <!-- 5 -->
+            <div class="manual-section" id="m5">
+              <div class="manual-titulo">5. Repositorio de documentos</div>
+              <p>Centraliza todos los documentos del equipo con enlace directo a Drive, Word, Excel, PDF u otros.</p>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📁 Repositorio</strong> en el sidebar.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>+ Agregar</strong> e ingresa título, tipo, fecha, enlace y participantes.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Para editar o eliminar, usa el botón <strong>⚙️</strong> de la fila.</span></div>
+              </div>
+              <div class="manual-tip">💡 Usa el filtro <strong>Tipo</strong> para ver solo documentos de un tipo específico.</div>
+            </div>
+
+            <!-- 6 -->
+            <div class="manual-section" id="m6">
+              <div class="manual-titulo">6. Auditoría e historial</div>
+              <p>La plataforma registra automáticamente todos los cambios para garantizar la trazabilidad institucional.</p>
+
+              <div class="manual-subtitulo">Historial de una actividad</div>
+              <p>En el detalle de cualquier actividad, haz clic en <strong>🕓 Historial</strong> para ver quién cambió qué, cuándo y con qué justificación.</p>
+
+              <div class="manual-subtitulo">Historial de un eje</div>
+              <p>En el panel derecho de cada eje, el botón <strong>🕓 Historial</strong> muestra todo lo ocurrido: creación, cambios de nombre, hitos y actividades.</p>
+
+              <div class="manual-subtitulo">Auditoría global</div>
+              <p>La vista <strong>🕓 Auditoría</strong> muestra el historial completo de la plataforma, filtrable por fecha, tipo de acción y usuario. Los registros se conservan aunque el elemento haya sido eliminado.</p>
+            </div>
+
+            <!-- 7 -->
+            <div class="manual-section" id="m7">
+              <div class="manual-titulo">7. Panel de Reportes</div>
+              <p>Accede desde <strong>📊 Reportes</strong> en el sidebar — se abre en nueva pestaña. Tiene 5 pestañas:</p>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">📊</span><span><strong>Resumen general:</strong> KPIs globales, avance por categoría y tabla de ejes con detalle de estados.</span></div>
+                <div class="manual-paso"><span class="paso-num">🗺️</span><span><strong>Matriz ciudades:</strong> cruza ejes vs. las 30 ciudades del ámbito PROMOVILIDAD mostrando % avance y cantidad de actividades por celda.</span></div>
+                <div class="manual-paso"><span class="paso-num">👤</span><span><strong>Por responsable:</strong> carga de trabajo y avance por persona.</span></div>
+                <div class="manual-paso"><span class="paso-num">⚠️</span><span><strong>Alertas:</strong> actividades vencidas y por vencer (las bloqueadas no aparecen).</span></div>
+                <div class="manual-paso"><span class="paso-num">📋</span><span><strong>POI:</strong> seguimiento programado vs. ejecutado (ver sección 8).</span></div>
+                <div class="manual-paso"><span class="paso-num">📎</span><span><strong>Evidencias POI:</strong> documentos de respaldo por hito POI (ver sección 12).</span></div>
+                <div class="manual-paso"><span class="paso-num">✈️</span><span><strong>Comisiones:</strong> resumen anual de viajes de comisión por eje, con personas, días y costo estimado.</span></div>
+              </div>
+              <div class="manual-tip">💡 Usa el filtro de categoría en la parte superior para ver los reportes de una categoría específica.</div>
+            </div>
+
+            <!-- 8 -->
+            <div class="manual-section" id="m8">
+              <div class="manual-titulo">8. Seguimiento POI</div>
+              <p>El POI muestra una matriz de <strong>Ejes × Meses</strong> comparando lo programado contra lo ejecutado.</p>
+
+              <div class="manual-subtitulo">¿Cómo funciona?</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">P</span><span><strong>Programado</strong> — se ingresa manualmente en cada celda (ej: 1 entregable en marzo).</span></div>
+                <div class="manual-paso"><span class="paso-num">E</span><span><strong>Ejecutado</strong> — se calcula automáticamente contando hitos marcados como POI que llegaron al 100%.</span></div>
+              </div>
+
+              <div class="manual-subtitulo">Marcar un hito como POI</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Abre el hito con el botón <strong>⚙️</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Marca la casilla <strong>📋 Este hito cuenta para el POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Guarda. Cuando ese hito llegue al 100%, se contabilizará en el mes de su fecha de fin.</span></div>
+              </div>
+
+              <div class="manual-subtitulo">Ingresar valores programados</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📊 Reportes → pestaña POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>año</strong> y opcionalmente filtra por categoría.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Ingresa los valores en las celdas <strong>P</strong> de cada mes.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>Haz clic en <strong>💾 Guardar programado</strong>.</span></div>
+              </div>
+              <div class="manual-tip">💡 Los colores indican: 🟢 Ejecutado ≥ Programado · 🟡 Ejecutado parcial · 🔴 Sin ejecutar (tenía programado). Un hito que inicia en diciembre 2025 y termina en marzo 2026 se contabiliza en <strong>marzo 2026</strong>.</div>
+            </div>
+
+            <!-- 9 -->
+            <div class="manual-section" id="m9">
+              <div class="manual-titulo">9. Cambiar contraseña</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>🔑 Cambiar contraseña</strong> en el sidebar.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Escribe tu nueva contraseña (mínimo 6 caracteres) y confírmala.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>Guardar contraseña</strong>.</span></div>
+              </div>
+              <div class="manual-tip">💡 Solo puedes cambiar tu propia contraseña. El administrador puede cambiar la de otros usuarios desde Supabase.</div>
+            </div>
+
+            <!-- 10 -->
+            <div class="manual-section" id="m10">
+              <div class="manual-titulo">10. Gestión de usuarios <span style="font-size:11px;background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:20px;font-weight:600;vertical-align:middle">Solo Admin</span></div>
+              <p>La sección <strong>👥 Usuarios</strong> solo es visible para el administrador.</p>
+
+              <div class="manual-subtitulo">Crear un usuario</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>supabase.com → Authentication → Users → Add user</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Ingresa email y contraseña y marca <strong>Auto Confirm User</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>El perfil se crea automáticamente con rol <strong>Técnico</strong>. Desde la plataforma puedes cambiar nombre y rol con el botón <strong>⚙️</strong>.</span></div>
+              </div>
+
+              <div class="manual-subtitulo">Roles disponibles</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <span style="background:#FEE2E2;color:#991B1B;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap">Admin</span>
+                  <span style="font-size:13px">Acceso total: edita y elimina cualquier actividad, gestiona usuarios y ve toda la auditoría.</span>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <span style="background:#EFF6FF;color:#1E40AF;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap">Director</span>
+                  <span style="font-size:13px">Puede ver todo y editar las actividades que creó.</span>
+                </div>
+                <div style="display:flex;gap:12px;align-items:flex-start">
+                  <span style="background:var(--signal-lt);color:var(--signal-dk);padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap">Técnico</span>
+                  <span style="font-size:13px">Puede crear actividades y editar o eliminar solo las que él mismo creó.</span>
+                </div>
+              </div>
+
+              <div class="manual-subtitulo">Desactivar un usuario</div>
+              <p>Usa el botón <strong>⚙️</strong> del usuario y cambia su estado a <strong>🔴 Desactivado</strong>. Sus datos se conservan pero no podrá iniciar sesión.</p>
+              <div class="manual-tip">💡 Para eliminar permanentemente un usuario ve a <strong>Supabase → Authentication → Users</strong> → selecciona el usuario → Delete.</div>
+            </div>
+
+            <!-- 11 -->
+            <div class="manual-section" id="m11">
+              <div class="manual-titulo">11. Reuniones por estrategia</div>
+              <p>Cada eje de trabajo puede tener un registro de reuniones asociadas, accesible desde el botón <strong>📅 Reuniones</strong> en el panel derecho.</p>
+              <div class="manual-subtitulo">Agregar una reunión</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona el eje de trabajo en el panel izquierdo.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>📅 Reuniones</strong> — se despliega el panel de reuniones.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>＋ Agregar reunión</strong> e ingresa nombre/asunto, fecha, comentario y URL del acta o grabación.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>Haz clic en <strong>Guardar reunión</strong>.</span></div>
+              </div>
+              <div class="manual-subtitulo">Editar o eliminar una reunión</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>En el panel de reuniones, haz clic en el botón <strong>⚙️</strong> de la reunión.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Modifica los datos y haz clic en <strong>Guardar cambios</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Para eliminar, haz clic en <strong>🗑️ Eliminar reunión</strong> — solo el creador o un administrador puede hacerlo.</span></div>
+              </div>
+              <div class="manual-tip">💡 Si se elimina un eje completo, todas sus reuniones se eliminan automáticamente.</div>
+            </div>
+
+            <!-- 12 -->
+            <div class="manual-section" id="m12">
+              <div class="manual-titulo">12. Evidencias POI</div>
+              <p>La pestaña <strong>📎 Evidencias POI</strong> en el Panel de Reportes permite registrar los documentos de respaldo (informes, oficios, actas) para cada hito marcado como POI.</p>
+              <div class="manual-subtitulo">Agregar una evidencia</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📊 Reportes → pestaña Evidencias POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>año</strong> y opcionalmente filtra por categoría.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Ubica el hito POI correspondiente y haz clic en <strong>+ Agregar enlace</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>Ingresa la URL del documento (Drive, etc.), la fecha de entrega y una descripción opcional.</span></div>
+                <div class="manual-paso"><span class="paso-num">5</span><span>Haz clic en <strong>Guardar</strong>.</span></div>
+              </div>
+              <div class="manual-subtitulo">Editar o eliminar una evidencia</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en el botón <strong>⚙️</strong> del hito que ya tiene evidencia registrada.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Modifica los datos y haz clic en <strong>Guardar</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Para eliminar, haz clic en <strong>🗑️ Eliminar evidencia</strong> — solo el creador o un administrador puede hacerlo.</span></div>
+              </div>
+              <div class="manual-tip">💡 El usuario POI ve esta pestaña en modo solo lectura — puede abrir los enlaces pero no editar ni agregar evidencias.</div>
+            </div>
+
+            <!-- 13 -->
+            <div class="manual-section" id="m13">
+              <div class="manual-titulo">13. Viajes de comisión</div>
+              <p>Permite registrar y estimar el costo de los viajes de comisión asociados a cada actividad. El resumen consolidado se ve en <strong>📊 Reportes → pestaña Comisiones</strong>.</p>
+              <div class="manual-subtitulo">Registrar un viaje de comisión</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Al crear o editar una actividad, marca <strong>✈️ Esta actividad es un viaje de comisión</strong> al final del formulario.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>tipo de transporte</strong>: Bus, Aéreo o Ambos (solo informativo).</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>El <strong>N° de personas</strong> se calcula automáticamente desde el equipo técnico, y los <strong>días</strong> desde las fechas de inicio y fin (fecha fin - fecha inicio + 1).</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>El <strong>costo diario</strong> es S/. 320 por defecto (viáticos MTC) — puedes modificarlo si cambia la norma.</span></div>
+                <div class="manual-paso"><span class="paso-num">5</span><span>El <strong>total estimado</strong> (personas × días × costo diario) se calcula automáticamente.</span></div>
+              </div>
+              <div class="manual-subtitulo">Ver el reporte de comisiones</div>
+              <div class="manual-pasos">
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📊 Reportes → pestaña ✈️ Comisiones</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>año</strong> y opcionalmente filtra por categoría.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Verás todas las comisiones agrupadas por eje con detalle de fechas, equipo, transporte y costo.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>El <strong>subtotal de personas por eje</strong> muestra las personas únicas (sin repetir). El <strong>Gran Total</strong> resume el costo anual de todas las comisiones.</span></div>
+              </div>
+              <div class="manual-tip">💡 El costo de transporte (bus o aéreo) no está incluido en el total — ese gasto lo gestiona Abastecimiento por separado.</div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL: DETALLE ACTIVIDAD -->
+<div class="modal" id="detailModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div class="modalTitle">Detalle de Actividad</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-ghost btn-sm" id="btnHistorialActividad">🕓 Historial</button>
+        <button class="btn-ghost btn-sm" id="btnEditActividad">✏️ Editar</button>
+        <button class="btn-danger btn-sm" id="btnDeleteActividad">🗑️ Eliminar</button>
+        <button class="btn-close" id="btnCloseDetail">✕</button>
+      </div>
+    </div>
+    <div class="modalBody" id="detailContent">
+      <div class="detail-grid">
+        <div class="detail-main">
+          <h3 id="dSub">...</h3>
+          <div class="chip-row">
+            <span class="chip" id="dEstado">Estado</span>
+            <span class="chip secondary" id="dPrio">Prioridad</span>
+          </div>
+        </div>
+        <div class="detail-act">
+          <label>Actividad General</label>
+          <p id="dAct">...</p>
+        </div>
+        <div class="detail-kvGrid">
+          <div class="kv-item"><label>Responsable</label><div id="dResp">—</div></div>
+          <div class="kv-item"><label>% Avance</label><div id="dProg">—</div></div>
+          <div class="kv-item"><label>Ciudad</label><div id="dCiudad">—</div></div>
+          <div class="kv-item"><label>Fecha Inicio</label><div id="dInicio">—</div></div>
+          <div class="kv-item"><label>Fecha Fin</label><div id="dFin">—</div></div>
+          <div class="kv-item"><label>Evidencia</label><div id="dLink">—</div></div>
+        </div>
+      </div>
+      <div class="detail-footer">
+        <div class="kv-full"><label>Hito</label><div id="dHito">—</div></div>
+        <div class="kv-full"><label>Equipo técnico</label><div id="dEquipo">—</div></div>
+        <div class="kv-full"><label>Producto / Entregable</label><p id="dProd">—</p></div>
+        <div class="kv-full"><label>Comentarios</label><p id="dComm">—</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CAMBIAR CONTRASEÑA -->
+<div class="modal" id="claveModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div class="modalTitle">🔑 Cambiar contraseña</div>
+      <button class="btn-close" id="btnCloseClave">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="claveForm" class="form-grid">
+        <div class="form-group span2">
+          <label>Nueva contraseña *</label>
+          <input type="password" id="claveNueva" required placeholder="Mínimo 6 caracteres"/>
+        </div>
+        <div class="form-group span2">
+          <label>Confirmar contraseña *</label>
+          <input type="password" id="claveConfirmar" required placeholder="Repite la contraseña"/>
+        </div>
+        <div class="form-actions span2">
+          <button type="button" class="btn-ghost" id="btnCancelClave">Cancelar</button>
+          <button type="submit" class="btn-primary" id="btnSaveClave">Guardar contraseña</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURAR USUARIO -->
+<div class="modal" id="usuarioModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">⚙️ Configurar Usuario</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="usuarioModalSub"></div>
+      </div>
+      <button class="btn-close" id="btnCloseUsuario">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="usuarioForm" class="form-grid">
+        <input type="hidden" id="uId"/>
+        <div class="form-group span2">
+          <label>Nombre</label>
+          <input type="text" id="uNombre" placeholder="Nombre completo"/>
+        </div>
+        <div class="form-group span2">
+          <label>Email</label>
+          <input type="email" id="uEmail" disabled style="opacity:0.6;cursor:not-allowed"/>
+        </div>
+        <div class="form-group">
+          <label>Rol</label>
+          <select id="uRol">
+            <option value="tecnico">Técnico</option>
+            <option value="director">Director</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado de cuenta</label>
+          <select id="uActivo">
+            <option value="1">🟢 Activo</option>
+            <option value="0">🔴 Desactivado</option>
+          </select>
+        </div>
+        <div class="form-actions span2" style="justify-content:flex-end">
+          <button type="button" class="btn-ghost" id="btnCancelUsuario">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" id="ejeModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">⚙️ Configurar Eje de Trabajo</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="ejeModalSub"></div>
+      </div>
+      <button class="btn-close" id="btnCloseEje">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="ejeForm" class="form-grid">
+        <input type="hidden" id="ejeNombreOriginal"/>
+        <div class="form-group span2">
+          <label>Nombre del Eje *</label>
+          <input type="text" id="ejeNombre" required placeholder="Nombre de la estrategia o proyecto"/>
+        </div>
+        <div class="form-group span2" id="ejetipoGroup">
+          <label>Categoría</label>
+          <select id="ejeTipo">
+            <option value="Planificación">Planificación</option>
+            <option value="Fortalecimiento">Fortalecimiento</option>
+            <option value="Asistencia Técnica">Asistencia Técnica</option>
+            <option value="Administrativo">Administrativo</option>
+          </select>
+        </div>
+        <div class="form-group span2">
+          <label>URL Ayuda Memoria</label>
+          <input type="url" id="ejeUrlAyuda" placeholder="https://docs.google.com/..."/>
+        </div>
+        <div class="form-group span2">
+          <label>URL Ficha de Actividad</label>
+          <input type="url" id="ejeUrlFicha" placeholder="https://docs.google.com/..."/>
+        </div>
+        <div class="form-actions span2" style="justify-content:space-between">
+          <button type="button" class="btn-danger" id="btnDeleteEje">🗑️ Eliminar eje</button>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="btn-ghost" id="btnCancelEje">Cancelar</button>
+            <button type="submit" class="btn-primary" id="btnSaveEje">Guardar cambios</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURAR HITO -->
+<div class="modal" id="hitoModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">⚙️ Configurar Hito</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="hitoModalSub"></div>
+      </div>
+      <button class="btn-close" id="btnCloseHito">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="hitoForm" class="form-grid">
+        <input type="hidden" id="hitoActividadGeneral"/>
+        <input type="hidden" id="hitoNombreOriginal"/>
+        <div class="form-group span2">
+          <label>Nombre del Hito *</label>
+          <input type="text" id="hitoNombre" required placeholder="Ej: Hito 1 - Diagnóstico"/>
+        </div>
+        <div class="form-group span2">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600;font-size:13px">
+            <input type="checkbox" id="hitoEsPoi" style="width:16px;height:16px;cursor:pointer;accent-color:var(--blue)"/>
+            <span>📋 Este hito cuenta para el POI</span>
+          </label>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;padding-left:26px">
+            Al marcarlo, cuando este hito llegue al 100% se contabilizará como ejecutado en el reporte POI.
+          </div>
+        </div>
+        <div class="form-actions span2" style="justify-content:space-between">
+          <button type="button" class="btn-danger" id="btnDeleteHito">🗑️ Eliminar hito</button>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="btn-ghost" id="btnCancelHito">Cancelar</button>
+            <button type="submit" class="btn-primary" id="btnSaveHito">Guardar cambios</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: FORMULARIO NUEVA / EDITAR ACTIVIDAD -->
+<div class="modal" id="formModal" aria-hidden="true">
+  <div class="modalCard wide">
+    <div class="modalHead">
+      <div class="modalTitle" id="formTitle">Nueva Actividad</div>
+      <button class="btn-close" id="btnCloseForm">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="actForm" class="form-grid">
+        <input type="hidden" id="fId"/>
+        <div class="form-group span2">
+          <label>Actividad General *</label>
+          <select id="fActividadGeneral" required>
+            <option value="">— Selecciona una estrategia —</option>
+          </select>
+        </div>
+        <div class="form-group span2">
+          <label>Hito</label>
+          <select id="fHito">
+            <option value="">— Sin hito / Selecciona —</option>
+          </select>
+        </div>
+        <div class="form-group span2">
+          <label>Subactividad *</label>
+          <input type="text" id="fSubactividad" required placeholder="Descripción de la tarea"/>
+        </div>
+        <div class="form-group">
+        <label>Responsable</label>
+        <div style="position:relative">
+          <input type="text" id="fResponsable" placeholder="Selecciona o escribe..." autocomplete="off"
+            onfocus="showResponsableList()" oninput="filterResponsableList(this.value)"/>
+          <div id="responsableDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--blue);border-radius:10px;z-index:50;max-height:180px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);margin-top:2px">
+            <div id="responsableOptions"></div>
+          </div>
+        </div>
+        </div>
+        <div class="form-group">
+          <label>Equipo técnico</label>
+          <div style="position:relative">
+            <input type="text" id="fEquipo" placeholder="Selecciona o escribe nombres..." autocomplete="off"
+              onfocus="showEquipoList()" oninput="filterEquipoList(this.value)"/>
+            <div id="equipoDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--blue);border-radius:10px;z-index:50;max-height:180px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);margin-top:2px">
+              <div id="equipoOptions"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ciudad / Ámbito</label>
+          <select id="fCiudadForm">
+            <option value="">— Sin ciudad —</option>
+            <option>Arequipa</option>
+            <option>Trujillo</option>
+            <option>Piura</option>
+            <option>Huancayo</option>
+            <option>Cusco</option>
+            <option>Chiclayo</option>
+            <option>Pucallpa</option>
+            <option>Tacna</option>
+            <option>Iquitos</option>
+            <option>Chimbote</option>
+            <option>Ica</option>
+            <option>Juliaca</option>
+            <option>Ayacucho</option>
+            <option>Chincha Alta</option>
+            <option>Huacho</option>
+            <option>Tarapoto</option>
+            <option>Puno</option>
+            <option>Puerto Maldonado</option>
+            <option>Talara</option>
+            <option>Huánuco</option>
+            <option>Sullana</option>
+            <option>Huaraz</option>
+            <option>Cajamarca</option>
+            <option>Tumbes</option>
+            <option>Cerro de Pasco</option>
+            <option>Huancavelica</option>
+            <option>Moquegua</option>
+            <option>Chachapoyas</option>
+            <option>Abancay</option>
+            <option>Moyobamba</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Dirección</label>
+          <input type="text" id="fDireccion" placeholder="Ej: DFPM"/>
+        </div>
+        <div class="form-group">
+          <label>Fecha inicio</label>
+          <input type="date" id="fFechaInicio"/>
+        </div>
+        <div class="form-group">
+          <label>Fecha fin</label>
+          <input type="date" id="fFechaFin"/>
+        </div>
+        <div class="form-group">
+          <label>Estado <span style="font-size:10px;color:var(--text-muted);font-weight:400">(automático por avance)</span></label>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div id="fEstadoDisplay" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:600;color:var(--text-muted)">
+              🟡 Pendiente
+            </div>
+            <input type="hidden" id="fEstadoForm" value="Pendiente"/>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-main)">
+              <input type="checkbox" id="fBloqueado" style="width:15px;height:15px;cursor:pointer;accent-color:var(--red)"/>
+              <span>🔴 Marcar como Bloqueado</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>% Avance (0-100)</label>
+          <input type="number" id="fAvance" min="0" max="100" placeholder="0"/>
+        </div>
+        <div class="form-group">
+          <label>Prioridad</label>
+          <select id="fPrioridad">
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
+          </select>
+        </div>
+        <div class="form-group span2">
+          <label>Producto / Entregable</label>
+          <input type="text" id="fProducto" placeholder="Informe, plano, reporte..."/>
+        </div>
+        <div class="form-group span2">
+          <label>Evidencia (URL)</label>
+          <input type="url" id="fEvidencia" placeholder="https://..."/>
+        </div>
+        <div class="form-group span2">
+          <label>Comentarios</label>
+          <textarea id="fComentarios" rows="3" placeholder="Observaciones adicionales..."></textarea>
+        </div>
+        <!-- COMISIÓN -->
+        <div class="form-group span2" style="border-top:1.5px dashed var(--border);padding-top:14px;margin-top:4px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-main)">
+            <input type="checkbox" id="fEsComision" style="width:15px;height:15px;cursor:pointer;accent-color:#7c3aed"/>
+            <span>✈️ Esta actividad es un viaje de comisión</span>
+          </label>
+        </div>
+        <div id="comisionFields" style="display:none;contents">
+          <div class="form-group">
+            <label>Tipo de transporte</label>
+            <select id="fComisionTransporte">
+              <option value="Bus">🚌 Bus</option>
+              <option value="Aéreo">✈️ Aéreo</option>
+              <option value="Ambos">🚌✈️ Ambos</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Costo diario (S/.)</label>
+            <input type="number" id="fComisionCostoDiario" value="320" min="1"/>
+          </div>
+          <div class="form-group">
+            <label>N° personas <span style="font-size:10px;color:var(--text-muted)">(desde equipo técnico)</span></label>
+            <div id="fComisionPersonas" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:700;color:var(--text-main)">—</div>
+            <input type="hidden" id="fComisionPersonasVal" value="0"/>
+          </div>
+          <div class="form-group">
+            <label>Días <span style="font-size:10px;color:var(--text-muted)">(desde fechas inicio/fin)</span></label>
+            <div id="fComisionDias" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:700;color:var(--text-main)">—</div>
+            <input type="hidden" id="fComisionDiasVal" value="0"/>
+          </div>
+          <div class="form-group span2">
+            <label>Total estimado (S/.) <span style="font-size:10px;color:var(--text-muted)">(personas × días × costo diario)</span></label>
+            <div id="fComisionTotal" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:15px;font-weight:700;color:#7c3aed">
+              S/. 0.00
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions span2">
+          <button type="button" class="btn-ghost" id="btnCancelForm">Cancelar</button>
+          <button type="submit" class="btn-primary" id="btnSaveForm">Guardar actividad</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NUEVO DOCUMENTO EN REPOSITORIO -->
+<div class="modal" id="repoModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div class="modalTitle" id="repoModalTitle">Agregar documento</div>
+      <button class="btn-close" id="btnCloseRepo">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="repoForm" class="form-grid">
+        <input type="hidden" id="rId"/>
+        <div class="form-group span2">
+          <label>Título *</label>
+          <input type="text" id="rTitulo" required placeholder="Nombre del documento"/>
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="rTipo">
+            <option value="Drive">Drive</option>
+            <option value="Word">Word</option>
+            <option value="Excel">Excel</option>
+            <option value="PPT">PPT</option>
+            <option value="PDF">PDF</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" id="rFecha"/>
+        </div>
+        <div class="form-group span2">
+          <label>Enlace *</label>
+          <input type="url" id="rEnlace" required placeholder="https://drive.google.com/..."/>
+        </div>
+        <div class="form-group span2">
+          <label>Participantes</label>
+          <input type="text" id="rParticipantes" placeholder="Ej: Todos DFPM, Cesar, Christian"/>
+        </div>
+        <div class="form-group span2">
+          <label>Comentarios</label>
+          <textarea id="rComentarios" rows="2" placeholder="Notas adicionales..."></textarea>
+        </div>
+        <div class="form-actions span2" style="justify-content:space-between">
+          <button type="button" class="btn-danger" id="btnDeleteRepo" style="display:none">🗑️ Eliminar</button>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="btn-ghost" id="btnCancelRepo">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: JUSTIFICACIÓN DE CAMBIO -->
+<div class="modal" id="justModal" aria-hidden="true">
+  <div class="modalCard">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">📝 Justificación requerida</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="justModalSub"></div>
+      </div>
+      <button class="btn-close" id="btnCloseJust">✕</button>
+    </div>
+    <div class="modalBody">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;line-height:1.6" id="justDetalle"></div>
+      <div class="form-group" style="margin-bottom:0">
+        <label style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:7px">
+          Motivo del cambio *
+        </label>
+        <textarea id="justTexto" rows="4" placeholder="Explica el motivo del cambio de fecha o eliminación..."
+          style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:vertical;outline:none;transition:border-color .2s"
+          onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="btn-ghost" id="btnCancelJust">Cancelar</button>
+        <button class="btn-primary" id="btnConfirmJust">Confirmar cambio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: HISTORIAL DE ACTIVIDAD -->
+<div class="modal" id="historialModal" aria-hidden="true">
+  <div class="modalCard wide">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">🕓 Historial de cambios</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="historialModalSub"></div>
+      </div>
+      <button class="btn-close" id="btnCloseHistorial">✕</button>
+    </div>
+    <div class="modalBody" id="historialContent" style="padding:0">
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: REUNIÓN -->
+<div class="modal" id="reunionModal" aria-hidden="true">
+  <div class="modalCard" style="max-width:480px">
+    <div class="modalHead">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="modalTitle">📅 Agregar reunión</div>
+        <button type="button" class="btn-danger" id="btnDeleteReunion"
+          style="display:none;font-size:11px;padding:3px 10px"
+          onclick="eliminarReunionDesdeModal()">🗑️ Eliminar</button>
+      </div>
+      <button class="btn-close" onclick="closeModal('reunionModal')">✕</button>
+    </div>
+    <div class="modalBody">
+      <form id="reunionForm">
+        <input type="hidden" id="reunionId">
+        <input type="hidden" id="reunionEjeNombre">
+        <div class="form-group">
+          <label>Nombre / Asunto *</label>
+          <input type="text" id="reunionNombre" placeholder="Ej: Reunión de coordinación con MTC" required>
+        </div>
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" id="reunionFecha">
+        </div>
+        <div class="form-group">
+          <label>Comentario / Objetivo</label>
+          <textarea id="reunionComentario" rows="3" placeholder="Descripción, acuerdos o resultado de la reunión..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>URL (acta, presentación, grabación…)</label>
+          <input type="url" id="reunionUrl" placeholder="https://drive.google.com/...">
+        </div>
+        <div style="margin-top:20px;display:flex;gap:8px;justify-content:flex-end">
+          <button type="button" class="btn-ghost" onclick="closeModal('reunionModal')">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: HISTORIAL DEL EJE -->
+<div class="modal" id="historialEjeModal" aria-hidden="true">
+  <div class="modalCard wide">
+    <div class="modalHead">
+      <div>
+        <div class="modalTitle">📊 Historial del Eje</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="historialEjeModalSub"></div>
+      </div>
+      <button class="btn-close" id="btnCloseHistorialEje">✕</button>
+    </div>
+    <div class="modalBody" id="historialEjeContent" style="padding:0">
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body>
+</html>
