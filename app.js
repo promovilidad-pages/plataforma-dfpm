@@ -2149,7 +2149,6 @@ function bindEvents() {
     document.getElementById('claveForm').reset();
   });
   document.getElementById('btnCancelUsuario')?.addEventListener('click', () => closeModal('usuarioModal'));
-  document.getElementById('btnRepo').addEventListener('click', () => switchView('repositorio'));
 
   document.getElementById('repoFiltroTipo').addEventListener('change', e => {
     const tipo = e.target.value;
