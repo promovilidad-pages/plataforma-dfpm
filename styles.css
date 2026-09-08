@@ -45,6 +45,13 @@
   --sidebar-border: #e8eaed;
   --sidebar-width:  260px;
 
+  /* Glassmorphism */
+  --glass-bg:        rgba(255, 255, 255, 0.60);
+  --glass-bg-strong: rgba(255, 255, 255, 0.80);
+  --glass-border:    rgba(255, 255, 255, 0.55);
+  --glass-blur:      18px;
+  --glass-shadow:    0 8px 32px rgba(10,15,30,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+
   /* Gantt */
   --ganttHeadH: 40px;
   --ganttRowH:  38px;
@@ -479,27 +486,32 @@ details > summary::marker { display: none; content: ''; }
 .eje-right-sub   { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
 
 /* Panel derecho — cuerpo */
-.eje-right-body { flex: 1; overflow-y: auto; }
+.eje-right-body { flex: 1; overflow-y: auto; padding-top: 10px; }
 
-.eje-hito-block { border-bottom: 1px solid var(--border); }
+.eje-hito-block { margin-bottom: 4px; }
 .eje-hito-label {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 16px 6px;
+  padding: 9px 16px 9px;
+  margin: 0 12px 8px 12px;
   font-size: 11px; font-weight: 700;
   color: var(--text-muted); text-transform: uppercase; letter-spacing: .7px;
   background: var(--ink-05);
-  border-left: 2px solid var(--signal);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--signal);
+  border-radius: var(--radius-md);
   gap: 10px;
 }
 
 .eje-task {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 16px 9px 18px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer; transition: background .1s;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin: 0 12px 6px 24px;
+  cursor: pointer; transition: background .1s, box-shadow .15s;
 }
-.eje-task:last-child { border-bottom: none; }
-.eje-task:hover { background: var(--ink-05); }
+.eje-task:last-child { margin-bottom: 10px; }
+.eje-task:hover { background: var(--ink-05); box-shadow: 0 2px 10px rgba(10,15,30,0.06); }
 
 .task-dot-sm { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .eje-task-name { font-size: 12.5px; color: var(--text-main); flex: 1; line-height: 1.3; }
@@ -583,7 +595,8 @@ details > summary::marker { display: none; content: ''; }
    REPOSITORIO
    ============================================= */
 .repo-table {
-  width: 100%; border-collapse: collapse; font-size: 12.5px;
+  width: 100%; border-collapse: separate; border-spacing: 0 6px; font-size: 12.5px;
+  padding: 0 6px;
 }
 .repo-table th {
   text-align: left; font-size: 10px; color: var(--text-muted);
@@ -592,9 +605,12 @@ details > summary::marker { display: none; content: ''; }
   padding: 10px 12px; position: sticky; top: 0;
 }
 .repo-table td {
-  padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top;
+  padding: 9px 12px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  vertical-align: middle; font-size: 13px; background: var(--bg-card);
+  transition: background .1s;
 }
-.repo-table tr:last-child td { border-bottom: none; }
+.repo-table td:first-child { border-left: 1px solid var(--border); border-radius: var(--radius-md) 0 0 var(--radius-md); }
+.repo-table td:last-child  { border-right: 1px solid var(--border); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
 .repo-table tr:hover td { background: var(--ink-05); }
 
 .tipo-chip {
@@ -605,7 +621,6 @@ details > summary::marker { display: none; content: ''; }
   white-space: nowrap; line-height: 1.4;
 }
 .tipo-chip span, .tipo-chip { font-size: 11px; }
-.repo-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 13px; }
 .link-ext { color: var(--blue); font-weight: 600; text-decoration: none; }
 .link-ext:hover { text-decoration: underline; }
 .muted-text  { color: var(--text-muted); }
@@ -626,9 +641,12 @@ details > summary::marker { display: none; content: ''; }
 .modal[aria-hidden="true"]  { opacity: 0; pointer-events: none; display: flex !important; }
 
 .modalCard {
-  background: var(--bg-card); width: 90%; max-width: var(--modal-w, 600px);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  width: 90%; max-width: var(--modal-w, 600px);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
-  box-shadow: 0 24px 60px rgba(10,15,30,0.18), 0 0 0 1px rgba(10,15,30,0.06);
+  box-shadow: 0 24px 60px rgba(10,15,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
   display: flex; flex-direction: column; max-height: 90vh;
   animation: slideUp .2s ease both;
 }

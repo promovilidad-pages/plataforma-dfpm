@@ -28,6 +28,8 @@
       --ink-05: #F4F7FA;
       --ink-10: #E2E8F0;
       --ink-40: #6E7D93;
+      --glass-bg: rgba(255,255,255,0.80);
+      --glass-border: rgba(255,255,255,0.55);
     }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
@@ -129,12 +131,11 @@
     /* TABLA GENERAL */
     .data-table {
       width: 100%;
-      border-collapse: collapse;
-      background: var(--white);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
+      border-collapse: separate;
+      border-spacing: 0 6px;
+      background: transparent;
       font-size: 13px;
+      padding: 0 6px;
     }
     .data-table th {
       background: var(--ink-05);
@@ -155,15 +156,18 @@
     }
     .data-table td {
       padding: 10px 14px;
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
       text-align: center;
+      background: var(--white);
     }
     .data-table td:first-child,
     .data-table td:nth-child(2) {
       text-align: left;
     }
-    .data-table tr:last-child td { border-bottom: none; }
+    .data-table td:first-child { border-left: 1px solid var(--border); border-radius: 10px 0 0 10px; }
+    .data-table td:last-child  { border-right: 1px solid var(--border); border-radius: 0 10px 10px 0; }
     .data-table tr:hover td { background: var(--ink-05); }
 
     /* BARRA DE PROGRESO */
@@ -190,10 +194,10 @@
 
     /* ALERTAS */
     .alert-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       margin-bottom: 16px;
     }
     .alert-row {
@@ -201,10 +205,13 @@
       align-items: center;
       gap: 12px;
       padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       font-size: 13px;
+      transition: box-shadow .15s;
     }
-    .alert-row:last-child { border-bottom: none; }
+    .alert-row:hover { box-shadow: 0 2px 10px rgba(10,15,30,0.06); }
     .alert-icon { font-size: 16px; flex-shrink: 0; }
     .alert-name { flex: 1; font-weight: 500; }
     .alert-meta { font-size: 11px; color: var(--muted); }
@@ -442,8 +449,9 @@
     .ev-modal[aria-hidden="false"] { opacity:1;pointer-events:all; }
     .ev-modal[aria-hidden="true"]  { opacity:0;pointer-events:none; }
     .ev-modal-card {
-      background:#fff;width:90%;max-width:460px;border-radius:16px;
-      box-shadow:0 24px 60px rgba(10,15,30,0.18);display:flex;flex-direction:column;
+      background:var(--glass-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      width:90%;max-width:460px;border-radius:16px;border:1px solid var(--glass-border);
+      box-shadow:0 24px 60px rgba(10,15,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);display:flex;flex-direction:column;
       max-height:90vh;animation:evSlideUp .2s ease both;
     }
     @keyframes evSlideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
