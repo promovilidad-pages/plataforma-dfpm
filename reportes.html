@@ -348,28 +348,20 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 32px;
-      margin: 3px;
-      border-radius: 7px;
+      height: 36px;
       gap: 1px;
       cursor: default;
-      transition: transform .1s;
     }
     .matrix-cell .pct { font-size: 11px; font-weight: 700; line-height: 1; }
     .matrix-cell .cnt { font-size: 9px; opacity: .75; line-height: 1; }
     .matrix-empty { color: var(--border); font-size: 14px; }
 
-    /* colores de celda por % — ahora en el chip interior, no en toda la celda */
-    td.cell-0    { background: var(--white); }
-    td.cell-low  { background: var(--white); }
-    td.cell-mid  { background: var(--white); }
-    td.cell-high { background: var(--white); }
-    td.cell-done { background: var(--white); }
-    td.cell-0 .matrix-cell    { background: #f1f3f6; }
-    td.cell-low .matrix-cell  { background: #fef3c7; }
-    td.cell-mid .matrix-cell  { background: #bfdbfe; }
-    td.cell-high .matrix-cell { background: #bbf7d0; }
-    td.cell-done .matrix-cell { background: #6ee7b7; }
+    /* colores de celda por % */
+    .cell-0   { background: #f8f9fb; }
+    .cell-low { background: #fef3c7; }
+    .cell-mid { background: #bfdbfe; }
+    .cell-high { background: #bbf7d0; }
+    .cell-done { background: #6ee7b7; }
 
     .legend-matrix {
       display: flex; gap: 16px; align-items: center;
