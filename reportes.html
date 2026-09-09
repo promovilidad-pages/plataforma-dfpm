@@ -317,10 +317,10 @@
     .matrix-right table td.cat-row {
       border-right: 1px solid var(--border);
     }
-    .cat-planif { background: #1e3a5f; color: #93c5fd; }
-    .cat-fortal { background: #1e3d2f; color: #6ee7b7; }
-    .cat-asist  { background: #3d2a00; color: #fcd34d; }
-    .cat-admin  { background: #2d1b4e; color: #c4b5fd; }
+    .cat-planif { background: #dbeafe; color: #1e40af; }
+    .cat-fortal { background: var(--signal-lt); color: var(--signal-dk); }
+    .cat-asist  { background: #fef3c7; color: #b45309; }
+    .cat-admin  { background: #ede9fe; color: #6d28d9; }
     /* Nombre del eje */
     .matrix-left table td.eje-name {
       padding: 4px 14px;
@@ -348,20 +348,28 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 36px;
+      height: 32px;
+      margin: 3px;
+      border-radius: 7px;
       gap: 1px;
       cursor: default;
+      transition: transform .1s;
     }
     .matrix-cell .pct { font-size: 11px; font-weight: 700; line-height: 1; }
     .matrix-cell .cnt { font-size: 9px; opacity: .75; line-height: 1; }
     .matrix-empty { color: var(--border); font-size: 14px; }
 
-    /* colores de celda por % */
-    .cell-0   { background: #f8f9fb; }
-    .cell-low { background: #fef3c7; }
-    .cell-mid { background: #bfdbfe; }
-    .cell-high { background: #bbf7d0; }
-    .cell-done { background: #6ee7b7; }
+    /* colores de celda por % — ahora en el chip interior, no en toda la celda */
+    td.cell-0    { background: var(--white); }
+    td.cell-low  { background: var(--white); }
+    td.cell-mid  { background: var(--white); }
+    td.cell-high { background: var(--white); }
+    td.cell-done { background: var(--white); }
+    td.cell-0 .matrix-cell    { background: #f1f3f6; }
+    td.cell-low .matrix-cell  { background: #fef3c7; }
+    td.cell-mid .matrix-cell  { background: #bfdbfe; }
+    td.cell-high .matrix-cell { background: #bbf7d0; }
+    td.cell-done .matrix-cell { background: #6ee7b7; }
 
     .legend-matrix {
       display: flex; gap: 16px; align-items: center;
@@ -682,14 +690,14 @@ const SUPABASE_URL  = 'https://lnjfnknciydxfgnyhfnf.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuamZua25jaXlkeGZnbnloZm5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDcxMjQsImV4cCI6MjA4OTYyMzEyNH0.HRkZcoDpAbzO8U36Lo_5E1_i6aA7oWEX5lg4PO6SjlQ';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-// ── 30 ciudades oficiales PROMOVILIDAD ──
+// ── 31 ciudades oficiales PROMOVILIDAD ──
 const CIUDADES = [
   'Arequipa','Trujillo','Piura','Huancayo','Cusco','Chiclayo',
   'Pucallpa','Tacna','Iquitos','Chimbote','Ica','Juliaca',
   'Ayacucho','Chincha Alta','Huacho','Tarapoto','Puno',
   'Puerto Maldonado','Talara','Huánuco','Sullana','Huaraz',
   'Cajamarca','Tumbes','Cerro de Pasco','Huancavelica',
-  'Moquegua','Chachapoyas','Abancay','Moyobamba'
+  'Moquegua','Chachapoyas','Abancay','Moyobamba','Huaral'
 ];
 
 let rawData      = [];
@@ -1286,10 +1294,10 @@ function renderPoi() {
   </thead><tbody>`;
 
   const catColors = {
-    'Planificación':    { bg:'#1e3a5f', tc:'#93c5fd' },
-    'Fortalecimiento':  { bg:'#1e3d2f', tc:'#6ee7b7' },
-    'Asistencia Técnica': { bg:'#3d2a00', tc:'#fcd34d' },
-    'Administrativo':   { bg:'#2d1b4e', tc:'#c4b5fd' },
+    'Planificación':    { bg:'#dbeafe', tc:'#1e40af' },
+    'Fortalecimiento':  { bg:'#dcfce7', tc:'#15803d' },
+    'Asistencia Técnica': { bg:'#fef3c7', tc:'#b45309' },
+    'Administrativo':   { bg:'#ede9fe', tc:'#6d28d9' },
   };
 
   cats.forEach(cat => {
@@ -1323,8 +1331,8 @@ function renderPoi() {
           <td style="text-align:center;padding:3px 2px;border-bottom:1px solid var(--border)">
             <input class="poi-input" type="number" min="0" max="99" data-key="${esc(key)}" value="${p||''}"/>
           </td>
-          <td style="text-align:center;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--border);${bg2}">
-            <span style="font-size:11px;font-weight:700;color:${e>0&&e>=p&&p>0?'var(--signal-dk)':e>0?'#b45309':'var(--muted)'}">${e > 0 ? e : '—'}</span>
+          <td style="text-align:center;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--border)">
+            <span style="display:inline-block;min-width:20px;padding:2px 5px;border-radius:6px;font-size:11px;font-weight:700;${bg2};color:${e>0&&e>=p&&p>0?'var(--signal-dk)':e>0?'#b45309':'var(--muted)'}">${e > 0 ? e : '—'}</span>
           </td>`;
       });
 
