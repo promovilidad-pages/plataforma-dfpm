@@ -6,6 +6,7 @@
   <title>Reportes — PROMOVILIDAD</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -533,13 +534,13 @@
 
 <!-- TABS -->
 <div class="tabs-bar">
-  <button class="tab-btn active" data-tab="resumen">📊 Resumen general</button>
-  <button class="tab-btn" data-tab="matriz">🗺️ Matriz ciudades</button>
-  <button class="tab-btn" data-tab="responsables">👤 Por responsable</button>
-  <button class="tab-btn" data-tab="alertas">⚠️ Alertas</button>
-  <button class="tab-btn" data-tab="poi">📋 POI</button>
-  <button class="tab-btn" data-tab="evidencias">📎 Evidencias POI</button>
-  <button class="tab-btn" data-tab="comisiones">✈️ Comisiones</button>
+  <button class="tab-btn active" data-tab="resumen"><i class="fa-solid fa-chart-column"></i> Resumen general</button>
+  <button class="tab-btn" data-tab="matriz"><i class="fa-solid fa-map"></i> Matriz ciudades</button>
+  <button class="tab-btn" data-tab="responsables"><i class="fa-solid fa-user"></i> Por responsable</button>
+  <button class="tab-btn" data-tab="alertas"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Alertas</button>
+  <button class="tab-btn" data-tab="poi"><i class="fa-solid fa-clipboard-list"></i> POI</button>
+  <button class="tab-btn" data-tab="evidencias"><i class="fa-solid fa-paperclip"></i> Evidencias POI</button>
+  <button class="tab-btn" data-tab="comisiones"><i class="fa-solid fa-plane"></i> Comisiones</button>
 </div>
 
 <!-- CONTENIDO -->
@@ -609,7 +610,7 @@
     <div class="loading" id="loadingEvidencias">Cargando evidencias...</div>
     <div id="evidenciasContent" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-        <span style="font-weight:700;font-size:16px">📎 Evidencias POI — Documentos por Hito</span>
+        <span style="font-weight:700;font-size:16px"><i class="fa-solid fa-paperclip"></i> Evidencias POI — Documentos por Hito</span>
         <div style="display:flex;gap:8px;align-items:center">
           <select id="evidenciasAnio" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit"></select>
           <select id="evidenciasCategoria" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit">
@@ -630,7 +631,7 @@
     <div class="loading" id="loadingComisiones">Cargando comisiones...</div>
     <div id="comisionesContent" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-        <span style="font-weight:700;font-size:16px">✈️ Viajes de Comisión — Resumen por Eje</span>
+        <span style="font-weight:700;font-size:16px"><i class="fa-solid fa-plane"></i> Viajes de Comisión — Resumen por Eje</span>
         <div style="display:flex;gap:8px;align-items:center">
           <select id="comisionesAnio" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit"></select>
           <select id="comisionesCategoria" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit">
@@ -651,7 +652,7 @@
     <div class="loading" id="loadingPoi">Cargando POI...</div>
     <div id="poiContent" style="display:none">
       <div class="section-title">
-        <span>📋 Seguimiento POI — Programado vs Ejecutado</span>
+        <span><i class="fa-solid fa-clipboard-list"></i> Seguimiento POI — Programado vs Ejecutado</span>
         <div style="display:flex;gap:8px;align-items:center">
           <select id="poiAnio" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit"></select>
           <select id="poiCategoria" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit">
@@ -662,20 +663,20 @@
             <option value="Administrativo">Administrativo</option>
           </select>
           <button id="btnGuardarPoi" style="padding:7px 16px;border-radius:8px;background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">
-            💾 Guardar programado
+            <i class="fa-solid fa-floppy-disk"></i> Guardar programado
           </button>
         </div>
       </div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:12px;padding:10px 14px;background:var(--ink-05);border-radius:8px">
-        💡 <strong>P</strong> = Programado (editable) · <strong>E</strong> = Ejecutado (automático — hitos marcados como POI al 100%) · Los totales se actualizan al guardar.
+        <i class="fa-solid fa-lightbulb"></i> <strong>P</strong> = Programado (editable) · <strong>E</strong> = Ejecutado (automático — hitos marcados como POI al 100%) · Los totales se actualizan al guardar.
       </div>
       <div id="poiMatrizWrap" style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);background:#fff">
         <div id="poiTableWrap">
         <div class="legend-matrix" style="justify-content:flex-start;gap:20px">
-          <span>🟢 Ejecutado ≥ Programado</span>
-          <span>🟡 Ejecutado parcial</span>
-          <span>⚪ Sin programar</span>
-          <span>🔴 Sin ejecutar (tenía programado)</span>
+          <span><i class="fa-solid fa-circle" style="color:var(--signal)"></i> Ejecutado ≥ Programado</span>
+          <span><i class="fa-solid fa-circle" style="color:var(--amber)"></i> Ejecutado parcial</span>
+          <span><i class="fa-regular fa-circle" style="color:var(--muted)"></i> Sin programar</span>
+          <span><i class="fa-solid fa-circle" style="color:var(--red)"></i> Sin ejecutar (tenía programado)</span>
         </div>
       </div>
     </div>
@@ -810,7 +811,7 @@ function aplicarModoPoi() {
   const btnVolver = document.getElementById('btnVolver');
   if (btnVolver) btnVolver.style.display = 'none';
   const btnSalir = document.createElement('button');
-  btnSalir.textContent = '⏻ Cerrar sesión';
+  btnSalir.textContent = 'Cerrar sesión';
   btnSalir.style.cssText = 'padding:6px 14px;border-radius:8px;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit';
   btnSalir.onclick = async () => {
     await sb.auth.signOut();
@@ -927,12 +928,12 @@ function renderResumen() {
       <div class="kpi-sub">${total ? Math.round(bloq/total*100) : 0}% del total</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-lbl">🚨 Vencidas</div>
+      <div class="kpi-lbl"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Vencidas</div>
       <div class="kpi-val" style="color:var(--red)">${vencidas}</div>
       <div class="kpi-sub">Fecha fin superada</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-lbl">⚠️ Por vencer</div>
+      <div class="kpi-lbl"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer</div>
       <div class="kpi-val" style="color:var(--amber)">${porVencer}</div>
       <div class="kpi-sub">Vencen en ≤7 días</div>
     </div>
@@ -983,12 +984,12 @@ function renderResumen() {
       <th>Categoría</th>
       <th title="Total actividades">Total</th>
       <th style="min-width:120px">Avance</th>
-      <th title="Completadas">✅</th>
-      <th title="En proceso">🔵</th>
-      <th title="Pendientes">🟡</th>
-      <th title="Bloqueadas">🔴</th>
-      <th title="Vencidas">🚨</th>
-      <th title="Por vencer">⚠️</th>
+      <th title="Completadas"><i class="fa-solid fa-check"></i></th>
+      <th title="En proceso"><i class="fa-solid fa-circle" style="color:var(--blue)"></i></th>
+      <th title="Pendientes"><i class="fa-solid fa-circle" style="color:var(--amber)"></i></th>
+      <th title="Bloqueadas"><i class="fa-solid fa-circle" style="color:var(--red)"></i></th>
+      <th title="Vencidas"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></th>
+      <th title="Por vencer"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></th>
     </tr></thead>
     <tbody>
       ${rows.map(r => `
@@ -1105,11 +1106,11 @@ function renderResponsables() {
       <th>Responsable</th>
       <th>Total</th>
       <th style="min-width:160px">Avance promedio</th>
-      <th>✅ Completadas</th>
-      <th>🔵 En proceso</th>
-      <th>🟡 Pendientes</th>
-      <th>🔴 Bloqueadas</th>
-      <th>🚨 Vencidas</th>
+      <th><i class="fa-solid fa-check"></i> Completadas</th>
+      <th><i class="fa-solid fa-circle" style="color:var(--blue)"></i> En proceso</th>
+      <th><i class="fa-solid fa-circle" style="color:var(--amber)"></i> Pendientes</th>
+      <th><i class="fa-solid fa-circle" style="color:var(--red)"></i> Bloqueadas</th>
+      <th><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Vencidas</th>
     </tr></thead>
     <tbody>
       ${rows.map(r => `
@@ -1147,7 +1148,7 @@ function renderAlertas() {
     .sort((a,b) => new Date(a.fecha_fin) - new Date(b.fecha_fin));
 
   const renderLista = (rows, tipo) => {
-    if (!rows.length) return `<div class="empty">No hay actividades ${tipo === 'vencida' ? 'vencidas' : 'por vencer'}. ✅</div>`;
+    if (!rows.length) return `<div class="empty">No hay actividades ${tipo === 'vencida' ? 'vencidas' : 'por vencer'}. <i class="fa-solid fa-check"></i></div>`;
     return rows.map(r => {
       const fin  = new Date(r.fecha_fin + 'T00:00:00');
       const hoy  = new Date(); hoy.setHours(0,0,0,0);
@@ -1157,13 +1158,13 @@ function renderAlertas() {
         : `Vence en ${diff} día${diff!==1?'s':''}`;
       return `
         <div class="alert-row">
-          <span class="alert-icon">${tipo === 'vencida' ? '🚨' : '⚠️'}</span>
+          <span class="alert-icon">${tipo === 'vencida' ? '<i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i>' : '<i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i>'}</span>
           <div style="flex:1;min-width:0">
             <div class="alert-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.subactividad)}</div>
             <div style="display:flex;gap:8px;margin-top:3px;flex-wrap:wrap">
               <span class="alert-eje">${esc(r.actividad_general)}</span>
-              ${r.responsable ? `<span class="alert-meta">👤 ${esc(r.responsable)}</span>` : ''}
-              ${r.ciudad ? `<span class="alert-meta">📍 ${esc(r.ciudad)}</span>` : ''}
+              ${r.responsable ? `<span class="alert-meta"><i class="fa-solid fa-user"></i> ${esc(r.responsable)}</span>` : ''}
+              ${r.ciudad ? `<span class="alert-meta"><i class="fa-solid fa-location-dot"></i> ${esc(r.ciudad)}</span>` : ''}
             </div>
           </div>
           <div style="text-align:right;flex-shrink:0">
@@ -1181,13 +1182,13 @@ function renderAlertas() {
   document.getElementById('alertasGrid').innerHTML = `
     <div>
       <div class="section-title">
-        <span>🚨 Actividades vencidas <span style="background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:6px">${vencidas.length}</span></span>
+        <span><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Actividades vencidas <span style="background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:6px">${vencidas.length}</span></span>
       </div>
       <div class="alert-card">${renderLista(vencidas,'vencida')}</div>
     </div>
     <div>
       <div class="section-title">
-        <span>⚠️ Por vencer (≤7 días) <span style="background:var(--amber-lt);color:#b45309;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:6px">${porVencer.length}</span></span>
+        <span><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer (≤7 días) <span style="background:var(--amber-lt);color:#b45309;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:6px">${porVencer.length}</span></span>
       </div>
       <div class="alert-card">${renderLista(porVencer,'por-vencer')}</div>
     </div>
@@ -1360,7 +1361,7 @@ function renderPoi() {
 async function guardarPoi() {
   if (!confirm('¿Confirmas guardar los valores programados (P) del POI?\n\nEsta acción actualizará los datos en el sistema.')) return;
   const btn = document.getElementById('btnGuardarPoi');
-  btn.disabled = true; btn.textContent = '💾 Guardando...';
+  btn.disabled = true; btn.textContent = 'Guardando...';
 
   const inputs = document.querySelectorAll('.poi-input');
   let errCount = 0;
@@ -1391,8 +1392,8 @@ async function guardarPoi() {
   }
 
   btn.disabled = false;
-  btn.textContent = errCount > 0 ? '⚠️ Guardado con errores' : '✅ Guardado';
-  setTimeout(() => { btn.textContent = '💾 Guardar programado'; }, 2000);
+  btn.textContent = errCount > 0 ? '<i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Guardado con errores' : '<i class="fa-solid fa-check"></i> Guardado';
+  setTimeout(() => { btn.textContent = '<i class="fa-solid fa-floppy-disk"></i> Guardar programado'; }, 2000);
   await loadPoi();
 }
 
@@ -1523,8 +1524,8 @@ function renderEvidencias() {
         const prom        = actsActivas.length ? Math.round(actsActivas.reduce((s,r) => s+(r.avance||0),0)/actsActivas.length) : 0;
 
         const estadoBadge = prom === 100
-          ? `<span style="background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">✅ 100%</span>`
-          : `<span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px">⏳ ${prom}%</span>`;
+          ? `<span style="background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px"><i class="fa-solid fa-check"></i> 100%</span>`
+          : `<span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px"><i class="fa-solid fa-hourglass-half"></i> ${prom}%</span>`;
 
         const ejeEsc  = esc(eje.nombre).replace(/'/g,"\'");
         const hitoEsc = esc(hito.nombre).replace(/'/g,"\'");
@@ -1534,11 +1535,11 @@ function renderEvidencias() {
           ? esPoi
             ? `<a href="${esc(ev.url||'#')}" target="_blank" rel="noopener"
                 style="font-size:12px;color:#4f46e5;font-weight:600;text-decoration:none">
-                🔗 ${esc(ev.descripcion||'Ver documento').substring(0,40)}${(ev.descripcion||'').length>40?'…':''}
+                <i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,40)}${(ev.descripcion||'').length>40?'…':''}
               </a>`
             : `<button onclick="abrirEditarEvidencia(${ev.id})"
                 style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid #e5e7eb;background:#f9fafb;cursor:pointer;display:flex;align-items:center;gap:6px">
-                ⚙️ <span style="color:#4f46e5;font-weight:600">🔗 ${esc(ev.descripcion||'Ver documento').substring(0,35)}${(ev.descripcion||'').length>35?'…':''}</span>
+                <i class="fa-solid fa-gear"></i> <span style="color:#4f46e5;font-weight:600"><i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,35)}${(ev.descripcion||'').length>35?'…':''}</span>
               </button>`
           : esPoi
             ? `<span style="font-size:11px;color:#9ca3af;font-style:italic">Sin evidencia registrada</span>`
@@ -1602,7 +1603,7 @@ function abrirNuevaEvidencia(ejeNombre, hitoNombre) {
   document.getElementById('evUrl').value         = '';
   document.getElementById('evFecha').value       = '';
   document.getElementById('evDescripcion').value = '';
-  document.getElementById('evModalTitle').textContent = '📎 Agregar evidencia';
+  document.getElementById('evModalTitle').textContent = 'Agregar evidencia';
   document.getElementById('evHitoLabel').textContent  = hitoNombre;
   document.getElementById('btnDeleteEvidencia').style.display = 'none';
   const link = document.getElementById('evUrlLink');
@@ -1620,7 +1621,7 @@ function abrirEditarEvidencia(id) {
   document.getElementById('evUrl').value         = ev.url || '';
   document.getElementById('evFecha').value       = ev.fecha || '';
   document.getElementById('evDescripcion').value = ev.descripcion || '';
-  document.getElementById('evModalTitle').textContent = '📎 Editar evidencia';
+  document.getElementById('evModalTitle').textContent = 'Editar evidencia';
   document.getElementById('evHitoLabel').textContent  = ev.hito_nombre;
   document.getElementById('btnDeleteEvidencia').style.display = canDelete ? 'block' : 'none';
   actualizarLinkEvidencia();
@@ -1733,7 +1734,7 @@ function renderComisiones() {
     'Administrativo':     '#8b5cf6',
   };
 
-  const transporteIcon = { 'Bus': '🚌', 'Aéreo': '✈️', 'Ambos': '🚌✈️' };
+  const transporteIcon = { 'Bus': '<i class="fa-solid fa-bus"></i>', 'Aéreo': '<i class="fa-solid fa-plane"></i>', 'Ambos': '<i class="fa-solid fa-bus"></i><i class="fa-solid fa-plane"></i>' };
 
   let html = '';
   let granTotalDias = 0, granTotal = 0;
@@ -1822,7 +1823,7 @@ function renderComisiones() {
   // Gran total
   html += `
     <div style="background:#f5f3ff;border-radius:12px;border:2px solid #7c3aed;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <span style="font-weight:700;font-size:14px;color:#5b21b6">✈️ GRAN TOTAL — Viajes de Comisión</span>
+      <span style="font-weight:700;font-size:14px;color:#5b21b6"><i class="fa-solid fa-plane"></i> GRAN TOTAL — Viajes de Comisión</span>
       <div style="display:flex;gap:24px;align-items:center">
         <span style="font-size:13px;color:#6b7280">${ejesConComisiones.length} eje${ejesConComisiones.length>1?'s':''} · ${granPersonasSet.size} persona${granPersonasSet.size!==1?'s':''} únicas</span>
         <span style="font-size:13px;color:#374151;font-weight:600">S/. 320 × personas × días</span>
@@ -1841,10 +1842,10 @@ function renderComisiones() {
   <div class="ev-modal-card">
     <div class="ev-modal-head">
       <div>
-        <div style="font-weight:700;font-size:15px" id="evModalTitle">📎 Agregar evidencia</div>
+        <div style="font-weight:700;font-size:15px" id="evModalTitle"><i class="fa-solid fa-paperclip"></i> Agregar evidencia</div>
         <div style="font-size:11px;color:#6b7280;margin-top:2px" id="evHitoLabel"></div>
       </div>
-      <button class="ev-btn-close" onclick="closeEvModal()">✕</button>
+      <button class="ev-btn-close" onclick="closeEvModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="ev-modal-body">
       <form id="evidenciaForm">
@@ -1857,7 +1858,7 @@ function renderComisiones() {
             oninput="actualizarLinkEvidencia()">
           <a id="evUrlLink" href="#" target="_blank" rel="noopener"
             style="display:none;margin-top:6px;font-size:12px;color:#4f46e5;text-decoration:none">
-            🔗 Abrir documento
+            <i class="fa-solid fa-link"></i> Abrir documento
           </a>
         </div>
         <div class="ev-form-group">
@@ -1870,7 +1871,7 @@ function renderComisiones() {
         </div>
         <div style="margin-top:6px">
           <button type="button" class="ev-btn-danger" id="btnDeleteEvidencia"
-            style="display:none;width:100%;margin-bottom:10px">🗑️ Eliminar evidencia</button>
+            style="display:none;width:100%;margin-bottom:10px"><i class="fa-solid fa-trash"></i> Eliminar evidencia</button>
           <div style="display:flex;gap:8px;justify-content:flex-end">
             <button type="button" class="ev-btn-ghost" onclick="closeEvModal()">Cancelar</button>
             <button type="submit" class="ev-btn-primary">Guardar</button>

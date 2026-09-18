@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <style>body { opacity: 0; }</style>
 <style>
@@ -59,28 +60,28 @@
 
     <nav class="sidebar-nav">
       <button class="nav-item active" data-view="actividades">
-        <span class="nav-icon">📋</span> Ejes de Trabajo
+        <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span> Ejes de Trabajo
       </button>
       <button class="nav-item" data-view="repositorio">
-        <span class="nav-icon">📁</span> Repositorio
+        <span class="nav-icon"><i class="fa-solid fa-folder-open"></i></span> Repositorio
       </button>
       <button class="nav-item" onclick="window.open('gantt.html','_blank')" id="navGantt">
-        <span class="nav-icon">📅</span> Cronograma
+        <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span> Cronograma
       </button>
       <button class="nav-item" onclick="window.open('reportes.html','_blank')">
-        <span class="nav-icon">📊</span> Reportes
+        <span class="nav-icon"><i class="fa-solid fa-chart-column"></i></span> Reportes
       </button>
       <button class="nav-item admin-only hidden" data-view="usuarios">
-        <span class="nav-icon">👥</span> Usuarios
+        <span class="nav-icon"><i class="fa-solid fa-users"></i></span> Usuarios
       </button>
       <button class="nav-item" data-view="auditoria">
-        <span class="nav-icon">🕓</span> Auditoría
+        <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span> Auditoría
       </button>
       <button class="nav-item" data-view="manual">
-        <span class="nav-icon">📖</span> Manual de uso
+        <span class="nav-icon"><i class="fa-solid fa-book-open"></i></span> Manual de uso
       </button>
       <button class="nav-item" id="btnCambiarClave">
-        <span class="nav-icon">🔑</span> Cambiar contraseña
+        <span class="nav-icon"><i class="fa-solid fa-key"></i></span> Cambiar contraseña
       </button>
     </nav>
 
@@ -121,7 +122,7 @@
         <span class="date-badge" id="dateBadge">Cargando...</span>
       </div>
       <div class="header-actions">
-        <button class="btn-ghost" id="btnRepo">📁 Repositorio</button>
+        <button class="btn-ghost" id="btnRepo"><i class="fa-solid fa-folder-open"></i> Repositorio</button>
       </div>
     </header>
 
@@ -162,8 +163,8 @@
         <div class="feed-header">
           <span>Cronograma de Proyecto</span>
           <div class="gantt-actions">
-            <a id="btnAyudaMemoria" class="btn-ghost btn-sm btn-doc-disabled" href="#" target="_blank" rel="noopener">📋 Ayuda Memoria</a>
-            <a id="btnFichaActividad" class="btn-ghost btn-sm btn-doc-disabled" href="#" target="_blank" rel="noopener">📄 Ficha de Actividad</a>
+            <a id="btnAyudaMemoria" class="btn-ghost btn-sm btn-doc-disabled" href="#" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> Ayuda Memoria</a>
+            <a id="btnFichaActividad" class="btn-ghost btn-sm btn-doc-disabled" href="#" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> Ficha de Actividad</a>
             <select id="ganttActividad" class="select-small" title="Actividad general">
               <option value="">Actividad general…</option>
             </select>
@@ -184,8 +185,8 @@
         <div class="feed-header">
           <span>Gestión de Usuarios</span>
           <div style="display:flex;gap:8px">
-            <button class="btn-ghost btn-sm" id="btnTabUsuarios" onclick="switchTabUsuarios('lista')">👥 Usuarios</button>
-            <button class="btn-ghost btn-sm" id="btnTabAgregar" onclick="switchTabUsuarios('agregar')">➕ Agregar usuario</button>
+            <button class="btn-ghost btn-sm" id="btnTabUsuarios" onclick="switchTabUsuarios('lista')"><i class="fa-solid fa-users"></i> Usuarios</button>
+            <button class="btn-ghost btn-sm" id="btnTabAgregar" onclick="switchTabUsuarios('agregar')"><i class="fa-solid fa-plus"></i> Agregar usuario</button>
           </div>
         </div>
         <div id="usuariosList"></div>
@@ -350,7 +351,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
                 <div class="manual-paso"><span class="paso-num">📌</span><span><strong>Estado:</strong> Pendiente, En proceso, Completado o Bloqueado.</span></div>
                 <div class="manual-paso"><span class="paso-num">👤</span><span><strong>Responsable:</strong> muestra solo sus actividades.</span></div>
                 <div class="manual-paso"><span class="paso-num">🏙️</span><span><strong>Ciudad:</strong> filtra por una de las 30 ciudades del ámbito PROMOVILIDAD.</span></div>
-                <div class="manual-paso"><span class="paso-num">📅</span><span><strong>Fechas:</strong> define un rango para acotar resultados.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i></span><span><strong>Fechas:</strong> define un rango para acotar resultados.</span></div>
               </div>
               <div class="manual-tip">💡 Haz clic en <strong>Limpiar filtros</strong> para restablecer todo.</div>
             </div>
@@ -360,11 +361,11 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-titulo">4. Cronograma Gantt</div>
               <p>Visualiza el cronograma de actividades con barras de progreso coloreadas por estado.</p>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>📅 Cronograma</strong> — se abre en nueva pestaña.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Cronograma</strong> — se abre en nueva pestaña.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Filtra por <strong>categoría</strong> y selecciona el <strong>Eje de Trabajo</strong> a visualizar.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Elige la vista: <strong>Días, Semanas o Meses</strong>.</span></div>
               </div>
-              <p>🟢 Completado · 🔵 En proceso · 🟡 Pendiente · 🔴 Bloqueado. Las actividades <strong>🚨 vencidas</strong> o <strong>⚠️ por vencer</strong> se marcan automáticamente (las bloqueadas no generan alertas).</p>
+              <p>🟢 Completado · 🔵 En proceso · 🟡 Pendiente · 🔴 Bloqueado. Las actividades <strong><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> vencidas</strong> o <strong><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> por vencer</strong> se marcan automáticamente (las bloqueadas no generan alertas).</p>
               <div class="manual-tip">💡 Si el eje tiene documentos vinculados, los botones de Ayuda Memoria y Ficha de Actividad se activarán en la parte superior.</div>
             </div>
 
@@ -373,7 +374,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-titulo">5. Repositorio de documentos</div>
               <p>Centraliza todos los documentos del equipo con enlace directo a Drive, Word, Excel, PDF u otros.</p>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📁 Repositorio</strong> en el sidebar.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong><i class="fa-solid fa-folder-open"></i> Repositorio</strong> en el sidebar.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>+ Agregar</strong> e ingresa título, tipo, fecha, enlace y participantes.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Para editar o eliminar, usa el botón <strong>⚙️</strong> de la fila.</span></div>
               </div>
@@ -386,10 +387,10 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <p>La plataforma registra automáticamente todos los cambios para garantizar la trazabilidad institucional.</p>
 
               <div class="manual-subtitulo">Historial de una actividad</div>
-              <p>En el detalle de cualquier actividad, haz clic en <strong>🕓 Historial</strong> para ver quién cambió qué, cuándo y con qué justificación.</p>
+              <p>En el detalle de cualquier actividad, haz clic en <strong><i class="fa-solid fa-clock-rotate-left"></i> Historial</strong> para ver quién cambió qué, cuándo y con qué justificación.</p>
 
               <div class="manual-subtitulo">Historial de un eje</div>
-              <p>En el panel derecho de cada eje, el botón <strong>🕓 Historial</strong> muestra todo lo ocurrido: creación, cambios de nombre, hitos y actividades.</p>
+              <p>En el panel derecho de cada eje, el botón <strong><i class="fa-solid fa-clock-rotate-left"></i> Historial</strong> muestra todo lo ocurrido: creación, cambios de nombre, hitos y actividades.</p>
 
               <div class="manual-subtitulo">Auditoría global</div>
               <p>La vista <strong>🕓 Auditoría</strong> muestra el historial completo de la plataforma, filtrable por fecha, tipo de acción y usuario. Los registros se conservan aunque el elemento haya sido eliminado.</p>
@@ -403,7 +404,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
                 <div class="manual-paso"><span class="paso-num">📊</span><span><strong>Resumen general:</strong> KPIs globales, avance por categoría y tabla de ejes con detalle de estados.</span></div>
                 <div class="manual-paso"><span class="paso-num">🗺️</span><span><strong>Matriz ciudades:</strong> cruza ejes vs. las 30 ciudades del ámbito PROMOVILIDAD mostrando % avance y cantidad de actividades por celda.</span></div>
                 <div class="manual-paso"><span class="paso-num">👤</span><span><strong>Por responsable:</strong> carga de trabajo y avance por persona.</span></div>
-                <div class="manual-paso"><span class="paso-num">⚠️</span><span><strong>Alertas:</strong> actividades vencidas y por vencer (las bloqueadas no aparecen).</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></span><span><strong>Alertas:</strong> actividades vencidas y por vencer (las bloqueadas no aparecen).</span></div>
                 <div class="manual-paso"><span class="paso-num">📋</span><span><strong>POI:</strong> seguimiento programado vs. ejecutado (ver sección 8).</span></div>
                 <div class="manual-paso"><span class="paso-num">📎</span><span><strong>Evidencias POI:</strong> documentos de respaldo por hito POI (ver sección 12).</span></div>
                 <div class="manual-paso"><span class="paso-num">✈️</span><span><strong>Comisiones:</strong> resumen anual de viajes de comisión por eje, con personas, días y costo estimado.</span></div>
@@ -453,7 +454,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
             <!-- 10 -->
             <div class="manual-section" id="m10">
               <div class="manual-titulo">10. Gestión de usuarios <span style="font-size:11px;background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:20px;font-weight:600;vertical-align:middle">Solo Admin</span></div>
-              <p>La sección <strong>👥 Usuarios</strong> solo es visible para el administrador.</p>
+              <p>La sección <strong><i class="fa-solid fa-users"></i> Usuarios</strong> solo es visible para el administrador.</p>
 
               <div class="manual-subtitulo">Crear un usuario</div>
               <div class="manual-pasos">
@@ -486,11 +487,11 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
             <!-- 11 -->
             <div class="manual-section" id="m11">
               <div class="manual-titulo">11. Reuniones por estrategia</div>
-              <p>Cada eje de trabajo puede tener un registro de reuniones asociadas, accesible desde el botón <strong>📅 Reuniones</strong> en el panel derecho.</p>
+              <p>Cada eje de trabajo puede tener un registro de reuniones asociadas, accesible desde el botón <strong><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones</strong> en el panel derecho.</p>
               <div class="manual-subtitulo">Agregar una reunión</div>
               <div class="manual-pasos">
                 <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona el eje de trabajo en el panel izquierdo.</span></div>
-                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>📅 Reuniones</strong> — se despliega el panel de reuniones.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones</strong> — se despliega el panel de reuniones.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>＋ Agregar reunión</strong> e ingresa nombre/asunto, fecha, comentario y URL del acta o grabación.</span></div>
                 <div class="manual-paso"><span class="paso-num">4</span><span>Haz clic en <strong>Guardar reunión</strong>.</span></div>
               </div>
@@ -560,10 +561,10 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
     <div class="modalHead">
       <div class="modalTitle">Detalle de Actividad</div>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-ghost btn-sm" id="btnHistorialActividad">🕓 Historial</button>
-        <button class="btn-ghost btn-sm" id="btnEditActividad">✏️ Editar</button>
-        <button class="btn-danger btn-sm" id="btnDeleteActividad">🗑️ Eliminar</button>
-        <button class="btn-close" id="btnCloseDetail">✕</button>
+        <button class="btn-ghost btn-sm" id="btnHistorialActividad"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+        <button class="btn-ghost btn-sm" id="btnEditActividad"><i class="fa-solid fa-pen"></i> Editar</button>
+        <button class="btn-danger btn-sm" id="btnDeleteActividad"><i class="fa-solid fa-trash"></i> Eliminar</button>
+        <button class="btn-close" id="btnCloseDetail"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
     <div class="modalBody" id="detailContent">
@@ -603,7 +604,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard">
     <div class="modalHead">
       <div class="modalTitle">🔑 Cambiar contraseña</div>
-      <button class="btn-close" id="btnCloseClave">✕</button>
+      <button class="btn-close" id="btnCloseClave"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="claveForm" class="form-grid">
@@ -632,7 +633,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="modalTitle">⚙️ Configurar Usuario</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="usuarioModalSub"></div>
       </div>
-      <button class="btn-close" id="btnCloseUsuario">✕</button>
+      <button class="btn-close" id="btnCloseUsuario"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="usuarioForm" class="form-grid">
@@ -678,7 +679,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="modalTitle">⚙️ Configurar Eje de Trabajo</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="ejeModalSub"></div>
       </div>
-      <button class="btn-close" id="btnCloseEje">✕</button>
+      <button class="btn-close" id="btnCloseEje"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="ejeForm" class="form-grid">
@@ -705,7 +706,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
           <input type="url" id="ejeUrlFicha" placeholder="https://docs.google.com/..."/>
         </div>
         <div class="form-actions span2" style="justify-content:space-between">
-          <button type="button" class="btn-danger" id="btnDeleteEje">🗑️ Eliminar eje</button>
+          <button type="button" class="btn-danger" id="btnDeleteEje"><i class="fa-solid fa-trash"></i> Eliminar eje</button>
           <div style="display:flex;gap:8px">
             <button type="button" class="btn-ghost" id="btnCancelEje">Cancelar</button>
             <button type="submit" class="btn-primary" id="btnSaveEje">Guardar cambios</button>
@@ -724,7 +725,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="modalTitle">⚙️ Configurar Hito</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="hitoModalSub"></div>
       </div>
-      <button class="btn-close" id="btnCloseHito">✕</button>
+      <button class="btn-close" id="btnCloseHito"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="hitoForm" class="form-grid">
@@ -744,7 +745,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
           </div>
         </div>
         <div class="form-actions span2" style="justify-content:space-between">
-          <button type="button" class="btn-danger" id="btnDeleteHito">🗑️ Eliminar hito</button>
+          <button type="button" class="btn-danger" id="btnDeleteHito"><i class="fa-solid fa-trash"></i> Eliminar hito</button>
           <div style="display:flex;gap:8px">
             <button type="button" class="btn-ghost" id="btnCancelHito">Cancelar</button>
             <button type="submit" class="btn-primary" id="btnSaveHito">Guardar cambios</button>
@@ -760,7 +761,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard wide">
     <div class="modalHead">
       <div class="modalTitle" id="formTitle">Nueva Actividad</div>
-      <button class="btn-close" id="btnCloseForm">✕</button>
+      <button class="btn-close" id="btnCloseForm"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="actForm" class="form-grid">
@@ -939,7 +940,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard">
     <div class="modalHead">
       <div class="modalTitle" id="repoModalTitle">Agregar documento</div>
-      <button class="btn-close" id="btnCloseRepo">✕</button>
+      <button class="btn-close" id="btnCloseRepo"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="repoForm" class="form-grid">
@@ -976,7 +977,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
           <textarea id="rComentarios" rows="2" placeholder="Notas adicionales..."></textarea>
         </div>
         <div class="form-actions span2" style="justify-content:space-between">
-          <button type="button" class="btn-danger" id="btnDeleteRepo" style="display:none">🗑️ Eliminar</button>
+          <button type="button" class="btn-danger" id="btnDeleteRepo" style="display:none"><i class="fa-solid fa-trash"></i> Eliminar</button>
           <div style="display:flex;gap:8px">
             <button type="button" class="btn-ghost" id="btnCancelRepo">Cancelar</button>
             <button type="submit" class="btn-primary">Guardar</button>
@@ -995,7 +996,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="modalTitle">📝 Justificación requerida</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="justModalSub"></div>
       </div>
-      <button class="btn-close" id="btnCloseJust">✕</button>
+      <button class="btn-close" id="btnCloseJust"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;line-height:1.6" id="justDetalle"></div>
@@ -1023,7 +1024,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="modalTitle">🕓 Historial de cambios</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="historialModalSub"></div>
       </div>
-      <button class="btn-close" id="btnCloseHistorial">✕</button>
+      <button class="btn-close" id="btnCloseHistorial"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody" id="historialContent" style="padding:0">
     </div>
@@ -1035,12 +1036,12 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard" style="max-width:480px">
     <div class="modalHead">
       <div style="display:flex;align-items:center;gap:10px">
-        <div class="modalTitle">📅 Agregar reunión</div>
+        <div class="modalTitle"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Agregar reunión</div>
         <button type="button" class="btn-danger" id="btnDeleteReunion"
           style="display:none;font-size:11px;padding:3px 10px"
-          onclick="eliminarReunionDesdeModal()">🗑️ Eliminar</button>
+          onclick="eliminarReunionDesdeModal()"><i class="fa-solid fa-trash"></i> Eliminar</button>
       </div>
-      <button class="btn-close" onclick="closeModal('reunionModal')">✕</button>
+      <button class="btn-close" onclick="closeModal('reunionModal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
       <form id="reunionForm">
@@ -1079,7 +1080,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="modalTitle">📊 Historial del Eje</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="historialEjeModalSub"></div>
       </div>
-      <button class="btn-close" id="btnCloseHistorialEje">✕</button>
+      <button class="btn-close" id="btnCloseHistorialEje"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody" id="historialEjeContent" style="padding:0">
     </div>

@@ -526,7 +526,7 @@ function renderList() {
             ${proc ? `<span class="eje-dot" style="background:var(--blue)"   title="${proc} en proceso"></span>` : ''}
             ${pend ? `<span class="eje-dot" style="background:var(--amber)"  title="${pend} pendiente(s)"></span>` : ''}
             ${bloq ? `<span class="eje-dot" style="background:var(--red)"    title="${bloq} bloqueada(s)"></span>` : ''}
-            ${alert ? `<span style="font-size:11px" title="Tiene alertas">⚠️</span>` : ''}
+            ${alert ? `<span style="font-size:11px" title="Tiene alertas"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></span>` : ''}
             <span class="eje-count">${rows.length} act.</span>
           </div>
         </div>
@@ -612,7 +612,7 @@ function renderList() {
               <div class="task-dot-sm" style="background:${estadoColor(estado)}"></div>
               <div class="eje-task-name">${esc(row.subactividad)}</div>
               <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-                ${alert==='vencida' ? '<span style="font-size:11px">🚨</span>' : alert==='por-vencer' ? '<span style="font-size:11px">⚠️</span>' : ''}
+                ${alert==='vencida' ? '<span style="font-size:11px"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></span>' : alert==='por-vencer' ? '<span style="font-size:11px"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></span>' : ''}
                 <span class="badge ${badgeClass}" style="font-size:10px;padding:1px 6px">${esc(estado)}</span>
                 <span class="task-pct-sm">${row.avance??0}%</span>
               </div>
@@ -660,7 +660,7 @@ function renderList() {
                 onclick="event.stopPropagation();abrirNuevoHito(this.dataset.eje)">＋ Hito</button>
           <button class="btn-add-inline" title="Reuniones del eje" style="background:#eef2ff;color:#4f46e5"
             data-eje="${esc(actName)}"
-            onclick="event.stopPropagation();togglePanelReuniones(this.dataset.eje)">📅 Reuniones</button>
+            onclick="event.stopPropagation();togglePanelReuniones(this.dataset.eje)"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones</button>
           ${(currentPerfil?.rol==='admin' || ejesData.find(e=>e.nombre===actName)?.creado_por===currentUser?.id) ? `
           <button class="btn-eje-action" style="opacity:1;font-size:14px"
                 title="Configurar eje"
@@ -855,7 +855,7 @@ function openDetail(row) {
       const alertEl = document.createElement('span');
       alertEl.id = 'dAlertBadge';
       alertEl.className = `badge-alert ${alertStatus === 'vencida' ? 'alert-vencida' : 'alert-por-vencer'}`;
-      alertEl.textContent = alertStatus === 'vencida' ? '🚨 Vencida' : '⚠️ Por vencer';
+      alertEl.textContent = alertStatus === 'vencida' ? 'Vencida' : 'Por vencer';
       chipRow.appendChild(alertEl);
     }
   }
@@ -1360,7 +1360,14 @@ function renderRepo(rows) {
     return;
   }
 
-  const tipoIcon = { Drive:'🗂️', Word:'📝', Excel:'📊', PPT:'📑', PDF:'📄', Otro:'📎' };
+  const tipoIcon = {
+    Drive: '<i class="fa-brands fa-google-drive" style="color:#00AC47"></i>',
+    Word:  '<i class="fa-solid fa-file-word" style="color:#2B579A"></i>',
+    Excel: '<i class="fa-solid fa-file-excel" style="color:#217346"></i>',
+    PPT:   '<i class="fa-solid fa-file-powerpoint" style="color:#D24726"></i>',
+    PDF:   '<i class="fa-solid fa-file-pdf" style="color:#E53E3E"></i>',
+    Otro:  '<i class="fa-solid fa-paperclip" style="color:var(--text-muted)"></i>',
+  };
 
   el.innerHTML = `
     <table class="repo-table">
@@ -1376,7 +1383,7 @@ function renderRepo(rows) {
         ${rows.map(r => `
           <tr>
             <td>${fmtDate(r.fecha)}</td>
-            <td><span class="tipo-chip"><span style="font-size:12px;line-height:1">${tipoIcon[r.tipo]||'📎'}</span> ${esc(r.tipo||'—')}</span></td>
+            <td><span class="tipo-chip"><span style="font-size:12px;line-height:1">${tipoIcon[r.tipo]||'<i class="fa-solid fa-paperclip" style="color:var(--text-muted)"></i>'}</span> ${esc(r.tipo||'—')}</span></td>
             <td>
               ${r.enlace
                 ? `<a href="${esc(r.enlace)}" target="_blank" rel="noopener" class="link-ext">${esc(r.titulo)}</a>`
@@ -1632,8 +1639,8 @@ function renderGantt() {
       <span class="legendChip" style="--c:var(--st-process)"><span class="legendDot"></span>En proceso</span>
       <span class="legendChip" style="--c:var(--st-pending)"><span class="legendDot"></span>Pendiente</span>
       <span class="legendChip" style="--c:var(--st-block)">  <span class="legendDot"></span>Bloqueado</span>
-      <span class="legendChip legend-sep">🚨 Vencida</span>
-      <span class="legendChip legend-sep">⚠️ Por vencer</span>
+      <span class="legendChip legend-sep"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Vencida</span>
+      <span class="legendChip legend-sep"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer</span>
     </div>
   `;
 
@@ -1667,7 +1674,7 @@ function renderGantt() {
     const idx      = filteredData.indexOf(t.row);
     const title    = `${t.estado} • ${t.pct}% • ${label}`;
     const alertG   = getAlertStatus(t.row);
-    const alertIcon = alertG === 'vencida' ? '🚨' : alertG === 'por-vencer' ? '⚠️' : '';
+    const alertIcon = alertG === 'vencida' ? '<i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i>' : alertG === 'por-vencer' ? '<i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i>' : '';
 
     html += `<div class="ganttLabel" style="grid-row:${rowGrid}" title="${esc(label)}">${esc(label)}</div>`;
     html += `
@@ -2365,7 +2372,7 @@ function renderPanelReuniones(panel, ejeNombre, rows) {
   panel.innerHTML = `
     <div class="panel-reuniones-inner">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <span style="font-weight:600;font-size:13px;color:#4f46e5">📅 Reuniones — ${esc(ejeNombre)}</span>
+        <span style="font-weight:600;font-size:13px;color:#4f46e5"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones — ${esc(ejeNombre)}</span>
         <button class="btn-add-inline" style="background:#4f46e5;color:#fff;font-size:12px"
           onclick="abrirModalReunion('${esc(ejeNombre).replace(/'/g,"\'")}')">＋ Agregar reunión</button>
       </div>
@@ -2390,7 +2397,7 @@ window.abrirModalReunion = function(ejeNombre) {
   document.getElementById('reunionFecha').value     = new Date().toISOString().split('T')[0];
   document.getElementById('reunionComentario').value= '';
   document.getElementById('reunionUrl').value       = '';
-  document.querySelector('#reunionModal .modalTitle').textContent = '📅 Agregar reunión';
+  document.querySelector('#reunionModal .modalTitle').textContent = 'Agregar reunión';
   document.getElementById('btnDeleteReunion').style.display = 'none';
   openModal('reunionModal');
 };
@@ -2405,7 +2412,7 @@ window.abrirEditarReunion = function(id) {
   document.getElementById('reunionFecha').value     = r.fecha || '';
   document.getElementById('reunionComentario').value= r.comentario || '';
   document.getElementById('reunionUrl').value       = r.url || '';
-  document.querySelector('#reunionModal .modalTitle').textContent = '📅 Editar reunión';
+  document.querySelector('#reunionModal .modalTitle').textContent = 'Editar reunión';
   document.getElementById('btnDeleteReunion').style.display = canDelete ? 'block' : 'none';
   openModal('reunionModal');
 };
