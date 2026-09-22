@@ -2552,6 +2552,16 @@ window.eliminarHito = async function(actividadGeneral, nombreHito) {
   if (!confirm(msg)) return;
   closeModal('hitoModal');
 
+  // Chequeo de permiso ANTES de borrar nada
+  const { data: hitoRow, error: hitoCheckError } = await sb.from('hitos').select('creado_por').eq('eje_nombre', actividadGeneral).eq('nombre', nombreHito).maybeSingle();
+  if (hitoCheckError) { alert('Error: ' + hitoCheckError.message); return; }
+  const esAdmin = currentPerfil?.rol === 'admin';
+  const esDuenio = hitoRow?.creado_por === currentUser?.id;
+  if (!esAdmin && !esDuenio) {
+    alert('No tenés permiso para eliminar este hito.\nSolo el usuario que lo creó o un administrador pueden hacerlo.');
+    return;
+  }
+
   // Log de eliminación del hito ANTES de borrar
   await insertarLog([{
     actividad_id:     null,
