@@ -2542,3 +2542,36 @@ window.eliminarEje = async function(nombreEje) {
   ejeSeleccionado = null;
   await loadActividades();
 };
+
+// ========= ELIMINAR HITO COMPLETO =========
+window.eliminarHito = async function(actividadGeneral, nombreHito) {
+  const count = rawData.filter(r => r.actividad_general === actividadGeneral && r.hito === nombreHito).length;
+  const msg = count
+    ? `¿Eliminar el hito "${nombreHito}" y sus ${count} actividades?\n\nEsta acción NO se puede deshacer.`
+    : `¿Eliminar el hito "${nombreHito}"?\n\nEsta acción NO se puede deshacer.`;
+  if (!confirm(msg)) return;
+  closeModal('hitoModal');
+
+  // Log de eliminación del hito ANTES de borrar
+  await insertarLog([{
+    actividad_id:     null,
+    actividad_nombre: actividadGeneral,
+    usuario_id:       currentUser.id,
+    usuario_nombre:   currentPerfil?.nombre || currentUser.email,
+    campo_modificado: 'hito_eliminacion',
+    valor_anterior:   nombreHito,
+    valor_nuevo:      null,
+    justificacion:    null,
+    tipo_accion:      'eliminacion',
+  }]);
+
+  await sb.from('hitos').delete().eq('eje_nombre', actividadGeneral).eq('nombre', nombreHito);
+  if (count) {
+    await sb.from('actividades').delete().eq('actividad_general', actividadGeneral).eq('hito', nombreHito);
+  }
+  const ejeAntes = ejeSeleccionado;
+  await loadActividades();
+  ejeSeleccionado = ejeAntes;
+};
+
+
