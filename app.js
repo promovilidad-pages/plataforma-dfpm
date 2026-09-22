@@ -1420,7 +1420,14 @@ window.eliminarRepo = async function(id, titulo) {
   if (!confirm(`¿Eliminar "${titulo}"?\n\nEsta acción no se puede deshacer.`)) return;
   closeModal('repoModal');
   const { error } = await sb.from('repositorio').delete().eq('id', id);
-  if (error) { alert('Error: ' + error.message); return; }
+    if (error) {
+    if (error.code === '42501' || error.message.includes('row-level security')) {
+      alert('No tenés permiso para eliminar documentos del repositorio.\nSolo un administrador puede hacerlo.');
+    } else {
+      alert('Error: ' + error.message);
+    }
+    return;
+  }
   await loadRepositorio();
 };
 
