@@ -1155,6 +1155,24 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
     return;
   }
 
+  // Validación de campos importantes: solo para actividades NUEVAS (no bloquea ediciones de las viejas)
+  if (!editingId) {
+    const faltantes = [];
+    if (!hitoVal)                                                        faltantes.push('Hito');
+    if (!document.getElementById('fResponsable').value.trim())           faltantes.push('Responsable');
+    if (!document.getElementById('fCiudadForm').value.trim())            faltantes.push('Ciudad');
+    if (!document.getElementById('fDireccion').value.trim())             faltantes.push('Dirección');
+    if (!document.getElementById('fFechaInicio').value)                  faltantes.push('Fecha de inicio');
+    if (!document.getElementById('fFechaFin').value)                     faltantes.push('Fecha de fin');
+
+    if (faltantes.length) {
+      alert('Por favor completa estos datos antes de guardar:\n\n• ' + faltantes.join('\n• '));
+      btn.disabled = false; btn.textContent = 'Guardar actividad';
+      hideSavingOverlay();
+      return;
+    }
+  }
+
   const payload = {
     actividad_general:   actividadGeneral,
     hito:                hitoVal || null,
