@@ -509,7 +509,15 @@ function renderList() {
       const eje = ejesData.find(e => e.nombre === actName);
       return (eje?.tipo || 'Planificación') === categoriaSeleccionada;
     })
-    .sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+    .sort((a,b) => {
+      // Ejes al 100% se van al fondo de su categoría; dentro de cada grupo, orden alfabético
+      const pctA = pctAvg((byAct.get(a)||[]).filter(r => r.subactividad !== '__placeholder__'));
+      const pctB = pctAvg((byAct.get(b)||[]).filter(r => r.subactividad !== '__placeholder__'));
+      const doneA = pctA === 100 ? 1 : 0;
+      const doneB = pctB === 100 ? 1 : 0;
+      if (doneA !== doneB) return doneA - doneB;
+      return a.localeCompare(b,'es',{sensitivity:'base'});
+    });
 
   // Si el eje seleccionado ya no existe, ir al primero
   if (ejeSeleccionado && !acts.includes(ejeSeleccionado)) ejeSeleccionado = acts[0] || null;

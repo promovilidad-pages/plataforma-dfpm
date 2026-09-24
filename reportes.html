@@ -1273,6 +1273,20 @@ function getEjecutado(ejeNombre, mes) {
   return count;
 }
 
+function ejeRelevanteAlAnio(ejeNombre) {
+  // Relevante si tiene al menos un hito POI cuyo año calculado coincide con el año
+  // seleccionado, o si ese hito aún no tiene fechas (recién creado, sin actividades)
+  const tieneHitoDelAnio = hitosPoiData.some(h => {
+    if (h.eje_nombre !== ejeNombre) return false;
+    const anioHito = getHitoAnio(ejeNombre, h.nombre);
+    return anioHito === poiAnio || anioHito === null;
+  });
+  if (tieneHitoDelAnio) return true;
+  // Respaldo: si ya tiene algo guardado en poi_programado para este año, nunca se oculta
+  // (evita esconder data histórica ya guardada, aunque los hitos hayan cambiado de fecha)
+  return Object.keys(poiData).some(k => k.startsWith(ejeNombre + '|'));
+}
+
 function renderPoi() {
   const cats = ['Planificación','Fortalecimiento','Asistencia Técnica','Administrativo'];
   const ejesFilt = ejesData.filter(e => !poiCategoria || e.tipo === poiCategoria);
@@ -1306,7 +1320,9 @@ function renderPoi() {
   };
 
   cats.forEach(cat => {
-    const ejesCat = ejesFilt.filter(e => e.tipo === cat);
+    // Solo ejes que tengan algo que ver con el año seleccionado (mismo criterio que Evidencias POI),
+    // para no mostrar filas vacías de ejes sin ninguna relación con el año que se está viendo
+    const ejesCat = ejesFilt.filter(e => e.tipo === cat && ejeRelevanteAlAnio(e.nombre));
     if (!ejesCat.length) return;
     const { bg, tc } = catColors[cat] || { bg:'#1e3a5f', tc:'#fff' };
 
