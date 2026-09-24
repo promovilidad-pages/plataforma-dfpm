@@ -3,6 +3,18 @@ const SUPABASE_URL  = 'https://lnjfnknciydxfgnyhfnf.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuamZua25jaXlkeGZnbnloZm5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDcxMjQsImV4cCI6MjA4OTYyMzEyNH0.HRkZcoDpAbzO8U36Lo_5E1_i6aA7oWEX5lg4PO6SjlQ';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+// ── Overlay de guardado (reutilizable) ──
+function showSavingOverlay(msg) {
+  const ov = document.getElementById('appSavingOverlay');
+  const m  = document.getElementById('appSavingOverlayMsg');
+  if (m) m.textContent = msg || 'Guardando, espere...';
+  if (ov) ov.style.display = 'flex';
+}
+function hideSavingOverlay() {
+  const ov = document.getElementById('appSavingOverlay');
+  if (ov) ov.style.display = 'none';
+}
+
 // ========= ESTADO GLOBAL =========
 let currentUser   = null;
 let currentPerfil = null;
@@ -1119,6 +1131,7 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('btnSaveForm');
   btn.disabled = true; btn.textContent = 'Guardando...';
+  showSavingOverlay('Guardando actividad, espere...');
 
   const actividadGeneral = getFormActividadGeneral();
   const hitoVal          = getFormHito();
@@ -1126,6 +1139,7 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
   if (!actividadGeneral) {
     alert('Debes seleccionar o escribir una Actividad General.');
     btn.disabled = false; btn.textContent = 'Guardar actividad';
+    hideSavingOverlay();
     return;
   }
 
@@ -1170,6 +1184,7 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
 
       if (cambiosFecha.length) {
         btn.disabled = false; btn.textContent = 'Guardar actividad';
+        hideSavingOverlay();
         try {
           justificacion = await pedirJustificacion(cambiosFecha);
         } catch {
@@ -1177,6 +1192,7 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
           return;
         }
         btn.disabled = true; btn.textContent = 'Guardando...';
+        showSavingOverlay('Guardando actividad, espere...');
       }
 
       btn.textContent = `Actualizando ID ${id}...`;
@@ -1219,11 +1235,13 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
     }
   } catch(err) {
     btn.disabled = false; btn.textContent = 'Guardar actividad';
+    hideSavingOverlay();
     alert('Error inesperado: ' + err.message);
     return;
   }
 
   btn.disabled = false; btn.textContent = 'Guardar actividad';
+  hideSavingOverlay();
   if (error) { alert('Error al guardar: ' + error.message); return; }
 
   const ejeAntes = ejeSeleccionado;
