@@ -1226,7 +1226,7 @@ async function loadPoi() {
   await poblarSelectorAniosPoi();
 
   const [{ data: hitosPoi }, { data: programado }] = await Promise.all([
-    sb.from('hitos').select('*').eq('es_poi', true),
+    sb.from('hitos').select('*').eq('es_poi', true).order('nombre', { ascending: true }),
     sb.from('poi_programado').select('*').eq('anio', poiAnio),
   ]);
 
@@ -1437,7 +1437,7 @@ async function loadEvidencias() {
   const anioEv = parseInt(document.getElementById('evidenciasAnio')?.value) || anioActual;
 
   const [{ data: hitosPoi }, { data: evidencias }, { data: programadoEv }] = await Promise.all([
-    sb.from('hitos').select('*').eq('es_poi', true),
+    sb.from('hitos').select('*').eq('es_poi', true).order('nombre', { ascending: true }),
     sb.from('poi_evidencias').select('*').order('created_at', { ascending: true }),
     sb.from('poi_programado').select('*').eq('anio', anioEv),
   ]);

@@ -494,7 +494,7 @@ details > summary::marker { display: none; content: ''; }
   padding: 9px 16px 9px;
   margin: 0 12px 8px 12px;
   font-size: 11px; font-weight: 700;
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: .7px;
+  color: var(--text-muted); letter-spacing: .7px;
   background: var(--ink-05);
   border: 1px solid var(--border);
   border-left: 3px solid var(--signal);
