@@ -712,7 +712,9 @@ window.selectEje = function(actName) {
 
 window.eliminarActividad = async function(id) {
   if (!confirm('¿Eliminar esta actividad? Esta acción no se puede deshacer.')) return;
+  showSavingOverlay('Eliminando actividad, espere...');
   const { error } = await sb.from('actividades').delete().eq('id', id);
+  hideSavingOverlay();
   if (error) { alert('Error al eliminar: ' + error.message); return; }
   const ejeAntes = ejeSeleccionado;
   await loadActividades();
@@ -1886,6 +1888,7 @@ async function deleteActividad() {
   }
 
   // Loguear eliminación ANTES de borrar (para conservar los datos)
+  showSavingOverlay('Eliminando actividad, espere...');
   if (row) {
     await insertarLog([{
       actividad_id:     row.id,
@@ -1901,6 +1904,7 @@ async function deleteActividad() {
   }
 
   const { error } = await sb.from('actividades').delete().eq('id', parseInt(editingId));
+  hideSavingOverlay();
   if (error) { alert('Error al eliminar: ' + error.message); return; }
 
   closeModal('detailModal');
