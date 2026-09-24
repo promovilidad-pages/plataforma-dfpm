@@ -729,6 +729,7 @@ document.getElementById('ejeForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('btnSaveEje');
   btn.disabled = true; btn.textContent = 'Guardando...';
+  showSavingOverlay('Guardando eje, espere...');
 
   const nombreOriginal = document.getElementById('ejeNombreOriginal').value.trim();
   const nuevoNombre    = document.getElementById('ejeNombre').value.trim();
@@ -736,7 +737,7 @@ document.getElementById('ejeForm').addEventListener('submit', async (e) => {
   const urlFicha       = document.getElementById('ejeUrlFicha').value.trim() || null;
   const tipo           = document.getElementById('ejeTipo').value;
 
-  if (!nuevoNombre) { alert('El nombre no puede estar vacío.'); btn.disabled = false; btn.textContent = 'Guardar'; return; }
+  if (!nuevoNombre) { alert('El nombre no puede estar vacío.'); btn.disabled = false; btn.textContent = 'Guardar'; hideSavingOverlay(); return; }
 
   let error;
   if (nombreOriginal) {
@@ -744,7 +745,7 @@ document.getElementById('ejeForm').addEventListener('submit', async (e) => {
     ({ error } = await sb.from('ejes')
       .update({ nombre: nuevoNombre, url_ayuda: urlAyuda, url_ficha: urlFicha, tipo: tipo })
       .eq('nombre', nombreOriginal));
-    if (error) { alert('Error: ' + error.message); btn.disabled=false; btn.textContent='Guardar eje'; return; }
+    if (error) { alert('Error: ' + error.message); btn.disabled=false; btn.textContent='Guardar eje'; hideSavingOverlay(); return; }
     // Actualizar actividades solo si cambió el nombre
     if (nombreOriginal !== nuevoNombre) {
       await sb.from('hitos').update({ eje_nombre: nuevoNombre }).eq('eje_nombre', nombreOriginal);
@@ -802,6 +803,7 @@ document.getElementById('ejeForm').addEventListener('submit', async (e) => {
   }
 
   btn.disabled = false; btn.textContent = 'Guardar eje';
+  hideSavingOverlay();
   if (error) { alert('Error: ' + error.message); return; }
 
   ejeSeleccionado = nuevoNombre;
@@ -2176,8 +2178,10 @@ function bindEvents() {
     if (nueva !== confirma) { alert('Las contraseñas no coinciden.'); return; }
 
     btn.disabled = true; btn.textContent = 'Guardando...';
+    showSavingOverlay('Guardando contraseña, espere...');
     const { error } = await sb.auth.updateUser({ password: nueva });
     btn.disabled = false; btn.textContent = 'Guardar contraseña';
+    hideSavingOverlay();
 
     if (error) { alert('Error: ' + error.message); return; }
     alert('✅ Contraseña actualizada correctamente.');
@@ -2265,12 +2269,13 @@ document.getElementById('hitoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('btnSaveHito');
   btn.disabled = true; btn.textContent = 'Guardando...';
+  showSavingOverlay('Guardando hito, espere...');
 
   const actGen   = document.getElementById('hitoActividadGeneral').value;
   const original = document.getElementById('hitoNombreOriginal').value.trim();
   const nuevo    = document.getElementById('hitoNombre').value.trim();
 
-  if (!nuevo) { btn.disabled=false; btn.textContent='Guardar'; return; }
+  if (!nuevo) { btn.disabled=false; btn.textContent='Guardar'; hideSavingOverlay(); return; }
 
   const esPoi = document.getElementById('hitoEsPoi').checked;
 
@@ -2283,7 +2288,7 @@ document.getElementById('hitoForm').addEventListener('submit', async (e) => {
       .eq('nombre', original)
       .select();
     error = updError;
-    if (error) { alert('Error: ' + error.message); btn.disabled=false; btn.textContent='Guardar'; return; }
+    if (error) { alert('Error: ' + error.message); btn.disabled=false; btn.textContent='Guardar'; hideSavingOverlay(); return; }
     if (original !== nuevo) {
       await sb.from('actividades')
         .update({ hito: nuevo })
@@ -2331,6 +2336,7 @@ document.getElementById('hitoForm').addEventListener('submit', async (e) => {
   }
 
   btn.disabled=false; btn.textContent='Guardar';
+  hideSavingOverlay();
   if (error) { alert('Error al guardar hito: ' + error.message); return; }
 
   // Restaurar modal para próxima vez
@@ -2539,6 +2545,8 @@ window.eliminarEje = async function(nombreEje) {
     return;
   }
 
+  showSavingOverlay('Eliminando eje, espere...');
+
   // Log de eliminación del eje ANTES de borrar
   await insertarLog([{
     actividad_id:     null,
@@ -2559,10 +2567,11 @@ window.eliminarEje = async function(nombreEje) {
   await sb.from('ejes').delete().eq('nombre', nombreEje);
   if (ids.length) {
     const { error } = await sb.from('actividades').delete().eq('actividad_general', nombreEje);
-    if (error) { alert('Error: ' + error.message); return; }
+    if (error) { hideSavingOverlay(); alert('Error: ' + error.message); return; }
   }
   ejeSeleccionado = null;
   await loadActividades();
+  hideSavingOverlay();
 };
 
 // ========= ELIMINAR HITO COMPLETO =========
@@ -2584,6 +2593,8 @@ window.eliminarHito = async function(actividadGeneral, nombreHito) {
     return;
   }
 
+  showSavingOverlay('Eliminando hito, espere...');
+
   // Log de eliminación del hito ANTES de borrar
   await insertarLog([{
     actividad_id:     null,
@@ -2604,6 +2615,7 @@ window.eliminarHito = async function(actividadGeneral, nombreHito) {
   const ejeAntes = ejeSeleccionado;
   await loadActividades();
   ejeSeleccionado = ejeAntes;
+  hideSavingOverlay();
 };
 
 
