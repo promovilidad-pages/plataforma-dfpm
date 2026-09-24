@@ -1202,13 +1202,18 @@ let hitosPoiData = [];
 const anioActual = new Date().getFullYear();
 let poiAnio      = anioActual;
 
-// Selector de años POI — se puebla dinámicamente desde poi_programado
-// (se llama desde loadPoi tras obtener los datos)
+// Selector de años POI — se puebla con los años de poi_programado
+// + los años reales de las fechas_fin de actividades (así nunca falta un año futuro)
 async function poblarSelectorAniosPoi() {
   const { data } = await sb.from('poi_programado').select('anio');
   const sel = document.getElementById('poiAnio');
   if (!sel) return;
-  const anios = [...new Set((data||[]).map(r => r.anio))].sort((a,b) => b-a);
+  const aniosProgramado = (data||[]).map(r => r.anio);
+  const aniosActividades = rawData
+    .map(r => r.fecha_fin)
+    .filter(Boolean)
+    .map(f => new Date(f+'T00:00:00').getFullYear());
+  const anios = [...new Set([...aniosProgramado, ...aniosActividades, anioActual])].sort((a,b) => b-a);
   if (!anios.length) anios.push(anioActual);
   const prevVal = parseInt(sel.value) || poiAnio;
   sel.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
@@ -1421,7 +1426,12 @@ async function poblarSelectorAnioEvidencias() {
   const { data } = await sb.from('poi_programado').select('anio');
   const sel = document.getElementById('evidenciasAnio');
   if (!sel) return;
-  const anios = [...new Set((data||[]).map(r => r.anio))].sort((a,b) => b-a);
+  const aniosProgramado = (data||[]).map(r => r.anio);
+  const aniosActividades = rawData
+    .map(r => r.fecha_fin)
+    .filter(Boolean)
+    .map(f => new Date(f+'T00:00:00').getFullYear());
+  const anios = [...new Set([...aniosProgramado, ...aniosActividades, anioActual])].sort((a,b) => b-a);
   if (!anios.length) anios.push(anioActual);
   const prevVal = parseInt(sel.value) || anioActual;
   sel.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
