@@ -1368,29 +1368,33 @@ async function guardarPoi() {
   const inputs = document.querySelectorAll('.poi-input');
   let errCount = 0;
 
-  for (const inp of inputs) {
+  // Separar en dos grupos: los que hay que guardar (val > 0) y los que hay que borrar (val = 0/vacío)
+  const paraGuardar = [];
+  const paraBorrar   = [];
+  inputs.forEach(inp => {
     const val = parseInt(inp.value) || 0;
     const [ejeNombre, anio, mes] = inp.dataset.key.split('|');
-
     if (val > 0) {
-      // Upsert — insertar o actualizar si ya existe
-      const { error } = await sb.from('poi_programado')
-        .upsert({
-          eje_nombre: ejeNombre,
-          anio:       parseInt(anio),
-          mes:        parseInt(mes),
-          valor:      val,
-        }, { onConflict: 'eje_nombre,anio,mes' });
-      if (error) { console.error('Error upsert:', error); errCount++; }
+      paraGuardar.push({ eje_nombre: ejeNombre, anio: parseInt(anio), mes: parseInt(mes), valor: val });
     } else {
-      // Si valor es 0 o vacío, eliminar si existe
-      const { error } = await sb.from('poi_programado')
-        .delete()
-        .eq('eje_nombre', ejeNombre)
-        .eq('anio', parseInt(anio))
-        .eq('mes', parseInt(mes));
-      if (error) console.error('Error delete:', error);
+      paraBorrar.push({ ejeNombre, anio: parseInt(anio), mes: parseInt(mes) });
     }
+  });
+
+  // 1) Un solo upsert masivo con todos los valores > 0, en vez de una petición por celda
+  if (paraGuardar.length) {
+    const { error } = await sb.from('poi_programado')
+      .upsert(paraGuardar, { onConflict: 'eje_nombre,anio,mes' });
+    if (error) { console.error('Error upsert:', error); errCount++; }
+  }
+
+  // 2) Los borrados sí van uno por celda (no se pueden agrupar en una sola sentencia con nombres que
+  //    contienen paréntesis/comas), pero se lanzan todos en paralelo en vez de esperar uno a uno
+  if (paraBorrar.length) {
+    const resultados = await Promise.all(paraBorrar.map(({ ejeNombre, anio, mes }) =>
+      sb.from('poi_programado').delete().eq('eje_nombre', ejeNombre).eq('anio', anio).eq('mes', mes)
+    ));
+    resultados.forEach(({ error }) => { if (error) console.error('Error delete:', error); });
   }
 
   if (overlay) overlay.style.display = 'none';
