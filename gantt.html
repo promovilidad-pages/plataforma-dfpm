@@ -600,6 +600,7 @@ function renderGantt() {
   const data = rawData.filter(r => r.subactividad && (r.actividad_general||'').trim() === ejeActual);
   if (!data.length) {
     container.innerHTML = '<div class="empty-gantt">Sin actividades para este eje</div>';
+    document.getElementById('labelRows').innerHTML = '';
     return;
   }
 
@@ -613,6 +614,7 @@ function renderGantt() {
 
   if (!tasks.length) {
     container.innerHTML = '<div class="empty-gantt">Sin fechas válidas para mostrar</div>';
+    document.getElementById('labelRows').innerHTML = '';
     return;
   }
 

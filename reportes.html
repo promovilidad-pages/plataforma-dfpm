@@ -764,15 +764,15 @@
         <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> <strong>P</strong> = Programado (editable) · <strong>E</strong> = Ejecutado (automático — hitos marcados como POI al 100%) · Los totales se actualizan al guardar.
       </div>
       <div id="poiMatrizWrap" style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);background:#fff">
-        <div id="poiTableWrap">
-        <div class="legend-matrix" style="justify-content:flex-start;gap:20px">
-          <span><i class="fa-solid fa-circle" style="color:var(--signal)"></i> Ejecutado ≥ Programado</span>
-          <span><i class="fa-solid fa-circle" style="color:var(--amber)"></i> Ejecutado parcial</span>
-          <span><i class="fa-regular fa-circle" style="color:var(--muted)"></i> Sin programar</span>
-          <span><i class="fa-solid fa-circle" style="color:var(--red)"></i> Sin ejecutar (tenía programado)</span>
-        </div>
+        <div id="poiTableWrap"></div>
       </div>
-    </div>
+      <!-- Leyenda fuera de #poiTableWrap: renderPoi() reemplaza ese contenido y la borraba -->
+      <div class="legend-matrix" style="justify-content:flex-start;gap:20px;margin-top:12px">
+        <span><i class="fa-solid fa-circle" style="color:var(--signal)"></i> Ejecutado ≥ Programado</span>
+        <span><i class="fa-solid fa-circle" style="color:var(--amber)"></i> Ejecutado parcial</span>
+        <span><i class="fa-regular fa-circle" style="color:var(--muted)"></i> Sin programar</span>
+        <span><i class="fa-solid fa-circle" style="color:var(--red)"></i> Sin ejecutar (tenía programado)</span>
+      </div>
   </div>
 
 </div>
