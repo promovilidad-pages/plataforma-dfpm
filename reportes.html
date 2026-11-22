@@ -1899,6 +1899,7 @@ function renderComisiones() {
     realizado:  { txt: 'Realizado',    bg: '#e6f4ea', fg: '#137333' },
     encurso:    { txt: 'En curso',     bg: '#e8f0fe', fg: '#1967d2' },
     porrealizar:{ txt: 'Por realizar', bg: '#fef7e0', fg: '#b06000' },
+    porconfirmar:{ txt: 'Por confirmar', bg: '#feefe3', fg: '#b3541e' },
     suspendido: { txt: 'Suspendido',   bg: '#fce8e6', fg: '#c5221f' },
     sinfechas:  { txt: 'Sin fechas',   bg: '#f1f3f4', fg: '#5f6368' },
   };
@@ -1907,7 +1908,12 @@ function renderComisiones() {
     const ini = r.fecha_inicio ? new Date(r.fecha_inicio + 'T00:00:00') : null;
     const fin = r.fecha_fin    ? new Date(r.fecha_fin    + 'T00:00:00') : ini;
     if (!ini) return 'sinfechas';
-    if (fin < hoy) return 'realizado';
+    // Realizado = la fecha ya pasó Y la actividad está al 100 %.
+    // Si la fecha pasó pero no llegó al 100 %, queda "Por confirmar" (fecha desactualizada o falta registrar avance).
+    if (fin < hoy) {
+      const completa = (parseInt(r.avance) || 0) >= 100 || (r.estado || '').toLowerCase().includes('completado');
+      return completa ? 'realizado' : 'porconfirmar';
+    }
     if (ini > hoy) return 'porrealizar';
     return 'encurso';
   };
@@ -1916,7 +1922,7 @@ function renderComisiones() {
 
   let html = '';
   let granTotalDias = 0, granTotal = 0;
-  let granRealizado = 0, granPendiente = 0, granSuspendido = 0;
+  let granRealizado = 0, granPendiente = 0, granSuspendido = 0, granPorConfirmar = 0;
   const granPersonasSet = new Set();
 
   ejesConComisiones.forEach(ejeNombre => {
@@ -1924,7 +1930,7 @@ function renderComisiones() {
     const colorCat = catColors[cat] || '#80868b';
 
     let ejeTotalDias = 0, ejeTotal = 0;
-    let ejeRealizado = 0, ejePendiente = 0, ejeSuspendido = 0;
+    let ejeRealizado = 0, ejePendiente = 0, ejeSuspendido = 0, ejePorConfirmar = 0;
     // Personas únicas del eje (union de todos los equipos técnicos)
     const personasUnicas = new Set();
     items.forEach(r => {
@@ -1942,6 +1948,7 @@ function renderComisiones() {
       const ev = estadoViaje(r);
       if (ev === 'realizado') { ejeRealizado += total; granRealizado += total; }
       else if (ev === 'suspendido') { ejeSuspendido += total; granSuspendido += total; }
+      else if (ev === 'porconfirmar') { ejePorConfirmar += total; granPorConfirmar += total; }
       else { ejePendiente += total; granPendiente += total; }
 
       const transp = transporteIcon[r.comision_transporte] || r.comision_transporte || '—';
@@ -1977,6 +1984,7 @@ function renderComisiones() {
             <span style="font-size:13px;color:#5f6368">${items.length} comisión${items.length>1?'es':''}</span>
             <span style="font-size:12.5px;color:#137333;font-variant-numeric:tabular-nums">Realizado: ${soles(ejeRealizado)}</span>
             <span style="font-size:12.5px;color:#b06000;font-variant-numeric:tabular-nums">Por realizar: ${soles(ejePendiente)}</span>
+            ${ejePorConfirmar ? `<span style="font-size:12.5px;color:#b3541e;font-variant-numeric:tabular-nums">Por confirmar: ${soles(ejePorConfirmar)}</span>` : ''}
             ${ejeSuspendido ? `<span style="font-size:12.5px;color:#c5221f;font-variant-numeric:tabular-nums">Suspendido: ${soles(ejeSuspendido)}</span>` : ''}
             <span style="font-size:14px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">Total: S/. ${ejeTotal.toLocaleString('es-PE')}</span>
           </div>
@@ -2021,6 +2029,7 @@ function renderComisiones() {
       <div style="flex-basis:100%;display:flex;gap:8px 12px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid #c6dafc">
         <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('realizado')} ${soles(granRealizado)}</span>
         <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porrealizar')} ${soles(granPendiente)}</span>
+        ${granPorConfirmar ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porconfirmar')} ${soles(granPorConfirmar)}</span>` : ''}
         ${granSuspendido ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('suspendido')} ${soles(granSuspendido)}</span>` : ''}
       </div>
     </div>`;
