@@ -1,0 +1,38 @@
+# Mantiene activo el proyecto de Supabase.
+# El plan gratuito de Supabase pausa el proyecto tras 7 días sin actividad.
+# Esta tarea hace una consulta pequeña cada 3 días para evitarlo.
+name: Mantener Supabase activo
+
+on:
+  schedule:
+    - cron: '17 13 */3 * *'   # cada 3 días, 08:17 hora de Perú (13:17 UTC)
+  workflow_dispatch:           # permite ejecutarla a mano desde la pestaña Actions
+
+permissions:
+  actions: write   # para reactivar esta misma tarea (ver último paso)
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar la base de datos
+        env:
+          SUPABASE_URL: https://lnjfnknciydxfgnyhfnf.supabase.co
+          # Clave pública (anon): es la misma que ya está en app.js y en la web publicada.
+          # Con las reglas RLS no permite leer datos sin iniciar sesión; solo genera actividad.
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuamZua25jaXlkeGZnbnloZm5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDcxMjQsImV4cCI6MjA4OTYyMzEyNH0.HRkZcoDpAbzO8U36Lo_5E1_i6aA7oWEX5lg4PO6SjlQ
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            "$SUPABASE_URL/rest/v1/ejes?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          echo "Respuesta de Supabase: $code"
+          test "$code" = "200"
+
+      - name: Evitar que GitHub desactive esta tarea por inactividad
+        # GitHub desactiva las tareas programadas si el repositorio pasa 60 días sin cambios.
+        # Reactivarla en cada ejecución reinicia ese plazo, sin crear commits.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/supabase-keepalive.yml/enable"
