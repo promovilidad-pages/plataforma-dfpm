@@ -3,74 +3,148 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>PROMOVILIDAD — Acceso</title>
+  <title>Plataforma DFPM · Acceso</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&icon_names=check_circle,error,visibility,visibility_off&display=block">
+  <link rel="preload" as="image" href="assets/fondo.webp">
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--white:#fff;--off:#f5f6f8;--border:#e8eaed;--text:#0f1117;--muted:#6b7280;--accent:#0057B8;--accent2:#00A3E0;--danger:#dc2626;--success:#16a34a}
-    body{font-family: 'Inter', sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-    .bg{position:fixed;inset:0;background-image:url('assets/fondo.png');background-size:cover;background-position:center;filter:brightness(0.55) saturate(1.05);z-index:0}
-    .bg-overlay{position:fixed;inset:0;background:linear-gradient(135deg,rgba(0,30,80,.55) 0%,rgba(0,87,184,.20) 100%);z-index:1}
-    .card{position:relative;z-index:10;width:100%;max-width:420px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:24px;padding:48px 44px;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 24px 80px rgba(0,0,0,.25),0 4px 16px rgba(0,0,0,.1);animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both;margin:24px}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-    .logo-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:32px;text-align:center}
-    .logo-img{width:80px;height:80px;object-fit:contain;margin-bottom:10px}
-    .logo-fallback{width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:26px;color:#fff;margin-bottom:10px;box-shadow:0 8px 24px rgba(0,87,184,.3)}
-    .logo-name{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--text);letter-spacing:.5px}
-    .logo-sub{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-top:3px}
-    h1{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;text-align:center}
-    .subtitle{font-size:13px;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:28px}
-    .field{margin-bottom:14px}
-    label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
-    input{width:100%;padding:13px 16px;background:var(--off);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
-    input:focus{border-color:var(--accent);background:var(--white);box-shadow:0 0 0 3px rgba(0,87,184,.08)}
-    input::placeholder{color:#c0c4cc}
-    .btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);border:none;border-radius:12px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:opacity .2s,transform .15s,box-shadow .2s;margin-top:10px;box-shadow:0 4px 16px rgba(0,87,184,.3)}
-    .btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,87,184,.35)}
-    .btn:active{transform:translateY(0)}
-    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
-    .alert{padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;display:none;line-height:1.4}
-    .alert.error{background:#fef2f2;border:1px solid #fecaca;color:var(--danger)}
-    .alert.success{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success)}
-    .alert.show{display:block}
-    .footer-note{text-align:center;font-size:12px;color:var(--muted);margin-top:20px;line-height:1.5}
-    .bottom-badge{position:fixed;bottom:20px;left:0;right:0;text-align:center;z-index:10}
-    .bottom-badge span{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase}
-    @media(max-width:480px){.card{padding:36px 28px}}
+    :root{
+      --bg:#f8f9fa; --surface:#fff; --border:#dadce0; --border-soft:#e8eaed;
+      --text:#202124; --text-2:#5f6368; --text-3:#80868b;
+      --primary:#1a73e8; --primary-hover:#1765cc; --primary-soft:#e8f0fe; --primary-ink:#1967d2;
+      --hover:#f1f3f4;
+      --ok:#137333; --ok-bg:#e6f4ea;
+      --bad:#c5221f; --bad-bg:#fce8e6;
+      --shadow-1:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:var(--surface);color:var(--text);font-family:"Roboto",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+    button,input{font:inherit}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+    .material-symbols-outlined{font-size:20px;line-height:1;user-select:none;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20}
+
+    /* Estructura: foto a la izquierda, acceso a la derecha */
+    .login{display:grid;grid-template-columns:minmax(0,1fr) 480px;min-height:100vh;min-height:100dvh}
+
+    .hero{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:40px 48px;color:#fff;background:#0d1b3e url('assets/fondo.webp') center/cover no-repeat;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background:rgba(8,20,48,.5)}
+    .hero>*{position:relative}
+    .hero-logo{display:block;align-self:flex-start;height:56px;width:auto}
+    .hero-text h2{margin:0 0 8px;font-size:32px;font-weight:400;line-height:1.25;letter-spacing:-.2px;max-width:20ch}
+    .hero-text p{margin:0;font-size:15px;color:rgba(255,255,255,.8);max-width:52ch}
+
+    .panel{display:flex;flex-direction:column;padding:40px 56px 28px;background:var(--surface);border-left:1px solid var(--border)}
+    .panel-main{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%;max-width:368px;margin:0 auto;animation:aparecer .25s ease both}
+    @keyframes aparecer{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    .logos{display:flex;align-items:center;gap:18px;margin-bottom:40px}
+    .logos img{display:block;height:34px;width:auto}
+    .logos .sep{width:1px;height:32px;background:var(--border)}
+
+    h1{margin:0;font-size:28px;font-weight:400;line-height:1.25;letter-spacing:-.2px}
+    .sub{margin:8px 0 28px;font-size:14px;color:var(--text-2)}
+
+    .alert{display:none;align-items:flex-start;gap:10px;padding:10px 14px;margin-bottom:20px;border-radius:8px;font-size:13px;line-height:1.45}
+    .alert.show{display:flex}
+    .alert::before{font-family:"Material Symbols Outlined";font-size:20px;line-height:20px;flex-shrink:0;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 20}
+    .alert.error{background:var(--bad-bg);color:var(--bad)}
+    .alert.error::before{content:"error"}
+    .alert.success{background:var(--ok-bg);color:var(--ok)}
+    .alert.success::before{content:"check_circle"}
+
+    .field{margin-bottom:20px}
+    .field label{display:block;margin-bottom:6px;font-size:12px;font-weight:500;color:var(--text-2)}
+    .field input{width:100%;height:44px;padding:0 14px;font-size:14px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:border-color .15s,box-shadow .15s}
+    .field input:hover{border-color:#bdc1c6}
+    .field input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+    .field input::placeholder{color:var(--text-3)}
+
+    .pass-wrap{position:relative}
+    .pass-wrap input{padding-right:48px}
+    .icon-btn{position:absolute;top:50%;right:2px;transform:translateY(-50%);width:40px;height:40px;border:none;border-radius:50%;background:transparent;display:inline-flex;align-items:center;justify-content:center;color:var(--text-2);cursor:pointer}
+    .icon-btn:hover{background:rgba(60,64,67,.08)}
+
+    .btn{width:100%;height:44px;margin-top:8px;padding:0 24px;border:1px solid transparent;border-radius:999px;background:var(--primary);color:#fff;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s,box-shadow .15s}
+    .btn:hover{background:var(--primary-hover);box-shadow:var(--shadow-1)}
+    .btn:active{transform:translateY(1px)}
+    .btn:disabled{background:var(--border-soft);color:var(--text-3);box-shadow:none;cursor:default;transform:none}
+
+    .help{margin:24px 0 0;font-size:13px;color:var(--text-2);text-align:center}
+    .panel-foot{margin:32px 0 0;font-size:11.5px;line-height:1.6;color:var(--text-3);text-align:center}
+
+    @media (max-width:960px){
+      .login{grid-template-columns:1fr}
+      .hero{display:none}
+      .panel{border-left:none;padding:32px 24px 24px;background:var(--surface)}
+    }
+    @media (max-width:400px){
+      .logos img{height:28px}
+      h1{font-size:24px}
+    }
+    @media (prefers-reduced-motion:reduce){.panel-main{animation:none}}
   </style>
 </head>
 <body>
-<div class="bg"></div>
-<div class="bg-overlay"></div>
-<div class="card">
-<div class="logo-wrap">
-  <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px">
-    <img src="assets/logomtc.png" alt="MTC"
-      style="height:44px;width:auto;object-fit:contain"/>
-    <div style="width:1px;height:48px;background:#e8eaed"></div>
-    <img src="assets/logopmv.png" alt="PROMOVILIDAD"
-      style="height:44px;width:auto;object-fit:contain"/>
-  </div>
+<div class="login">
+
+  <section class="hero" aria-hidden="true">
+    <img class="hero-logo" src="assets/promovilidad_logo_blanco.webp" alt="" onerror="this.style.display='none'"/>
+    <div class="hero-text">
+      <h2>Gestión de actividades, hitos y reportes</h2>
+      <p>Dirección de Fortalecimiento y Planificación de la Movilidad · Programa Nacional de Transporte Urbano Sostenible</p>
+    </div>
+  </section>
+
+  <main class="panel">
+    <div class="panel-main">
+      <div class="logos">
+        <img src="assets/logomtc.webp" alt="Ministerio de Transportes y Comunicaciones"/>
+        <div class="sep"></div>
+        <img src="assets/logopmv.webp" alt="Promovilidad"/>
+      </div>
+
+      <h1>Plataforma DFPM</h1>
+      <p class="sub">Inicia sesión con tu correo institucional para continuar.</p>
+
+      <div class="alert error" id="alertError" role="alert"></div>
+      <div class="alert success" id="alertSuccess" role="status"></div>
+
+      <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" placeholder="usuario@promovilidad.com" autocomplete="email"/>
+      </div>
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="pass-wrap">
+          <input type="password" id="password" placeholder="Tu contraseña" autocomplete="current-password"/>
+          <button type="button" class="icon-btn" id="togglePass" aria-label="Mostrar contraseña"><span class="material-symbols-outlined">visibility</span></button>
+        </div>
+      </div>
+      <button class="btn" id="btnLogin">Ingresar a la plataforma</button>
+
+      <p class="help">¿Problemas para acceder? Contacta al administrador del sistema.</p>
+    </div>
+    <p class="panel-foot">Dirección de Fortalecimiento y Planificación de la Movilidad · DFPM</p>
+  </main>
+
 </div>
-  <h1>PLATAFORMA DFPM</h1>
-  <p class="subtitle">Ingresa tus credenciales para acceder a la plataforma de gestión.</p>
-  <div class="alert error" id="alertError"></div>
-  <div class="alert success" id="alertSuccess"></div>
-  <div class="field">
-    <label>Correo electrónico</label>
-    <input type="email" id="email" placeholder="usuario@promovilidad.com" autocomplete="email"/>
-  </div>
-  <div class="field">
-    <label>Contraseña</label>
-    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
-  </div>
-  <button class="btn" id="btnLogin">Ingresar a la plataforma</button>
-  <p class="footer-note">¿Problemas para acceder?<br>Contacta al administrador del sistema.</p>
-</div>
-<div class="bottom-badge">
-  <span>Dirección de Fortalecimiento y Planificación de la Movilidad · DFPM</span>
-</div>
+<script>
+  // Mostrar / ocultar contraseña
+  (function(){
+    const pass=document.getElementById('password');
+    const tgl=document.getElementById('togglePass');
+    tgl.addEventListener('click',()=>{
+      const mostrar=pass.type==='password';
+      pass.type=mostrar?'text':'password';
+      tgl.querySelector('span').textContent=mostrar?'visibility_off':'visibility';
+      tgl.setAttribute('aria-label',mostrar?'Ocultar contraseña':'Mostrar contraseña');
+    });
+    // Enter sobre el botón del ojo solo alterna, no envía el formulario
+    tgl.addEventListener('keydown',e=>{if(e.key==='Enter')e.stopPropagation()});
+  })();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const SUPABASE_URL  = 'https://lnjfnknciydxfgnyhfnf.supabase.co';
