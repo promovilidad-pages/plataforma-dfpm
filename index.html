@@ -138,7 +138,10 @@
       </div>
       <div class="content-feed" style="padding:0">
         <div class="feed-header" style="padding:12px 16px">
-          <span>Ejes de Trabajo</span>
+          <span style="display:flex;align-items:center;gap:8px">
+            <button type="button" class="btn-icon-sm" id="btnToggleEjes" title="Ocultar lista de ejes" aria-label="Ocultar lista de ejes"><i class="fa-solid fa-table-columns"></i></button>
+            Ejes de Trabajo
+          </span>
           <span class="count-badge" id="countBadge">Cargando...</span>
         </div>
         <div id="list"></div>
@@ -1130,6 +1133,24 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
       b.addEventListener('click', function () { if (esMovil()) cerrarMovil(); });
     });
     actualizarEtiqueta();
+  })();
+
+  // Mostrar / ocultar la lista de ejes (columna izquierda de "Ejes de Trabajo")
+  (function () {
+    var btn = document.getElementById('btnToggleEjes');
+    function aplicar(oculta) {
+      document.body.classList.toggle('ejes-ocultos', oculta);
+      var txt = oculta ? 'Mostrar lista de ejes' : 'Ocultar lista de ejes';
+      btn.title = txt; btn.setAttribute('aria-label', txt);
+    }
+    var guardado = null;
+    try { guardado = localStorage.getItem('dfpm-panel-ejes'); } catch (e) {}
+    aplicar(guardado === 'oculta');
+    btn.addEventListener('click', function () {
+      var oculta = !document.body.classList.contains('ejes-ocultos');
+      aplicar(oculta);
+      try { localStorage.setItem('dfpm-panel-ejes', oculta ? 'oculta' : 'visible'); } catch (e) {}
+    });
   })();
 </script>
 </body>

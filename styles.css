@@ -450,6 +450,10 @@ details > summary::marker { display: none; content: ''; }
   background: var(--surface);
 }
 
+/* Lista de ejes oculta: el panel derecho ocupa todo el ancho */
+body.ejes-ocultos .two-panel { grid-template-columns: 1fr; }
+body.ejes-ocultos .panel-left { display: none; }
+
 .panel-right {
   display: flex; flex-direction: column;
   overflow-y: auto; min-width: 0;
@@ -717,6 +721,8 @@ details > summary::marker { display: none; content: ''; }
 .form-group textarea { height: auto; padding: 10px 12px; resize: vertical; min-height: 80px; line-height: 1.5; }
 .form-group input[type="checkbox"] { accent-color: var(--primary); }
 .form-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 8px; grid-column: 1 / -1; flex-wrap: wrap; }
+/* Cancelar/Guardar siempre a la derecha, aunque el botón Eliminar esté oculto */
+.form-actions > div:last-child { margin-left: auto; }
 
 /* =============================================
    GANTT (vista interna)

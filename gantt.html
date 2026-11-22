@@ -110,6 +110,7 @@
     .btn-ctrl:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
     /* Activo = tonal */
     .btn-ctrl.active { background: var(--primary-soft); border-color: transparent; color: var(--primary-ink); }
+    body.ejes-ocultos .eje-panel { display: none; }
     .btn-ctrl.active:hover { background: #d2e3fc; }
     /* Grupo de botones de ícono dentro de un contorno en píldora */
     .zoom-group {
@@ -350,6 +351,9 @@
 
 <!-- HERRAMIENTAS -->
 <div class="toolbar">
+  <button type="button" class="btn-ctrl active" id="btnToggleEjes" title="Ocultar lista de ejes" aria-pressed="true">
+    <i class="fa-solid fa-table-columns"></i> Ejes
+  </button>
   <select id="ganttCategoria">
     <option value="Planificación">Planificación</option>
     <option value="Fortalecimiento">Fortalecimiento</option>
@@ -922,6 +926,26 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeDetail(); 
 document.getElementById('detailModal').addEventListener('click', e => {
   if(e.target === document.getElementById('detailModal')) closeDetail();
 });
+</script>
+<script>
+  // Mostrar / ocultar la lista de ejes (independiente del resto del código)
+  (function () {
+    var btn = document.getElementById('btnToggleEjes');
+    function aplicar(oculta) {
+      document.body.classList.toggle('ejes-ocultos', oculta);
+      btn.classList.toggle('active', !oculta);
+      btn.setAttribute('aria-pressed', oculta ? 'false' : 'true');
+      btn.title = oculta ? 'Mostrar lista de ejes' : 'Ocultar lista de ejes';
+    }
+    var guardado = null;
+    try { guardado = localStorage.getItem('dfpm-gantt-ejes'); } catch (e) {}
+    aplicar(guardado === 'oculta');
+    btn.addEventListener('click', function () {
+      var oculta = !document.body.classList.contains('ejes-ocultos');
+      aplicar(oculta);
+      try { localStorage.setItem('dfpm-gantt-ejes', oculta ? 'oculta' : 'visible'); } catch (e) {}
+    });
+  })();
 </script>
 </body>
 </html>
