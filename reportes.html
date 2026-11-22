@@ -5,99 +5,141 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Reportes — PROMOVILIDAD</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
+    /* Estilo Google Material (Workspace) — ver GUIA_ESTILO_GOOGLE.md
+       Se conservan todos los nombres de clases y variables que usa el JS. */
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #f8f9fb;
-      --white: #ffffff;
-      --border: #e8eaed;
-      --text: #0f1117;
-      --muted: #6b7280;
-      --accent: #0057B8;
-      --signal: #00C17C;
-      --signal-lt: rgba(0,193,124,0.12);
-      --signal-dk: #00956A;
-      --amber: #F5A623;
-      --amber-lt: rgba(245,166,35,0.12);
-      --red: #E53E3E;
-      --red-lt: rgba(229,62,62,0.1);
-      --blue: #3B6FFF;
-      --blue-lt: rgba(59,111,255,0.1);
-      --ink: #0A0F1E;
-      --ink-05: #F4F7FA;
-      --ink-10: #E2E8F0;
-      --ink-40: #6E7D93;
-      --glass-bg: rgba(255,255,255,0.80);
-      --glass-border: rgba(255,255,255,0.55);
-    }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+      /* Tokens de la guía */
+      --surface: #ffffff;
+      --line: #dadce0;
+      --line-soft: #e8eaed;
+      --text-2: #5f6368;
+      --text-3: #80868b;
+      --primary: #1a73e8;
+      --primary-hover: #1765cc;
+      --primary-soft: #e8f0fe;
+      --primary-ink: #1967d2;
+      --hover: #f1f3f4;
+      --ok: #137333;   --ok-bg: #e6f4ea;
+      --warn: #b06000; --warn-bg: #fef7e0;
+      --bad: #c5221f;  --bad-bg: #fce8e6;
+      --shadow-1: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+      --shadow-2: 0 1px 3px rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
 
-    /* HEADER */
+      /* Variables antiguas (las usan los estilos en línea del HTML/JS) → paleta Google */
+      --bg: #f8f9fa;
+      --white: #ffffff;
+      --border: #dadce0;
+      --text: #202124;
+      --muted: #5f6368;
+      --accent: #1a73e8;
+      --signal: #1e8e3e;
+      --signal-lt: #e6f4ea;
+      --signal-dk: #137333;
+      --amber: #e37400;
+      --amber-lt: #fef7e0;
+      --red: #d93025;
+      --red-lt: #fce8e6;
+      --blue: #1a73e8;
+      --blue-lt: #e8f0fe;
+      --ink: #202124;
+      --ink-05: #f8f9fa;
+      --ink-10: #e8eaed;
+      --ink-40: #80868b;
+      --glass-bg: #ffffff;
+      --glass-border: #dadce0;
+    }
+    body {
+      font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; }
+    strong, b { font-weight: 500; }
+    :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* HEADER (barra superior) */
     .header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line-soft);
+      padding: 10px 24px;
+      min-height: 64px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .header-logo img { height: 32px; object-fit: contain; }
-    .header-title { font-size: 15px; font-weight: 700; color: var(--text); }
-    .header-sep { width: 1px; height: 28px; background: var(--border); }
+    .header-logo img { height: 30px; width: auto; display: block; object-fit: contain; }
+    .header-title { font-size: 22px; font-weight: 400; color: var(--text); line-height: 1.25; letter-spacing: -.1px; }
+    .header-sep { width: 1px; height: 28px; background: var(--line); }
     .btn-back {
-      display: flex; align-items: center; gap: 6px;
-      padding: 7px 12px; border-radius: 8px;
-      background: none; border: 1px solid var(--border);
-      color: var(--muted); font-family: inherit; font-size: 13px;
-      cursor: pointer; transition: all .15s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 36px; padding: 0 16px 0 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--line);
+      color: var(--primary-ink); font-family: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: background .15s, border-color .15s; text-decoration: none; white-space: nowrap;
     }
-    .btn-back:hover { background: var(--bg); color: var(--text); }
+    .btn-back i { font-size: 13px; }
+    .btn-back:hover { background: #f6fafe; border-color: #c6dafc; }
     .spacer { flex: 1; }
-    .last-update { font-size: 11px; color: var(--muted); }
-
-    select {
-      padding: 7px 12px; border-radius: 8px;
-      border: 1px solid var(--border); background: var(--white);
-      color: var(--text); font-family: inherit; font-size: 13px;
-      cursor: pointer; outline: none;
-    }
-    select:focus { border-color: var(--accent); }
-
-    /* TABS */
-    .tabs-bar {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
-      display: flex;
-      gap: 4px;
-    }
-    .tab-btn {
-      padding: 12px 18px;
-      border: none;
-      background: none;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all .15s;
+    .last-update {
+      display: inline-flex; align-items: center; height: 28px;
+      padding: 0 12px; border-radius: 8px;
+      font-size: 12.5px; font-weight: 500; color: var(--text-2);
+      background: var(--surface); border: 1px solid var(--line);
       white-space: nowrap;
     }
-    .tab-btn:hover { color: var(--text); }
-    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 700; }
+    .last-update:empty { display: none; }
+
+    select {
+      height: 36px; padding: 0 10px; border-radius: 8px;
+      border: 1px solid var(--line); background: var(--surface);
+      color: var(--text); font-family: inherit; font-size: 13px; font-weight: 400;
+      cursor: pointer; outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    select:hover { border-color: #bdc1c6; }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+
+    /* TABS (chips estilo Google, como .cat-tab del panel) */
+    .tabs-bar {
+      background: var(--bg);
+      padding: 16px 24px 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tab-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 36px; padding: 0 16px 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+      white-space: nowrap;
+    }
+    .tab-btn i { font-size: 13px; color: var(--text-2); }
+    .tab-btn:hover { background: var(--hover); }
+    .tab-btn.active { background: var(--primary-soft); border-color: transparent; color: var(--primary-ink); }
+    .tab-btn.active i { color: var(--primary-ink); }
 
     /* CONTENT */
-    .content { padding: 24px 20px; }
+    .content { padding: 20px 24px 48px; }
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-panel.active { display: block; animation: aparecer .2s ease; }
+    @keyframes aparecer { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
     /* KPIs */
     .kpi-grid {
@@ -107,48 +149,52 @@
       margin-bottom: 28px;
     }
     .kpi-card {
-      background: var(--white);
-      border: 1px solid var(--border);
+      background: var(--surface);
+      border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 18px 20px;
+      padding: 16px 20px 18px;
+      transition: box-shadow .18s;
     }
-    .kpi-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 8px; }
-    .kpi-val { font-size: 28px; font-weight: 800; color: var(--ink); line-height: 1; }
-    .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+    .kpi-card:hover { box-shadow: var(--shadow-1); }
+    .kpi-lbl { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 10px; }
+    .kpi-lbl i { font-size: 13px; }
+    .kpi-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+    .kpi-val { font-size: 32px; font-weight: 400; color: var(--text); line-height: 1.1; letter-spacing: -.5px; font-variant-numeric: tabular-nums; }
+    .kpi-sub { font-size: 12px; color: var(--text-2); margin-top: 6px; }
 
     /* SECCIÓN TÍTULO */
     .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 12px;
+      padding: 0 2px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
+    .section-title i { color: var(--text-2); }
 
     /* TABLA GENERAL */
     .data-table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 6px;
-      background: transparent;
+      border-spacing: 0;
+      background: var(--surface);
       font-size: 13px;
-      padding: 0 6px;
+      padding: 0;
     }
     .data-table th {
-      background: var(--ink-05);
-      padding: 10px 14px;
+      background: var(--bg);
+      padding: 11px 14px;
       text-align: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-2);
       white-space: nowrap;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--line);
       vertical-align: middle;
     }
     .data-table th:first-child,
@@ -157,72 +203,78 @@
     }
     .data-table td {
       padding: 10px 14px;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--line-soft);
       vertical-align: middle;
       text-align: center;
-      background: var(--white);
+      background: var(--surface);
+      font-variant-numeric: tabular-nums;
     }
     .data-table td:first-child,
     .data-table td:nth-child(2) {
       text-align: left;
     }
-    .data-table td:first-child { border-left: 1px solid var(--border); border-radius: 10px 0 0 10px; }
-    .data-table td:last-child  { border-right: 1px solid var(--border); border-radius: 0 10px 10px 0; }
-    .data-table tr:hover td { background: var(--ink-05); }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--bg); }
 
     /* BARRA DE PROGRESO */
-    .prog-wrap { display: flex; align-items: center; gap: 8px; }
+    .prog-wrap { display: flex; align-items: center; gap: 10px; }
     .prog-bar-bg {
       flex: 1; height: 6px; background: var(--ink-10);
-      border-radius: 99px; overflow: hidden; min-width: 60px;
+      border-radius: 999px; overflow: hidden; min-width: 60px;
     }
-    .prog-bar-fill { height: 100%; border-radius: 99px; transition: width .3s; }
-    .prog-pct { font-size: 12px; font-weight: 700; min-width: 36px; text-align: right; }
+    .prog-bar-fill { height: 100%; border-radius: 999px; transition: width .3s; }
+    .prog-pct { font-size: 12px; font-weight: 500; min-width: 36px; text-align: right; font-variant-numeric: tabular-nums; }
 
-    /* BADGE ESTADO */
+    /* BADGE ESTADO (chips) */
     .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 500;
+      line-height: 1;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
-    .badge-comp { background: var(--signal-lt); color: var(--signal-dk); }
-    .badge-proc { background: var(--blue-lt); color: var(--blue); }
-    .badge-pend { background: var(--amber-lt); color: #b45309; }
-    .badge-bloq { background: var(--red-lt); color: var(--red); }
+    .badge-comp { background: var(--ok-bg); color: var(--ok); }
+    .badge-proc { background: var(--primary-soft); color: var(--primary-ink); }
+    .badge-pend { background: var(--warn-bg); color: var(--warn); }
+    .badge-bloq { background: var(--bad-bg); color: var(--bad); }
 
     /* ALERTAS */
     .alert-card {
       background: transparent;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       margin-bottom: 16px;
     }
     .alert-row {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       padding: 12px 16px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
       font-size: 13px;
       transition: box-shadow .15s;
     }
-    .alert-row:hover { box-shadow: 0 2px 10px rgba(10,15,30,0.06); }
+    .alert-row:hover { box-shadow: var(--shadow-1); }
     .alert-icon { font-size: 16px; flex-shrink: 0; }
-    .alert-name { flex: 1; font-weight: 500; }
-    .alert-meta { font-size: 11px; color: var(--muted); }
-    .alert-eje { font-size: 11px; color: var(--blue); }
+    .alert-name { flex: 1; font-weight: 500; font-size: 14px; color: var(--text); }
+    .alert-meta { font-size: 12px; color: var(--text-2); }
+    .alert-eje { font-size: 12px; color: var(--primary-ink); }
 
     /* MATRIZ CIUDADES */
     .matrix-wrap {
       border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--white);
+      border: 1px solid var(--line);
+      background: var(--surface);
       overflow: hidden;
     }
     .matrix-layout {
@@ -233,7 +285,7 @@
     .matrix-left {
       flex-shrink: 0;
       width: 240px;
-      border-right: 1px solid var(--border);
+      border-right: 1px solid var(--line);
       overflow: hidden;
       box-shadow: none;
       position: relative;
@@ -263,7 +315,7 @@
       height: 38px;
       min-height: 38px;
       max-height: 38px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--line-soft);
       font-size: 11px;
       overflow: hidden;
     }
@@ -285,50 +337,52 @@
     }
     /* Header izquierdo */
     .matrix-left table th {
-      background: var(--ink);
-      color: #fff;
+      background: var(--bg);
+      color: var(--text-2);
       padding: 8px 14px;
       text-align: left;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 500;
       white-space: nowrap;
+      border-bottom: 1px solid var(--line);
     }
     /* Header ciudades */
     .matrix-right table th {
-      background: var(--ink);
-      color: #fff;
+      background: var(--bg);
+      color: var(--text-2);
       padding: 8px 6px;
       text-align: center;
-      font-size: 10px;
-      font-weight: 600;
+      font-size: 11.5px;
+      font-weight: 500;
       white-space: nowrap;
-      border-right: 1px solid rgba(255,255,255,0.1);
+      text-overflow: ellipsis;
+      border-right: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line);
       width: 72px;
       min-width: 72px;
     }
     /* Fila categoría izquierda */
     .matrix-left table td.cat-row {
       padding: 6px 14px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
     }
     /* Fila categoría derecha */
     .matrix-right table td.cat-row {
-      border-right: 1px solid var(--border);
+      border-right: 1px solid transparent;
     }
-    .cat-planif { background: #dbeafe; color: #1e40af; }
-    .cat-fortal { background: var(--signal-lt); color: var(--signal-dk); }
-    .cat-asist  { background: #fef3c7; color: #b45309; }
-    .cat-admin  { background: #ede9fe; color: #6d28d9; }
+    .cat-planif { background: #e8f0fe; color: #1967d2; }
+    .cat-fortal { background: #e6f4ea; color: #137333; }
+    .cat-asist  { background: #fef7e0; color: #b06000; }
+    .cat-admin  { background: #f3e8fd; color: #8430ce; }
     /* Nombre del eje */
     .matrix-left table td.eje-name {
       padding: 4px 14px;
-      font-weight: 600;
-      font-size: 12px;
-      color: var(--ink);
-      background: var(--white);
+      font-weight: 500;
+      font-size: 13px;
+      color: var(--text);
+      background: var(--surface);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -338,7 +392,7 @@
     /* Celdas de datos */
     .matrix-right table td {
       text-align: center;
-      border-right: 1px solid var(--border);
+      border-right: 1px solid var(--line-soft);
       width: 72px;
       min-width: 72px;
       padding: 0;
@@ -349,78 +403,108 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 34px;
-      margin: 1px;
-      border-radius: 17px;
-      gap: 1px;
+      height: 32px;
+      margin: 2px 4px;
+      border-radius: 8px;
+      gap: 2px;
       cursor: default;
+      color: var(--text);
     }
-    .matrix-cell .pct { font-size: 11px; font-weight: 700; line-height: 1; }
-    .matrix-cell .cnt { font-size: 9px; opacity: .75; line-height: 1; }
-    .matrix-empty { color: var(--border); font-size: 14px; }
+    .matrix-cell .pct { font-size: 12px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
+    .matrix-cell .cnt { font-size: 10px; opacity: .8; line-height: 1; }
+    .matrix-empty { color: var(--line); font-size: 14px; }
 
     /* colores de celda por % */
-    td.cell-0    { background: var(--white); }
-    td.cell-low  { background: var(--white); }
-    td.cell-mid  { background: var(--white); }
-    td.cell-high { background: var(--white); }
-    td.cell-done { background: var(--white); }
-    td.cell-0 .matrix-cell    { background: #f1f3f6; }
-    td.cell-low .matrix-cell  { background: #fef3c7; }
-    td.cell-mid .matrix-cell  { background: #bfdbfe; }
-    td.cell-high .matrix-cell { background: #bbf7d0; }
-    td.cell-done .matrix-cell { background: #6ee7b7; }
+    td.cell-0    { background: var(--surface); }
+    td.cell-low  { background: var(--surface); }
+    td.cell-mid  { background: var(--surface); }
+    td.cell-high { background: var(--surface); }
+    td.cell-done { background: var(--surface); }
+    td.cell-0 .matrix-cell    { background: #f1f3f4; color: var(--text-2); }
+    td.cell-low .matrix-cell  { background: #fef7e0; color: #b06000; }
+    td.cell-mid .matrix-cell  { background: #e8f0fe; color: #1967d2; }
+    td.cell-high .matrix-cell { background: #e6f4ea; color: #137333; }
+    td.cell-done .matrix-cell { background: #ceead6; color: #0d652d; }
 
     .legend-matrix {
       display: flex; gap: 16px; align-items: center;
-      padding: 10px 16px;
-      border-top: 1px solid var(--border);
-      font-size: 11px; color: var(--muted);
+      padding: 12px 16px;
+      border-top: 1px solid var(--line);
+      font-size: 12px; color: var(--text-2);
       flex-wrap: wrap;
     }
-    .leg-box { width: 14px; height: 14px; border-radius: 3px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+    .leg-box { width: 14px; height: 14px; border-radius: 4px; display: inline-block; margin-right: 6px; vertical-align: middle; }
 
     /* LOADING */
-    .loading { text-align: center; padding: 60px; color: var(--muted); font-size: 14px; }
-    .empty { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+    .loading { text-align: center; padding: 60px; color: var(--text-2); font-size: 14px; }
+    .empty { text-align: center; padding: 40px; color: var(--text-2); font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
 
-    /* CATEGORIA BADGE */
+    /* CATEGORIA BADGE (chip con punto de color, como .cat-tab) */
     .cat-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 24px;
+      padding: 0 10px 0 8px;
+      border-radius: 999px;
+      background: var(--hover);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      line-height: 1;
     }
-    .cat-badge.planif  { background: #dbeafe; color: #1e40af; }
-    .cat-badge.fortal  { background: var(--signal-lt); color: var(--signal-dk); }
-    .cat-badge.asist   { background: #fef3c7; color: #b45309; }
-    .cat-badge.admin   { background: #ede9fe; color: #6d28d9; }
+    .cat-badge::before {
+      content: ""; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--cat, var(--primary)); flex-shrink: 0;
+    }
+    .cat-badge.planif  { --cat: #1a73e8; }
+    .cat-badge.fortal  { --cat: #1e8e3e; }
+    .cat-badge.asist   { --cat: #f9ab00; }
+    .cat-badge.admin   { --cat: #9334e6; }
 
     @media (max-width: 768px) {
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .content { padding: 16px 12px; }
+      .content { padding: 16px 16px 40px; }
+      .header { padding: 10px 16px; gap: 10px; }
+      .header-title { font-size: 18px; }
+      .tabs-bar { padding: 12px 16px 4px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+      .tabs-bar::-webkit-scrollbar { display: none; }
+      .tab-btn { flex-shrink: 0; }
+      .kpi-val { font-size: 28px; }
+      #alertasGrid { grid-template-columns: 1fr !important; }
+      .matrix-left, .matrix-left table { width: 160px; }
+      .matrix-left table td.eje-name { max-width: 160px; }
+      .data-table { min-width: 760px; }
+      .data-table td:first-child { min-width: 200px; }
+    }
+    @media (max-width: 480px) {
+      .header-sep, .header-logo { display: none; }
+      .last-update { display: none; }
     }
     /* POI inputs */
     .poi-input {
       width: 36px;
+      height: 28px;
       padding: 3px 4px;
-      border: 1px solid var(--border);
-      border-radius: 5px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
       text-align: center;
-      font-size: 11px;
+      font-size: 12px;
       font-family: inherit;
-      color: var(--ink);
-      background: #fff;
+      color: var(--text);
+      background: var(--surface);
+      font-variant-numeric: tabular-nums;
+      transition: border-color .15s, box-shadow .15s;
     }
-    .poi-input:focus { border-color: var(--blue); outline: none; }
-    .poi-exec { font-size: 11px; font-weight: 700; }
-    .poi-cell-done   { background: #f0fdf4; }
-    .poi-cell-partial { background: #fefce8; }
-    .poi-cell-missing { background: #fef2f2; }
-    .poi-total-p { font-size: 12px; font-weight: 700; color: var(--blue); }
-    .poi-total-e { font-size: 12px; font-weight: 700; color: var(--signal-dk); }
+    .poi-input:hover { border-color: #bdc1c6; }
+    .poi-input:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); outline: none; }
+    .poi-exec { font-size: 11px; font-weight: 500; }
+    .poi-cell-done   { background: #e6f4ea; }
+    .poi-cell-partial { background: #fef7e0; }
+    .poi-cell-missing { background: #fce8e6; }
+    .poi-total-p { font-size: 12px; font-weight: 500; color: var(--primary-ink); }
+    .poi-total-e { font-size: 12px; font-weight: 500; color: var(--signal-dk); }
 
     /* POI tabla — alturas fijas sincronizadas */
     #poiLeft table tr,
@@ -447,46 +531,55 @@
       min-height: 30px;
       max-height: 30px;
     }
+    #poiTableWrap table { font-variant-numeric: tabular-nums; }
+    #poiTableWrap tbody tr:hover td { filter: brightness(.985); }
+
+    /* Botón principal (Guardar programado) */
+    #btnGuardarPoi:hover { background: var(--primary-hover) !important; box-shadow: var(--shadow-1); }
+    #btnGuardarPoi:disabled { opacity: .7; cursor: default; }
 
     /* ── Modal evidencias ── */
     .ev-modal {
-      position:fixed;inset:0;background:rgba(10,15,30,0.5);z-index:200;
+      position:fixed;inset:0;background:rgba(32,33,36,.5);z-index:200;
       display:flex;justify-content:center;align-items:center;
-      backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s;padding:20px;
+      opacity:0;pointer-events:none;transition:opacity .2s;padding:20px;
     }
     .ev-modal[aria-hidden="false"] { opacity:1;pointer-events:all; }
     .ev-modal[aria-hidden="true"]  { opacity:0;pointer-events:none; }
     .ev-modal-card {
-      background:var(--glass-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-      width:90%;max-width:460px;border-radius:16px;border:1px solid var(--glass-border);
-      box-shadow:0 24px 60px rgba(10,15,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);display:flex;flex-direction:column;
+      background:var(--surface);
+      width:90%;max-width:460px;border-radius:16px;border:none;
+      box-shadow:var(--shadow-2);display:flex;flex-direction:column;
       max-height:90vh;animation:evSlideUp .2s ease both;
     }
     @keyframes evSlideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
     .ev-modal-head {
-      padding:16px 20px;border-bottom:1px solid #e5e7eb;
-      display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+      padding:16px 16px 14px 24px;border-bottom:1px solid var(--line);
+      display:flex;justify-content:space-between;align-items:center;gap:12px;flex-shrink:0;
     }
-    .ev-modal-body { padding:20px;overflow-y:auto; }
-    .ev-form-group { display:flex;flex-direction:column;margin-bottom:14px; }
+    .ev-modal-body { padding:20px 24px 24px;overflow-y:auto; }
+    .ev-form-group { display:flex;flex-direction:column;margin-bottom:16px; }
     .ev-form-group:last-child { margin-bottom:0; }
-    .ev-form-group label { font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px; }
+    .ev-form-group label { font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:6px; }
     .ev-form-group input, .ev-form-group textarea {
-      border:1px solid #d1d5db;border-radius:8px;padding:8px 12px;
-      font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;
+      border:1px solid var(--line);border-radius:8px;padding:10px 12px;
+      font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);
+      outline:none;transition:border-color .15s, box-shadow .15s;
     }
-    .ev-form-group input:focus, .ev-form-group textarea:focus { border-color:#6366f1; }
+    .ev-form-group input { height:42px; }
+    .ev-form-group input:hover, .ev-form-group textarea:hover { border-color:#bdc1c6; }
+    .ev-form-group input:focus, .ev-form-group textarea:focus { border-color:var(--primary);box-shadow:0 0 0 1px var(--primary); }
     .ev-btn-close {
-      background:none;border:none;cursor:pointer;font-size:16px;color:#9ca3af;
-      width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-2);
+      width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
     }
-    .ev-btn-close:hover { background:#f3f4f6;color:#374151; }
-    .ev-btn-primary { padding:8px 18px;border-radius:8px;background:#4f46e5;color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit; }
-    .ev-btn-primary:hover { background:#4338ca; }
-    .ev-btn-ghost { padding:8px 14px;border-radius:8px;background:transparent;color:#374151;border:1px solid #d1d5db;font-size:13px;cursor:pointer;font-family:inherit; }
-    .ev-btn-ghost:hover { background:#f9fafb; }
-    .ev-btn-danger { padding:6px 14px;border-radius:8px;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit; }
-    .ev-btn-danger:hover { background:#fee2e2; }
+    .ev-btn-close:hover { background:rgba(60,64,67,.08);color:var(--text); }
+    .ev-btn-primary { height:40px;padding:0 24px;border-radius:999px;background:var(--primary);color:#fff;border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit; }
+    .ev-btn-primary:hover { background:var(--primary-hover);box-shadow:var(--shadow-1); }
+    .ev-btn-ghost { height:40px;padding:0 20px;border-radius:999px;background:var(--surface);color:var(--primary-ink);border:1px solid var(--line);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit; }
+    .ev-btn-ghost:hover { background:#f6fafe;border-color:#c6dafc; }
+    .ev-btn-danger { height:36px;padding:0 16px;border-radius:999px;background:var(--surface);color:var(--bad);border:1px solid var(--line);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit; }
+    .ev-btn-danger:hover { background:var(--bad-bg);border-color:#f6aea9; }
   </style>
 </head>
 <body style="opacity:0">
@@ -498,26 +591,26 @@
   }
   #appLoaderReportes.fade-out { opacity:0;pointer-events:none; }
   .rep-spinner {
-    width:40px;height:40px;border:3px solid #e5e7eb;
-    border-top-color:#00a651;border-radius:50%;
+    width:40px;height:40px;border:3px solid #e8f0fe;
+    border-top-color:#1a73e8;border-radius:50%;
     animation:repSpin .7s linear infinite;
   }
   @keyframes repSpin { to { transform:rotate(360deg); } }
-  .rep-loader-text { font-size:13px;color:#6b7280;font-family:inherit;letter-spacing:.3px; }
+  .rep-loader-text { font-size:14px;color:#5f6368;font-family:inherit; }
 </style>
 
 <div id="appLoaderReportes">
-  <img src="assets/logopmv.png" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
+  <img src="assets/logopmv.webp" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
   <div class="rep-spinner"></div>
   <div class="rep-loader-text">Cargando reportes...</div>
 </div>
 
 <!-- HEADER -->
 <div class="header">
-  <a href="index.html" class="btn-back" id="btnVolver">◀ Volver</a>
+  <a href="index.html" class="btn-back" id="btnVolver"><i class="fa-solid fa-arrow-left"></i> Volver</a>
   <div class="header-sep"></div>
   <div class="header-logo">
-    <img src="assets/logopmv.png" alt="PMV" onerror="this.style.display='none'"/>
+    <img src="assets/logopmv.webp" alt="PMV" onerror="this.style.display='none'"/>
   </div>
   <div class="header-title">Panel de Reportes — DFPM</div>
   <div class="header-sep"></div>
@@ -554,7 +647,7 @@
       <div class="section-title">Avance por categoría</div>
       <div id="catGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:28px"></div>
       <div class="section-title">Avance por Eje de Trabajo</div>
-      <div style="background:var(--white);border-radius:12px;border:1px solid var(--border);overflow:hidden">
+      <div style="background:var(--white);border-radius:12px;border:1px solid var(--border);overflow-x:auto">
         <table class="data-table" id="ejesTable"></table>
       </div>
     </div>
@@ -566,7 +659,7 @@
     <div id="matrizContent" style="display:none">
       <div class="section-title">
         <span>Ejes de Trabajo × Ciudades — % avance y cantidad de actividades</span>
-        <span style="font-size:11px;color:var(--muted);font-weight:400">Scroll horizontal para ver todas las ciudades →</span>
+        <span style="font-size:12px;color:var(--muted);font-weight:400">Scroll horizontal para ver todas las ciudades →</span>
       </div>
       <div class="matrix-wrap">
         <div class="matrix-layout">
@@ -576,11 +669,11 @@
           <div class="matrix-right" id="matrizRight"></div>
         </div>
         <div class="legend-matrix">
-          <span><span class="leg-box" style="background:#f8f9fb;border:1px solid var(--border)"></span>Sin actividades</span>
-          <span><span class="leg-box" style="background:#fef3c7"></span>1–25%</span>
-          <span><span class="leg-box" style="background:#bfdbfe"></span>26–50%</span>
-          <span><span class="leg-box" style="background:#bbf7d0"></span>51–99%</span>
-          <span><span class="leg-box" style="background:#6ee7b7"></span>100% completado</span>
+          <span><span class="leg-box" style="background:#f1f3f4;border:1px solid var(--border)"></span>Sin actividades</span>
+          <span><span class="leg-box" style="background:#fef7e0;border:1px solid #fde293"></span>1–25%</span>
+          <span><span class="leg-box" style="background:#e8f0fe;border:1px solid #aecbfa"></span>26–50%</span>
+          <span><span class="leg-box" style="background:#e6f4ea;border:1px solid #a8dab5"></span>51–99%</span>
+          <span><span class="leg-box" style="background:#ceead6;border:1px solid #81c995"></span>100% completado</span>
         </div>
       </div>
     </div>
@@ -591,7 +684,7 @@
     <div class="loading" id="loadingResp">Cargando...</div>
     <div id="respContent" style="display:none">
       <div class="section-title">Actividades por responsable</div>
-      <div style="background:var(--white);border-radius:12px;border:1px solid var(--border);overflow:hidden">
+      <div style="background:var(--white);border-radius:12px;border:1px solid var(--border);overflow-x:auto">
         <table class="data-table" id="respTable"></table>
       </div>
     </div>
@@ -610,10 +703,10 @@
     <div class="loading" id="loadingEvidencias">Cargando evidencias...</div>
     <div id="evidenciasContent" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-        <span style="font-weight:700;font-size:16px"><i class="fa-solid fa-paperclip"></i> Evidencias POI — Documentos por Hito</span>
+        <span style="font-weight:500;font-size:16px;color:var(--text)"><i class="fa-solid fa-paperclip" style="color:var(--muted)"></i> Evidencias POI — Documentos por Hito</span>
         <div style="display:flex;gap:8px;align-items:center">
-          <select id="evidenciasAnio" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit"></select>
-          <select id="evidenciasCategoria" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit">
+          <select id="evidenciasAnio"></select>
+          <select id="evidenciasCategoria">
             <option value="">Todas las categorías</option>
             <option value="Planificación">Planificación</option>
             <option value="Fortalecimiento">Fortalecimiento</option>
@@ -631,10 +724,10 @@
     <div class="loading" id="loadingComisiones">Cargando comisiones...</div>
     <div id="comisionesContent" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-        <span style="font-weight:700;font-size:16px"><i class="fa-solid fa-plane"></i> Viajes de Comisión — Resumen por Eje</span>
+        <span style="font-weight:500;font-size:16px;color:var(--text)"><i class="fa-solid fa-plane" style="color:var(--muted)"></i> Viajes de Comisión — Resumen por Eje</span>
         <div style="display:flex;gap:8px;align-items:center">
-          <select id="comisionesAnio" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit"></select>
-          <select id="comisionesCategoria" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit">
+          <select id="comisionesAnio"></select>
+          <select id="comisionesCategoria">
           <option value="">Todas las categorías</option>
           <option value="Planificación">Planificación</option>
           <option value="Fortalecimiento">Fortalecimiento</option>
@@ -653,22 +746,22 @@
     <div id="poiContent" style="display:none">
       <div class="section-title">
         <span><i class="fa-solid fa-clipboard-list"></i> Seguimiento POI — Programado vs Ejecutado</span>
-        <div style="display:flex;gap:8px;align-items:center">
-          <select id="poiAnio" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit"></select>
-          <select id="poiCategoria" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-family:inherit">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <select id="poiAnio"></select>
+          <select id="poiCategoria">
             <option value="">Todas las categorías</option>
             <option value="Planificación">Planificación</option>
             <option value="Fortalecimiento">Fortalecimiento</option>
             <option value="Asistencia Técnica">Asistencia Técnica</option>
             <option value="Administrativo">Administrativo</option>
           </select>
-          <button id="btnGuardarPoi" style="padding:7px 16px;border-radius:8px;background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">
+          <button id="btnGuardarPoi" style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 20px 0 16px;border-radius:999px;background:var(--blue);color:#fff;border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap">
             <i class="fa-solid fa-floppy-disk"></i> Guardar programado
           </button>
         </div>
       </div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;padding:10px 14px;background:var(--ink-05);border-radius:8px">
-        <i class="fa-solid fa-lightbulb"></i> <strong>P</strong> = Programado (editable) · <strong>E</strong> = Ejecutado (automático — hitos marcados como POI al 100%) · Los totales se actualizan al guardar.
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;padding:10px 16px;background:var(--white);border:1px solid var(--border);border-radius:12px">
+        <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> <strong>P</strong> = Programado (editable) · <strong>E</strong> = Ejecutado (automático — hitos marcados como POI al 100%) · Los totales se actualizan al guardar.
       </div>
       <div id="poiMatrizWrap" style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);background:#fff">
         <div id="poiTableWrap">
@@ -812,7 +905,7 @@ function aplicarModoPoi() {
   if (btnVolver) btnVolver.style.display = 'none';
   const btnSalir = document.createElement('button');
   btnSalir.textContent = 'Cerrar sesión';
-  btnSalir.style.cssText = 'padding:6px 14px;border-radius:8px;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit';
+  btnSalir.style.cssText = 'height:36px;padding:0 16px;border-radius:999px;background:#fff;color:#c5221f;border:1px solid #dadce0;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap';
   btnSalir.onclick = async () => {
     await sb.auth.signOut();
     window.location.href = 'login.html';
@@ -904,37 +997,37 @@ function renderResumen() {
     </div>
     <div class="kpi-card">
       <div class="kpi-lbl">Avance promedio</div>
-      <div class="kpi-val" style="color:var(--signal)">${avgPct}%</div>
+      <div class="kpi-val">${avgPct}%</div>
       <div class="kpi-sub">De todas las actividades</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-lbl">Completadas</div>
-      <div class="kpi-val" style="color:var(--signal)">${comp}</div>
+      <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--signal)"></span>Completadas</div>
+      <div class="kpi-val">${comp}</div>
       <div class="kpi-sub">${total ? Math.round(comp/total*100) : 0}% del total</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-lbl">En proceso</div>
-      <div class="kpi-val" style="color:var(--blue)">${proc}</div>
+      <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--blue)"></span>En proceso</div>
+      <div class="kpi-val">${proc}</div>
       <div class="kpi-sub">${total ? Math.round(proc/total*100) : 0}% del total</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-lbl">Pendientes</div>
-      <div class="kpi-val" style="color:var(--amber)">${pend}</div>
+      <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--amber)"></span>Pendientes</div>
+      <div class="kpi-val">${pend}</div>
       <div class="kpi-sub">${total ? Math.round(pend/total*100) : 0}% del total</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-lbl">Bloqueadas</div>
-      <div class="kpi-val" style="color:var(--red)">${bloq}</div>
+      <div class="kpi-lbl"><span class="kpi-dot" style="background:var(--red)"></span>Bloqueadas</div>
+      <div class="kpi-val">${bloq}</div>
       <div class="kpi-sub">${total ? Math.round(bloq/total*100) : 0}% del total</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-lbl"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Vencidas</div>
-      <div class="kpi-val" style="color:var(--red)">${vencidas}</div>
+      <div class="kpi-val">${vencidas}</div>
       <div class="kpi-sub">Fecha fin superada</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-lbl"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer</div>
-      <div class="kpi-val" style="color:var(--amber)">${porVencer}</div>
+      <div class="kpi-val">${porVencer}</div>
       <div class="kpi-sub">Vencen en ≤7 días</div>
     </div>
   `;
@@ -949,15 +1042,15 @@ function renderResumen() {
     const pct     = n ? Math.round(activas.reduce((s,r) => s+(r.avance||0),0)/n) : 0;
     const cc      = catClass(cat);
     return `
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px">
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px 18px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <span class="cat-badge ${cc}">${esc(cat)}</span>
-          <span style="font-size:22px;font-weight:800;color:var(--ink)">${pct}%</span>
+          <span style="font-size:28px;font-weight:400;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums">${pct}%</span>
         </div>
-        <div style="height:8px;background:var(--ink-10);border-radius:99px;overflow:hidden;margin-bottom:10px">
+        <div style="height:6px;background:var(--ink-10);border-radius:99px;overflow:hidden;margin-bottom:10px">
           <div style="height:100%;width:${pct}%;background:${pctBarColor(pct)};border-radius:99px;transition:width .4s"></div>
         </div>
-        <div style="font-size:11px;color:var(--muted)">${n} actividades · ${ejesCat.size} ejes</div>
+        <div style="font-size:12px;color:var(--muted)">${n} actividades · ${ejesCat.size} ejes</div>
       </div>
     `;
   }).join('');
@@ -994,9 +1087,9 @@ function renderResumen() {
     <tbody>
       ${rows.map(r => `
         <tr>
-          <td style="font-weight:600;font-size:13px">${esc(r.eje.nombre)}</td>
+          <td style="font-weight:500;font-size:13px">${esc(r.eje.nombre)}</td>
           <td><span class="cat-badge ${catClass(r.eje.tipo)}">${esc(r.eje.tipo||'—')}</span></td>
-          <td style="font-weight:600;text-align:center">${r.total}</td>
+          <td style="font-weight:500;text-align:center">${r.total}</td>
           <td>
             <div class="prog-wrap">
               <div class="prog-bar-bg">
@@ -1009,8 +1102,8 @@ function renderResumen() {
           <td style="text-align:center">${r.proc ? `<span class="badge badge-proc">${r.proc}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
           <td style="text-align:center">${r.pend ? `<span class="badge badge-pend">${r.pend}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
           <td style="text-align:center">${r.bloq ? `<span class="badge badge-bloq">${r.bloq}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
-          <td style="text-align:center">${r.venc ? `<span style="color:var(--red);font-weight:700;font-size:12px">${r.venc}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
-          <td style="text-align:center">${r.porV ? `<span style="color:var(--amber);font-weight:700;font-size:12px">${r.porV}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
+          <td style="text-align:center">${r.venc ? `<span style="color:var(--red);font-weight:500;font-size:13px">${r.venc}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
+          <td style="text-align:center">${r.porV ? `<span style="color:var(--amber);font-weight:500;font-size:13px">${r.porV}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
         </tr>
       `).join('')}
     </tbody>
@@ -1115,8 +1208,8 @@ function renderResponsables() {
     <tbody>
       ${rows.map(r => `
         <tr>
-          <td style="font-weight:600">${esc(r.nombre)}</td>
-          <td style="font-weight:700">${r.n}</td>
+          <td style="font-weight:500">${esc(r.nombre)}</td>
+          <td style="font-weight:500">${r.n}</td>
           <td>
             <div class="prog-wrap">
               <div class="prog-bar-bg">
@@ -1129,7 +1222,7 @@ function renderResponsables() {
           <td>${r.proc ? `<span class="badge badge-proc">${r.proc}</span>` : '—'}</td>
           <td>${r.pend ? `<span class="badge badge-pend">${r.pend}</span>` : '—'}</td>
           <td>${r.bloq ? `<span class="badge badge-bloq">${r.bloq}</span>` : '—'}</td>
-          <td>${r.alert ? `<span style="color:var(--red);font-weight:700">${r.alert}</span>` : '—'}</td>
+          <td>${r.alert ? `<span style="color:var(--red);font-weight:500">${r.alert}</span>` : '—'}</td>
         </tr>
       `).join('')}
     </tbody>
@@ -1168,7 +1261,7 @@ function renderAlertas() {
             </div>
           </div>
           <div style="text-align:right;flex-shrink:0">
-            <div style="font-size:12px;font-weight:700;color:${tipo==='vencida'?'var(--red)':'var(--amber)'}">${diffTxt}</div>
+            <div style="font-size:12px;font-weight:500;color:${tipo==='vencida'?'var(--bad)':'var(--warn)'}">${diffTxt}</div>
             <div class="alert-meta">${fmtDate(r.fecha_fin)}</div>
             <div style="margin-top:4px">
               <span class="badge ${r.avance>=100?'badge-comp':r.avance>=50?'badge-proc':'badge-pend'}">${r.avance||0}%</span>
@@ -1182,13 +1275,13 @@ function renderAlertas() {
   document.getElementById('alertasGrid').innerHTML = `
     <div>
       <div class="section-title">
-        <span><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Actividades vencidas <span style="background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:6px">${vencidas.length}</span></span>
+        <span><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Actividades vencidas <span style="display:inline-flex;align-items:center;height:22px;background:var(--red-lt);color:var(--bad);padding:0 8px;border-radius:6px;font-size:12px;font-weight:500;margin-left:6px;vertical-align:middle">${vencidas.length}</span></span>
       </div>
       <div class="alert-card">${renderLista(vencidas,'vencida')}</div>
     </div>
     <div>
       <div class="section-title">
-        <span><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer (≤7 días) <span style="background:var(--amber-lt);color:#b45309;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-left:6px">${porVencer.length}</span></span>
+        <span><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer (≤7 días) <span style="display:inline-flex;align-items:center;height:22px;background:var(--amber-lt);color:var(--warn);padding:0 8px;border-radius:6px;font-size:12px;font-weight:500;margin-left:6px;vertical-align:middle">${porVencer.length}</span></span>
       </div>
       <div class="alert-card">${renderLista(porVencer,'por-vencer')}</div>
     </div>
@@ -1296,27 +1389,27 @@ function renderPoi() {
   // Una sola tabla con columna sticky
   let html = `<table style="table-layout:fixed;border-collapse:collapse;width:100%;min-width:max-content"><thead>
     <tr style="height:${HEAD1_H}px">
-      <th rowspan="2" style="width:220px;min-width:220px;text-align:center;padding:8px 14px;background:var(--ink);color:#fff;vertical-align:middle;${STICKY}background:var(--ink)">
-        Eje de Trabajo<br><span style="font-size:9px;color:rgba(255,255,255,0.5);font-weight:500">Hitos POI</span>
+      <th rowspan="2" style="width:220px;min-width:220px;text-align:left;padding:8px 14px;background:var(--bg);color:var(--muted);font-size:12px;font-weight:500;line-height:1.3;vertical-align:middle;border-bottom:1px solid var(--border);border-right:1px solid var(--border);${STICKY}background:var(--bg)">
+        Eje de Trabajo<br><span style="font-size:11px;color:var(--ink-40);font-weight:400">Hitos POI</span>
       </th>
-      <th colspan="2" style="text-align:center;background:#0f2744;color:#fff;padding:5px 4px;font-size:11px;font-weight:700;border-right:1px solid rgba(255,255,255,0.2)">Total</th>
-      ${MESES.map(m => `<th colspan="2" style="text-align:center;background:var(--ink);color:#fff;padding:5px 4px;font-size:11px;font-weight:600;border-right:1px solid rgba(255,255,255,0.15)">${m}</th>`).join('')}
+      <th colspan="2" style="text-align:center;background:#e8f0fe;color:#1967d2;padding:5px 4px;font-size:12px;font-weight:500;border-right:1px solid var(--border)">Total</th>
+      ${MESES.map(m => `<th colspan="2" style="text-align:center;background:var(--bg);color:var(--muted);padding:5px 4px;font-size:12px;font-weight:500;border-right:2px solid var(--border)">${m}</th>`).join('')}
     </tr>
     <tr style="height:${HEAD2_H}px">
-      <th style="text-align:center;font-size:9px;font-weight:700;background:#0a1f3d;color:#93c5fd;width:44px;min-width:44px;padding:3px 2px">P</th>
-      <th style="text-align:center;font-size:9px;font-weight:700;background:#0a1f3d;color:#6ee7b7;width:44px;min-width:44px;padding:3px 2px;border-right:1px solid rgba(255,255,255,0.2)">E</th>
+      <th style="text-align:center;font-size:11px;font-weight:500;background:#e8f0fe;color:#1967d2;width:44px;min-width:44px;padding:3px 2px;border-bottom:1px solid var(--border)">P</th>
+      <th style="text-align:center;font-size:11px;font-weight:500;background:#e8f0fe;color:#137333;width:44px;min-width:44px;padding:3px 2px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)">E</th>
       ${MESES.map(() => `
-        <th style="text-align:center;font-size:9px;font-weight:700;background:#111827;color:#93c5fd;width:38px;min-width:38px;padding:3px 2px">P</th>
-        <th style="text-align:center;font-size:9px;font-weight:700;background:#111827;color:#6ee7b7;width:38px;min-width:38px;padding:3px 2px;border-right:1px solid rgba(255,255,255,0.1)">E</th>
+        <th style="text-align:center;font-size:11px;font-weight:500;background:var(--bg);color:#1967d2;width:38px;min-width:38px;padding:3px 2px;border-bottom:1px solid var(--border)">P</th>
+        <th style="text-align:center;font-size:11px;font-weight:500;background:var(--bg);color:#137333;width:38px;min-width:38px;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--border)">E</th>
       `).join('')}
     </tr>
   </thead><tbody>`;
 
   const catColors = {
-    'Planificación':    { bg:'#dbeafe', tc:'#1e40af' },
-    'Fortalecimiento':  { bg:'#dcfce7', tc:'#15803d' },
-    'Asistencia Técnica': { bg:'#fef3c7', tc:'#b45309' },
-    'Administrativo':   { bg:'#ede9fe', tc:'#6d28d9' },
+    'Planificación':    { bg:'#e8f0fe', tc:'#1967d2' },
+    'Fortalecimiento':  { bg:'#e6f4ea', tc:'#137333' },
+    'Asistencia Técnica': { bg:'#fef7e0', tc:'#b06000' },
+    'Administrativo':   { bg:'#f3e8fd', tc:'#8430ce' },
   };
 
   cats.forEach(cat => {
@@ -1324,10 +1417,10 @@ function renderPoi() {
     // para no mostrar filas vacías de ejes sin ninguna relación con el año que se está viendo
     const ejesCat = ejesFilt.filter(e => e.tipo === cat && ejeRelevanteAlAnio(e.nombre));
     if (!ejesCat.length) return;
-    const { bg, tc } = catColors[cat] || { bg:'#1e3a5f', tc:'#fff' };
+    const { bg, tc } = catColors[cat] || { bg:'#f1f3f4', tc:'#202124' };
 
     html += `<tr style="height:${CAT_H}px">
-      <td style="background:${bg};color:${tc};padding:5px 14px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;${STICKY}background:${bg}">${esc(cat)}</td>
+      <td style="background:${bg};color:${tc};padding:5px 14px;font-size:12px;font-weight:500;white-space:nowrap;${STICKY}background:${bg}">${esc(cat)}</td>
       <td style="background:${bg}"></td><td style="background:${bg}"></td>
       ${MESES.map(() => `<td style="background:${bg}"></td><td style="background:${bg}"></td>`).join('')}
     </tr>`;
@@ -1344,25 +1437,25 @@ function renderPoi() {
         totalP += p; totalE += e;
 
         let bg2 = '';
-        if (p > 0 && e >= p)       bg2 = 'background:#f0fdf4';
-        else if (p > 0 && e > 0)   bg2 = 'background:#fefce8';
-        else if (p > 0 && e === 0) bg2 = 'background:#fef2f2';
+        if (p > 0 && e >= p)       bg2 = 'background:#e6f4ea';
+        else if (p > 0 && e > 0)   bg2 = 'background:#fef7e0';
+        else if (p > 0 && e === 0) bg2 = 'background:#fce8e6';
 
         messCells += `
-          <td style="text-align:center;padding:3px 2px;border-bottom:1px solid var(--border)">
+          <td style="text-align:center;padding:3px 2px;border-bottom:1px solid var(--ink-10)">
             <input class="poi-input" type="number" min="0" max="99" data-key="${esc(key)}" value="${p||''}"/>
           </td>
-          <td style="text-align:center;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--border)">
-            <span style="display:inline-block;min-width:20px;padding:2px 5px;border-radius:6px;font-size:11px;font-weight:700;${bg2};color:${e>0&&e>=p&&p>0?'var(--signal-dk)':e>0?'#b45309':'var(--muted)'}">${e > 0 ? e : '—'}</span>
+          <td style="text-align:center;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--ink-10)">
+            <span style="display:inline-block;min-width:20px;padding:2px 5px;border-radius:6px;font-size:12px;font-weight:500;${bg2};color:${e>0&&e>=p&&p>0?'var(--signal-dk)':e>0?'#b06000':'var(--muted)'}">${e > 0 ? e : '—'}</span>
           </td>`;
       });
 
-      const totColor = totalE >= totalP && totalP > 0 ? 'var(--signal-dk)' : totalE > 0 ? '#b45309' : 'var(--muted)';
+      const totColor = totalE >= totalP && totalP > 0 ? 'var(--signal-dk)' : totalE > 0 ? '#b06000' : 'var(--muted)';
 
       html += `<tr style="height:${ROW_H}px">
-        <td style="font-weight:600;font-size:12px;padding:8px 14px;background:#fff;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:220px;max-width:220px;${STICKY}background:#fff" title="${esc(eje.nombre)}">${esc(eje.nombre)}</td>
-        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--border);font-weight:700;font-size:12px;color:var(--blue);background:#f0f7ff;width:44px">${totalP || '—'}</td>
-        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--border);font-weight:700;font-size:12px;color:${totColor};background:#f0fdf4;border-right:1px solid var(--border);width:44px">${totalE || '—'}</td>
+        <td style="font-weight:500;font-size:13px;color:var(--text);padding:8px 14px;background:#fff;border-bottom:1px solid var(--ink-10);border-right:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:220px;max-width:220px;${STICKY}background:#fff" title="${esc(eje.nombre)}">${esc(eje.nombre)}</td>
+        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--ink-10);font-weight:500;font-size:13px;color:#1967d2;background:#f4f8fe;width:44px">${totalP || '—'}</td>
+        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--ink-10);font-weight:500;font-size:13px;color:${totColor};background:#f4f8fe;border-right:1px solid var(--border);width:44px">${totalE || '—'}</td>
         ${messCells}
       </tr>`;
     });
@@ -1516,10 +1609,10 @@ function renderEvidencias() {
   const anioFiltro = parseInt(document.getElementById('evidenciasAnio')?.value) || new Date().getFullYear();
   const cats       = ['Planificación','Fortalecimiento','Asistencia Técnica','Administrativo'];
   const catColors  = {
-    'Planificación':      '#3b82f6',
-    'Fortalecimiento':    '#10b981',
-    'Asistencia Técnica': '#f59e0b',
-    'Administrativo':     '#8b5cf6',
+    'Planificación':      '#1a73e8',
+    'Fortalecimiento':    '#1e8e3e',
+    'Asistencia Técnica': '#f9ab00',
+    'Administrativo':     '#9334e6',
   };
 
   let html = '';
@@ -1548,7 +1641,7 @@ function renderEvidencias() {
         totalP += evPoiData[`${eje.nombre}|${anioFiltro}|${mes}`] || 0;
       }
       const totalE = getEjecutadoAnio(eje.nombre, anioFiltro);
-      const colorCat = catColors[cat] || '#6b7280';
+      const colorCat = catColors[cat] || '#80868b';
 
       const hitosRows = hitosEje.map(hito => {
         const ev = evidenciasData.find(e => e.hito_nombre === hito.nombre && e.eje_nombre === eje.nombre);
@@ -1557,8 +1650,8 @@ function renderEvidencias() {
         const prom        = actsActivas.length ? Math.round(actsActivas.reduce((s,r) => s+(r.avance||0),0)/actsActivas.length) : 0;
 
         const estadoBadge = prom === 100
-          ? `<span style="background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px"><i class="fa-solid fa-check"></i> 100%</span>`
-          : `<span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px"><i class="fa-solid fa-hourglass-half"></i> ${prom}%</span>`;
+          ? `<span style="display:inline-flex;align-items:center;gap:5px;height:22px;background:#e6f4ea;color:#137333;font-size:11.5px;font-weight:500;padding:0 8px;border-radius:6px;white-space:nowrap"><i class="fa-solid fa-check"></i> 100%</span>`
+          : `<span style="display:inline-flex;align-items:center;gap:5px;height:22px;background:#fef7e0;color:#b06000;font-size:11.5px;font-weight:500;padding:0 8px;border-radius:6px;white-space:nowrap"><i class="fa-solid fa-hourglass-half"></i> ${prom}%</span>`;
 
         const ejeEsc  = esc(eje.nombre).replace(/'/g,"\'");
         const hitoEsc = esc(hito.nombre).replace(/'/g,"\'");
@@ -1567,46 +1660,46 @@ function renderEvidencias() {
         const evidenciaHTML = ev
           ? esPoi
             ? `<a href="${esc(ev.url||'#')}" target="_blank" rel="noopener"
-                style="font-size:12px;color:#4f46e5;font-weight:600;text-decoration:none">
+                style="font-size:13px;color:#1967d2;font-weight:500;text-decoration:none">
                 <i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,40)}${(ev.descripcion||'').length>40?'…':''}
               </a>`
             : `<button onclick="abrirEditarEvidencia(${ev.id})"
-                style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid #e5e7eb;background:#f9fafb;cursor:pointer;display:flex;align-items:center;gap:6px">
-                <i class="fa-solid fa-gear"></i> <span style="color:#4f46e5;font-weight:600"><i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,35)}${(ev.descripcion||'').length>35?'…':''}</span>
+                style="font-size:13px;height:32px;padding:0 14px 0 12px;border-radius:999px;border:1px solid #dadce0;background:#fff;color:#5f6368;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;max-width:100%">
+                <i class="fa-solid fa-gear"></i> <span style="color:#1967d2;font-weight:500"><i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,35)}${(ev.descripcion||'').length>35?'…':''}</span>
               </button>`
           : esPoi
-            ? `<span style="font-size:11px;color:#9ca3af;font-style:italic">Sin evidencia registrada</span>`
+            ? `<span style="font-size:13px;color:#80868b">Sin evidencia registrada</span>`
             : `<button onclick="abrirNuevaEvidencia('${ejeEsc}','${hitoEsc}')"
-                style="font-size:11px;padding:3px 10px;border-radius:6px;border:1px dashed #c7d2fe;background:#eef2ff;color:#4f46e5;cursor:pointer">
-                + Agregar enlace
+                style="font-size:13px;font-weight:500;height:32px;padding:0 14px 0 12px;border-radius:999px;border:1px solid transparent;background:#e8f0fe;color:#1967d2;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit">
+                <i class="fa-solid fa-plus"></i> Agregar enlace
               </button>`;
 
-        return `<tr style="border-bottom:1px solid #f3f4f6">
-          <td style="padding:10px 14px;font-size:13px;color:#111827">${esc(hito.nombre)}</td>
-          <td style="padding:10px 14px;text-align:center">${estadoBadge}</td>
-          <td style="padding:10px 14px">${evidenciaHTML}</td>
+        return `<tr style="border-bottom:1px solid #e8eaed">
+          <td style="padding:10px 16px;font-size:13px;color:#202124">${esc(hito.nombre)}</td>
+          <td style="padding:10px 16px;text-align:center">${estadoBadge}</td>
+          <td style="padding:10px 16px">${evidenciaHTML}</td>
         </tr>`;
       }).join('');
 
       html += `
-        <div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px;overflow:hidden">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f8fafc;border-bottom:1px solid #e5e7eb">
+        <div style="background:#fff;border-radius:12px;border:1px solid #dadce0;margin-bottom:16px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px 14px 20px;background:#fff;border-bottom:1px solid #dadce0">
             <div style="display:flex;align-items:center;gap:10px">
               <span style="width:10px;height:10px;border-radius:50%;background:${colorCat};display:inline-block;flex-shrink:0"></span>
-              <span style="font-weight:700;font-size:14px">${esc(eje.nombre)}</span>
-              <span style="font-size:11px;background:#f1f5f9;padding:2px 8px;border-radius:8px;color:#6b7280">${esc(cat)}</span>
+              <span style="font-weight:500;font-size:15px;color:#202124">${esc(eje.nombre)}</span>
+              <span style="font-size:12px;font-weight:500;background:#f1f3f4;padding:2px 10px;border-radius:999px;color:#5f6368;white-space:nowrap">${esc(cat)}</span>
             </div>
             <div style="display:flex;gap:12px;align-items:center">
-              <span style="font-size:12px;color:#3b82f6;font-weight:700">P: ${totalP || '—'}</span>
-              <span style="font-size:12px;color:#10b981;font-weight:700">E: ${totalE || '—'}</span>
+              <span style="font-size:13px;color:#1967d2;font-weight:500;font-variant-numeric:tabular-nums">P: ${totalP || '—'}</span>
+              <span style="font-size:13px;color:#137333;font-weight:500;font-variant-numeric:tabular-nums">E: ${totalE || '—'}</span>
             </div>
           </div>
           <table style="width:100%;border-collapse:collapse">
             <thead>
-              <tr style="background:#f8fafc;border-bottom:1px solid #e5e7eb">
-                <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:left;width:45%">HITO POI</th>
-                <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:center;width:12%">AVANCE</th>
-                <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:left">EVIDENCIA</th>
+              <tr style="background:#f8f9fa;border-bottom:1px solid #dadce0">
+                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:#5f6368;text-align:left;width:45%">Hito POI</th>
+                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:#5f6368;text-align:center;width:12%">Avance</th>
+                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:#5f6368;text-align:left">Evidencia</th>
               </tr>
             </thead>
             <tbody>${hitosRows}</tbody>
@@ -1616,7 +1709,7 @@ function renderEvidencias() {
   });
 
   if (!hayContenido) {
-    html = `<div style="text-align:center;padding:48px;color:#9ca3af">No hay hitos POI para el año ${anioFiltro}.</div>`;
+    html = `<div style="text-align:center;padding:48px 20px;color:#5f6368;font-size:13px;background:#fff;border:1px solid #dadce0;border-radius:12px"><i class="fa-regular fa-folder-open" style="display:block;font-size:36px;color:#bdc1c6;margin-bottom:10px"></i>No hay hitos POI para el año ${anioFiltro}.</div>`;
   }
   lista.innerHTML = html;
 }
@@ -1756,15 +1849,15 @@ function renderComisiones() {
 
   const ejesConComisiones = Object.keys(porEje);
   if (!ejesConComisiones.length) {
-    lista.innerHTML = `<div style="text-align:center;padding:48px;color:#9ca3af">No hay viajes de comisión para ${anioFiltro}.</div>`;
+    lista.innerHTML = `<div style="text-align:center;padding:48px 20px;color:#5f6368;font-size:13px;background:#fff;border:1px solid #dadce0;border-radius:12px"><i class="fa-solid fa-plane" style="display:block;font-size:36px;color:#bdc1c6;margin-bottom:10px"></i>No hay viajes de comisión para ${anioFiltro}.</div>`;
     return;
   }
 
   const catColors = {
-    'Planificación':      '#3b82f6',
-    'Fortalecimiento':    '#10b981',
-    'Asistencia Técnica': '#f59e0b',
-    'Administrativo':     '#8b5cf6',
+    'Planificación':      '#1a73e8',
+    'Fortalecimiento':    '#1e8e3e',
+    'Asistencia Técnica': '#f9ab00',
+    'Administrativo':     '#9334e6',
   };
 
   const transporteIcon = { 'Bus': '<i class="fa-solid fa-bus"></i>', 'Aéreo': '<i class="fa-solid fa-plane"></i>', 'Ambos': '<i class="fa-solid fa-bus"></i><i class="fa-solid fa-plane"></i>' };
@@ -1775,7 +1868,7 @@ function renderComisiones() {
 
   ejesConComisiones.forEach(ejeNombre => {
     const { cat, items } = porEje[ejeNombre];
-    const colorCat = catColors[cat] || '#6b7280';
+    const colorCat = catColors[cat] || '#80868b';
 
     let ejeTotalDias = 0, ejeTotal = 0;
     // Personas únicas del eje (union de todos los equipos técnicos)
@@ -1797,15 +1890,15 @@ function renderComisiones() {
       const fechaIni = r.fecha_inicio ? fmtDate(r.fecha_inicio) : '—';
       const fechaFin = r.fecha_fin    ? fmtDate(r.fecha_fin)    : '—';
 
-      return `<tr style="border-bottom:1px solid #f3f4f6">
-        <td style="padding:9px 14px;font-size:13px;color:#111827;font-weight:500">${esc(r.subactividad)}</td>
-        <td style="padding:9px 14px;font-size:12px;color:#6b7280;white-space:nowrap">${fechaIni} → ${fechaFin}</td>
-        <td style="padding:9px 14px;font-size:12px;color:#6b7280">${esc(r.equipo_tecnico||'—')}</td>
-        <td style="padding:9px 14px;text-align:center;font-size:13px;font-weight:700;color:#374151">${personas}</td>
-        <td style="padding:9px 14px;text-align:center;font-size:13px;font-weight:700;color:#374151">${dias}</td>
-        <td style="padding:9px 14px;text-align:center;font-size:13px">${transp}</td>
-        <td style="padding:9px 14px;text-align:center;font-size:12px;color:#6b7280">S/. ${(r.comision_costo_diario||320)}</td>
-        <td style="padding:9px 14px;text-align:right;font-size:13px;font-weight:700;color:#7c3aed">S/. ${total.toLocaleString('es-PE')}</td>
+      return `<tr style="border-bottom:1px solid #e8eaed">
+        <td style="padding:10px 14px 10px 20px;font-size:13px;color:#202124;font-weight:400">${esc(r.subactividad)}</td>
+        <td style="padding:10px 14px;font-size:12px;color:#5f6368;white-space:nowrap;font-variant-numeric:tabular-nums">${fechaIni} → ${fechaFin}</td>
+        <td style="padding:10px 14px;font-size:12px;color:#5f6368">${esc(r.equipo_tecnico||'—')}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:#202124;font-variant-numeric:tabular-nums">${personas}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:#202124;font-variant-numeric:tabular-nums">${dias}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:13px;color:#5f6368">${transp}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:12px;color:#5f6368;font-variant-numeric:tabular-nums">S/. ${(r.comision_costo_diario||320)}</td>
+        <td style="padding:10px 20px 10px 14px;text-align:right;font-size:13px;font-weight:500;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${total.toLocaleString('es-PE')}</td>
       </tr>`;
     }).join('');
 
@@ -1814,39 +1907,39 @@ function renderComisiones() {
     personasUnicas.forEach(p => granPersonasSet.add(p));
 
     html += `
-      <div style="background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px;overflow:hidden">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f8fafc;border-bottom:1px solid #e5e7eb">
+      <div style="background:#fff;border-radius:12px;border:1px solid #dadce0;margin-bottom:16px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px 14px 20px;background:#fff;border-bottom:1px solid #dadce0">
           <div style="display:flex;align-items:center;gap:10px">
             <span style="width:10px;height:10px;border-radius:50%;background:${colorCat};display:inline-block;flex-shrink:0"></span>
-            <span style="font-weight:700;font-size:14px">${esc(ejeNombre)}</span>
-            <span style="font-size:11px;background:#f1f5f9;padding:2px 8px;border-radius:8px;color:#6b7280">${esc(cat)}</span>
+            <span style="font-weight:500;font-size:15px;color:#202124">${esc(ejeNombre)}</span>
+            <span style="font-size:12px;font-weight:500;background:#f1f3f4;padding:2px 10px;border-radius:999px;color:#5f6368;white-space:nowrap">${esc(cat)}</span>
           </div>
           <div style="display:flex;gap:16px;align-items:center">
-            <span style="font-size:12px;color:#6b7280">${items.length} comisión${items.length>1?'es':''}</span>
-            <span style="font-size:13px;font-weight:700;color:#7c3aed">Total: S/. ${ejeTotal.toLocaleString('es-PE')}</span>
+            <span style="font-size:13px;color:#5f6368">${items.length} comisión${items.length>1?'es':''}</span>
+            <span style="font-size:14px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">Total: S/. ${ejeTotal.toLocaleString('es-PE')}</span>
           </div>
         </div>
         <table style="width:100%;border-collapse:collapse">
           <thead>
-            <tr style="background:#f8fafc;border-bottom:1px solid #e5e7eb">
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:left;width:25%">ACTIVIDAD</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:left;width:16%">FECHAS</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:left">EQUIPO TÉCNICO</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:center;width:7%">PERS.</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:center;width:6%">DÍAS</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:center;width:8%">TRANSP.</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:center;width:9%">C/DÍA</th>
-              <th style="padding:8px 14px;font-size:11px;font-weight:700;color:#6b7280;text-align:right;width:11%">TOTAL</th>
+            <tr style="background:#f8f9fa;border-bottom:1px solid #dadce0">
+              <th style="padding:10px 14px 10px 20px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:25%">Actividad</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:16%">Fechas</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left">Equipo técnico</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:7%">Pers.</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:6%">Días</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:8%">Transp.</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:9%">C/día</th>
+              <th style="padding:10px 20px 10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:right;width:11%">Total</th>
             </tr>
           </thead>
           <tbody>${filas}</tbody>
           <tfoot>
-            <tr style="background:#f5f3ff;border-top:2px solid #e9d5ff">
-              <td colspan="3" style="padding:8px 14px;font-size:12px;font-weight:700;color:#7c3aed">Subtotal ${esc(ejeNombre)}</td>
-              <td style="padding:8px 14px;text-align:center;font-size:12px;font-weight:700;color:#374151">${ejeTotalPersonas}</td>
-              <td style="padding:8px 14px;text-align:center;font-size:12px;font-weight:700;color:#374151">${ejeTotalDias}</td>
+            <tr style="background:#f8f9fa;border-top:1px solid #dadce0">
+              <td colspan="3" style="padding:10px 14px 10px 20px;font-size:13px;font-weight:500;color:#5f6368">Subtotal ${esc(ejeNombre)}</td>
+              <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">${ejeTotalPersonas}</td>
+              <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">${ejeTotalDias}</td>
               <td colspan="2"></td>
-              <td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:800;color:#7c3aed">S/. ${ejeTotal.toLocaleString('es-PE')}</td>
+              <td style="padding:10px 20px 10px 14px;text-align:right;font-size:14px;font-weight:500;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${ejeTotal.toLocaleString('es-PE')}</td>
             </tr>
           </tfoot>
         </table>
@@ -1855,12 +1948,12 @@ function renderComisiones() {
 
   // Gran total
   html += `
-    <div style="background:#f5f3ff;border-radius:12px;border:2px solid #7c3aed;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <span style="font-weight:700;font-size:14px;color:#5b21b6"><i class="fa-solid fa-plane"></i> GRAN TOTAL — Viajes de Comisión</span>
-      <div style="display:flex;gap:24px;align-items:center">
-        <span style="font-size:13px;color:#6b7280">${ejesConComisiones.length} eje${ejesConComisiones.length>1?'s':''} · ${granPersonasSet.size} persona${granPersonasSet.size!==1?'s':''} únicas</span>
-        <span style="font-size:13px;color:#374151;font-weight:600">S/. 320 × personas × días</span>
-        <span style="font-size:16px;font-weight:800;color:#7c3aed">S/. ${granTotal.toLocaleString('es-PE')}</span>
+    <div style="background:#e8f0fe;border-radius:12px;border:1px solid transparent;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 24px">
+      <span style="font-weight:500;font-size:16px;color:#1967d2"><i class="fa-solid fa-plane"></i> Gran total — Viajes de Comisión</span>
+      <div style="display:flex;gap:8px 24px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:13px;color:#5f6368">${ejesConComisiones.length} eje${ejesConComisiones.length>1?'s':''} · ${granPersonasSet.size} persona${granPersonasSet.size!==1?'s':''} únicas</span>
+        <span style="font-size:13px;color:#5f6368;font-weight:400">S/. 320 × personas × días</span>
+        <span style="font-size:24px;font-weight:400;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${granTotal.toLocaleString('es-PE')}</span>
       </div>
     </div>`;
 
@@ -1875,8 +1968,8 @@ function renderComisiones() {
   <div class="ev-modal-card">
     <div class="ev-modal-head">
       <div>
-        <div style="font-weight:700;font-size:15px" id="evModalTitle"><i class="fa-solid fa-paperclip"></i> Agregar evidencia</div>
-        <div style="font-size:11px;color:#6b7280;margin-top:2px" id="evHitoLabel"></div>
+        <div style="font-weight:400;font-size:20px;line-height:1.3;color:#202124" id="evModalTitle"><i class="fa-solid fa-paperclip"></i> Agregar evidencia</div>
+        <div style="font-size:13px;color:#5f6368;margin-top:2px" id="evHitoLabel"></div>
       </div>
       <button class="ev-btn-close" onclick="closeEvModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -1890,8 +1983,8 @@ function renderComisiones() {
           <input type="url" id="evUrl" placeholder="https://drive.google.com/..." required
             oninput="actualizarLinkEvidencia()">
           <a id="evUrlLink" href="#" target="_blank" rel="noopener"
-            style="display:none;margin-top:6px;font-size:12px;color:#4f46e5;text-decoration:none">
-            <i class="fa-solid fa-link"></i> Abrir documento
+            style="display:none;margin-top:8px;font-size:13px;font-weight:500;color:#1967d2;text-decoration:none">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir documento
           </a>
         </div>
         <div class="ev-form-group">
@@ -1905,7 +1998,7 @@ function renderComisiones() {
         <div style="margin-top:6px">
           <button type="button" class="ev-btn-danger" id="btnDeleteEvidencia"
             style="display:none;width:100%;margin-bottom:10px"><i class="fa-solid fa-trash"></i> Eliminar evidencia</button>
-          <div style="display:flex;gap:8px;justify-content:flex-end">
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
             <button type="button" class="ev-btn-ghost" onclick="closeEvModal()">Cancelar</button>
             <button type="submit" class="ev-btn-primary">Guardar</button>
           </div>
@@ -1916,9 +2009,9 @@ function renderComisiones() {
 </div>
 
 <!-- OVERLAY: Guardando POI programado -->
-<div id="poiSavingOverlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,15,30,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center">
-  <div style="background:var(--glass-bg-strong,#fff);border:1px solid var(--glass-border,rgba(255,255,255,0.4));border-radius:16px;padding:26px 34px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 24px 60px rgba(10,15,30,0.25)">
+<div id="poiSavingOverlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(32,33,36,.5);align-items:center;justify-content:center">
+  <div style="background:#fff;border:none;border-radius:16px;padding:26px 34px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:var(--shadow-2)">
     <i class="fa-solid fa-spinner fa-spin" style="font-size:26px;color:var(--blue)"></i>
-    <div style="font-size:13px;font-weight:600;color:var(--text-main,#0f172a)">Guardando datos de POI programado, espere...</div>
+    <div style="font-size:14px;font-weight:400;color:#202124">Guardando datos de POI programado, espere...</div>
   </div>
 </div>
