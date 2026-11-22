@@ -1,0 +1,125 @@
+/* =============================================
+   PLATAFORMA DFPM — Tema claro / oscuro
+   Este archivo se carga ANTES de los estilos de cada página.
+   1) Define en claro las variables nuevas que no existían (mismos colores de siempre).
+   2) Redefine todas las variables cuando el usuario activa el modo oscuro
+      (<html data-theme="dark">, lo pone tema.js).
+   ============================================= */
+
+:root {
+  --on-primary:      #ffffff;
+  --line-strong:     #bdc1c6;
+  --soft-hover:      #f6fafe;
+  --soft-hover-line: #c6dafc;
+  --primary-soft-2:  #d2e3fc;
+  --primary-line:    #aecbfa;
+  --blue-tint:       #f4f8fe;
+  --hover-overlay:   rgba(60,64,67,.08);
+  --grid-line:       rgba(60,64,67,.08);
+  --shade-0:         rgba(60,64,67,.025);
+  --shade-1:         rgba(60,64,67,.05);
+  --shade-2:         rgba(60,64,67,.07);
+  --tip-ink:         #174ea6;
+  --tip-warn-ink:    #7a4100;
+  --ok:  #137333;  --ok-bg:   #e6f4ea;  --ok-line: #a8dab5;
+  --ok-strong: #0d652d;  --ok-strong-bg: #ceead6;  --ok-strong-line: #81c995;
+  --warn:#b06000;  --warn-bg: #fef7e0;  --warn-line: #fde293;
+  --bad: #c5221f;  --bad-bg:  #fce8e6;  --bad-line: #f6aea9;
+  --purple: #8430ce; --purple-bg: #f3e8fd;
+  --orange: #b3541e; --orange-bg: #feefe3;
+}
+
+/* ── Modo oscuro (paleta oscura de Google Workspace) ── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:            #1b1c1e;
+  --surface:       #232427;
+  --line:          #3c4043;
+  --line-soft:     #303134;
+  --line-strong:   #5f6368;
+  --text:          #e8eaed;
+  --text-2:        #bdc1c6;
+  --text-3:        #9aa0a6;
+  --primary:       #8ab4f8;
+  --primary-hover: #aecbfa;
+  --primary-soft:  #263449;
+  --primary-soft-2:#2f4566;
+  --primary-ink:   #8ab4f8;
+  --primary-line:  #3d5a85;
+  --on-primary:    #1b1c1e;
+  --hover:         #2e3033;
+  --soft-hover:    #262e3b;
+  --soft-hover-line:#3d5a85;
+  --blue-tint:     #252b35;
+  --hover-overlay: rgba(232,234,237,.08);
+  --grid-line:     rgba(232,234,237,.07);
+  --shade-0:       rgba(232,234,237,.02);
+  --shade-1:       rgba(232,234,237,.04);
+  --shade-2:       rgba(232,234,237,.06);
+  --tip-ink:       #aecbfa;
+  --tip-warn-ink:  #fdd663;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.5), 0 1px 3px 1px rgba(0,0,0,.3);
+  --shadow-2: 0 1px 3px rgba(0,0,0,.5), 0 4px 8px 3px rgba(0,0,0,.3);
+
+  --ok:  #81c995;  --ok-bg:   #1e3526;  --ok-line: #2f5a3c;
+  --ok-strong: #a8dab5; --ok-strong-bg: #24462f; --ok-strong-line: #3d7a50;
+  --warn:#fdd663;  --warn-bg: #3a3119;  --warn-line: #6b5a22;
+  --bad: #f28b82;  --bad-bg:  #42221f;  --bad-line: #7a3a35;
+  --purple: #d7aefb; --purple-bg: #362548;
+  --orange: #fcad70; --orange-bg: #42301f;
+
+  /* Variables antiguas que usan los estilos en línea */
+  --ink:     #e8eaed;
+  --ink-80:  #dadce0;
+  --ink-60:  #bdc1c6;
+  --ink-40:  #9aa0a6;
+  --ink-20:  #5f6368;
+  --ink-10:  #3c4043;
+  --ink-05:  #28292c;
+  --white:   #232427;
+  --border:  #3c4043;
+  --muted:   #bdc1c6;
+  --accent:  #8ab4f8;
+  --accent-dk: #aecbfa;
+  --signal:    #5bb974;
+  --signal-dk: #81c995;
+  --signal-lt: #1e3526;
+  --blue:      #8ab4f8;
+  --blue-lt:   #263449;
+  --amber:     #fbbc04;
+  --amber-lt:  #3a3119;
+  --red:       #f28b82;
+  --red-lt:    #42221f;
+  --st-pending:#fbbc04;
+  --st-process:#8ab4f8;
+  --st-done:   #5bb974;
+  --st-block:  #f28b82;
+  --bg-app:    #1b1c1e;
+  --bg-card:   #232427;
+  --text-main: #e8eaed;
+  --text-muted:#bdc1c6;
+  --text-soft: #5f6368;
+  --sidebar-bg:     #1b1c1e;
+  --sidebar-panel:  #1b1c1e;
+  --sidebar-border: #303134;
+  --glass-bg:        #232427;
+  --glass-bg-strong: #232427;
+  --glass-border:    #3c4043;
+}
+
+/* Gantt: en las filas de hito, la sombra de fin de semana / mes alterno va encima
+   del fondo de la fila (en claro casi no se nota; en oscuro formaba un tablero) */
+:root[data-theme="dark"] .gantt-cell.group-row.alt-month { background: linear-gradient(var(--shade-0), var(--shade-0)), var(--bg); }
+:root[data-theme="dark"] .gantt-cell.group-row.weekend { background: linear-gradient(var(--shade-1), var(--shade-1)), var(--bg); }
+:root[data-theme="dark"] .gantt-cell.group-row.weekend.alt-month { background: linear-gradient(var(--shade-2), var(--shade-2)), var(--bg); }
+
+/* Botón sol / luna */
+.btn-tema {
+  width: 40px; height: 40px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%; background: transparent;
+  color: var(--text-2); font-size: 17px; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.btn-tema:hover { background: var(--hover-overlay); color: var(--text); }

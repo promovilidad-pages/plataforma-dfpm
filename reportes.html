@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="tema.css"/>
+  <script src="tema.js"></script>
   <style>
     /* Estilo Google Material (Workspace) — ver GUIA_ESTILO_GOOGLE.md
        Se conservan todos los nombres de clases y variables que usa el JS. */
@@ -87,7 +89,7 @@
       cursor: pointer; transition: background .15s, border-color .15s; text-decoration: none; white-space: nowrap;
     }
     .btn-back i { font-size: 13px; }
-    .btn-back:hover { background: #f6fafe; border-color: #c6dafc; }
+    .btn-back:hover { background:var(--soft-hover); border-color:var(--soft-hover-line); }
     .spacer { flex: 1; }
     .last-update {
       display: inline-flex; align-items: center; height: 28px;
@@ -105,7 +107,7 @@
       cursor: pointer; outline: none;
       transition: border-color .15s, box-shadow .15s;
     }
-    select:hover { border-color: #bdc1c6; }
+    select:hover { border-color:var(--line-strong); }
     select:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
 
     /* TABS (chips estilo Google, como .cat-tab del panel) */
@@ -372,10 +374,10 @@
     .matrix-right table td.cat-row {
       border-right: 1px solid transparent;
     }
-    .cat-planif { background: #e8f0fe; color: #1967d2; }
-    .cat-fortal { background: #e6f4ea; color: #137333; }
-    .cat-asist  { background: #fef7e0; color: #b06000; }
-    .cat-admin  { background: #f3e8fd; color: #8430ce; }
+    .cat-planif { background:var(--primary-soft); color: var(--primary-ink); }
+    .cat-fortal { background: var(--ok-bg); color: var(--ok); }
+    .cat-asist  { background: var(--warn-bg); color: var(--warn); }
+    .cat-admin  { background: var(--purple-bg); color: var(--purple); }
     /* Nombre del eje */
     .matrix-left table td.eje-name {
       padding: 4px 14px;
@@ -420,11 +422,11 @@
     td.cell-mid  { background: var(--surface); }
     td.cell-high { background: var(--surface); }
     td.cell-done { background: var(--surface); }
-    td.cell-0 .matrix-cell    { background: #f1f3f4; color: var(--text-2); }
-    td.cell-low .matrix-cell  { background: #fef7e0; color: #b06000; }
-    td.cell-mid .matrix-cell  { background: #e8f0fe; color: #1967d2; }
-    td.cell-high .matrix-cell { background: #e6f4ea; color: #137333; }
-    td.cell-done .matrix-cell { background: #ceead6; color: #0d652d; }
+    td.cell-0 .matrix-cell    { background:var(--hover); color: var(--text-2); }
+    td.cell-low .matrix-cell  { background: var(--warn-bg); color: var(--warn); }
+    td.cell-mid .matrix-cell  { background:var(--primary-soft); color: var(--primary-ink); }
+    td.cell-high .matrix-cell { background: var(--ok-bg); color: var(--ok); }
+    td.cell-done .matrix-cell { background: var(--ok-strong-bg); color: var(--ok-strong); }
 
     .legend-matrix {
       display: flex; gap: 16px; align-items: center;
@@ -497,12 +499,12 @@
       font-variant-numeric: tabular-nums;
       transition: border-color .15s, box-shadow .15s;
     }
-    .poi-input:hover { border-color: #bdc1c6; }
+    .poi-input:hover { border-color:var(--line-strong); }
     .poi-input:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); outline: none; }
     .poi-exec { font-size: 11px; font-weight: 500; }
-    .poi-cell-done   { background: #e6f4ea; }
-    .poi-cell-partial { background: #fef7e0; }
-    .poi-cell-missing { background: #fce8e6; }
+    .poi-cell-done   { background: var(--ok-bg); }
+    .poi-cell-partial { background: var(--warn-bg); }
+    .poi-cell-missing { background: var(--bad-bg); }
     .poi-total-p { font-size: 12px; font-weight: 500; color: var(--primary-ink); }
     .poi-total-e { font-size: 12px; font-weight: 500; color: var(--signal-dk); }
 
@@ -567,36 +569,36 @@
       outline:none;transition:border-color .15s, box-shadow .15s;
     }
     .ev-form-group input { height:42px; }
-    .ev-form-group input:hover, .ev-form-group textarea:hover { border-color:#bdc1c6; }
+    .ev-form-group input:hover, .ev-form-group textarea:hover { border-color:var(--line-strong); }
     .ev-form-group input:focus, .ev-form-group textarea:focus { border-color:var(--primary);box-shadow:0 0 0 1px var(--primary); }
     .ev-btn-close {
       background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-2);
       width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;
     }
-    .ev-btn-close:hover { background:rgba(60,64,67,.08);color:var(--text); }
-    .ev-btn-primary { height:40px;padding:0 24px;border-radius:999px;background:var(--primary);color:#fff;border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit; }
+    .ev-btn-close:hover { background:var(--hover-overlay);color:var(--text); }
+    .ev-btn-primary { height:40px;padding:0 24px;border-radius:999px;background:var(--primary);color:var(--on-primary);border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit; }
     .ev-btn-primary:hover { background:var(--primary-hover);box-shadow:var(--shadow-1); }
     .ev-btn-ghost { height:40px;padding:0 20px;border-radius:999px;background:var(--surface);color:var(--primary-ink);border:1px solid var(--line);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit; }
-    .ev-btn-ghost:hover { background:#f6fafe;border-color:#c6dafc; }
+    .ev-btn-ghost:hover { background:var(--soft-hover);border-color:var(--soft-hover-line); }
     .ev-btn-danger { height:36px;padding:0 16px;border-radius:999px;background:var(--surface);color:var(--bad);border:1px solid var(--line);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit; }
-    .ev-btn-danger:hover { background:var(--bad-bg);border-color:#f6aea9; }
+    .ev-btn-danger:hover { background:var(--bad-bg);border-color:var(--bad-line); }
   </style>
 </head>
 <body style="opacity:0">
 <style>
   #appLoaderReportes {
-    position:fixed;inset:0;z-index:9999;background:#fff;
+    position:fixed;inset:0;z-index:9999;background:var(--surface);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
     transition:opacity .3s ease;
   }
   #appLoaderReportes.fade-out { opacity:0;pointer-events:none; }
   .rep-spinner {
-    width:40px;height:40px;border:3px solid #e8f0fe;
+    width:40px;height:40px;border:3px solid var(--primary-soft);
     border-top-color:#1a73e8;border-radius:50%;
     animation:repSpin .7s linear infinite;
   }
   @keyframes repSpin { to { transform:rotate(360deg); } }
-  .rep-loader-text { font-size:14px;color:#5f6368;font-family:inherit; }
+  .rep-loader-text { font-size:14px;color:var(--text-2);font-family:inherit; }
 </style>
 
 <div id="appLoaderReportes">
@@ -623,6 +625,7 @@
   </select>
   <div class="spacer"></div>
   <span class="last-update" id="lastUpdate"></span>
+  <button type="button" class="btn-tema" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro"><i class="fa-solid fa-moon"></i></button>
 </div>
 
 <!-- TABS -->
@@ -669,11 +672,11 @@
           <div class="matrix-right" id="matrizRight"></div>
         </div>
         <div class="legend-matrix">
-          <span><span class="leg-box" style="background:#f1f3f4;border:1px solid var(--border)"></span>Sin actividades</span>
-          <span><span class="leg-box" style="background:#fef7e0;border:1px solid #fde293"></span>1–25%</span>
-          <span><span class="leg-box" style="background:#e8f0fe;border:1px solid #aecbfa"></span>26–50%</span>
-          <span><span class="leg-box" style="background:#e6f4ea;border:1px solid #a8dab5"></span>51–99%</span>
-          <span><span class="leg-box" style="background:#ceead6;border:1px solid #81c995"></span>100% completado</span>
+          <span><span class="leg-box" style="background:var(--hover);border:1px solid var(--border)"></span>Sin actividades</span>
+          <span><span class="leg-box" style="background:var(--warn-bg);border:1px solid var(--warn-line)"></span>1–25%</span>
+          <span><span class="leg-box" style="background:var(--primary-soft);border:1px solid var(--primary-line)"></span>26–50%</span>
+          <span><span class="leg-box" style="background:var(--ok-bg);border:1px solid var(--ok-line)"></span>51–99%</span>
+          <span><span class="leg-box" style="background:var(--ok-strong-bg);border:1px solid var(--ok-strong-line)"></span>100% completado</span>
         </div>
       </div>
     </div>
@@ -755,7 +758,7 @@
             <option value="Asistencia Técnica">Asistencia Técnica</option>
             <option value="Administrativo">Administrativo</option>
           </select>
-          <button id="btnGuardarPoi" style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 20px 0 16px;border-radius:999px;background:var(--blue);color:#fff;border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap">
+          <button id="btnGuardarPoi" style="display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 20px 0 16px;border-radius:999px;background:var(--primary);color:var(--on-primary);border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap">
             <i class="fa-solid fa-floppy-disk"></i> Guardar programado
           </button>
         </div>
@@ -763,7 +766,7 @@
       <div style="font-size:13px;color:var(--muted);margin-bottom:12px;padding:10px 16px;background:var(--white);border:1px solid var(--border);border-radius:12px">
         <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> <strong>P</strong> = Programado (editable) · <strong>E</strong> = Ejecutado (automático — hitos marcados como POI al 100%) · Los totales se actualizan al guardar.
       </div>
-      <div id="poiMatrizWrap" style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);background:#fff">
+      <div id="poiMatrizWrap" style="overflow-x:auto;border-radius:12px;border:1px solid var(--border);background:var(--surface)">
         <div id="poiTableWrap"></div>
       </div>
       <!-- Leyenda fuera de #poiTableWrap: renderPoi() reemplaza ese contenido y la borraba -->
@@ -905,7 +908,7 @@ function aplicarModoPoi() {
   if (btnVolver) btnVolver.style.display = 'none';
   const btnSalir = document.createElement('button');
   btnSalir.textContent = 'Cerrar sesión';
-  btnSalir.style.cssText = 'height:36px;padding:0 16px;border-radius:999px;background:#fff;color:#c5221f;border:1px solid #dadce0;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap';
+  btnSalir.style.cssText = 'height:36px;padding:0 16px;border-radius:999px;background:var(--surface);color:var(--bad);border:1px solid var(--line);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap';
   btnSalir.onclick = async () => {
     await sb.auth.signOut();
     window.location.href = 'login.html';
@@ -1392,30 +1395,30 @@ function renderPoi() {
       <th rowspan="2" style="width:220px;min-width:220px;text-align:left;padding:8px 14px;background:var(--bg);color:var(--muted);font-size:12px;font-weight:500;line-height:1.3;vertical-align:middle;border-bottom:1px solid var(--border);border-right:1px solid var(--border);${STICKY}background:var(--bg)">
         Eje de Trabajo<br><span style="font-size:11px;color:var(--ink-40);font-weight:400">Hitos POI</span>
       </th>
-      <th colspan="2" style="text-align:center;background:#e8f0fe;color:#1967d2;padding:5px 4px;font-size:12px;font-weight:500;border-right:1px solid var(--border)">Total</th>
+      <th colspan="2" style="text-align:center;background:var(--primary-soft);color:var(--primary-ink);padding:5px 4px;font-size:12px;font-weight:500;border-right:1px solid var(--border)">Total</th>
       ${MESES.map(m => `<th colspan="2" style="text-align:center;background:var(--bg);color:var(--muted);padding:5px 4px;font-size:12px;font-weight:500;border-right:2px solid var(--border)">${m}</th>`).join('')}
     </tr>
     <tr style="height:${HEAD2_H}px">
-      <th style="text-align:center;font-size:11px;font-weight:500;background:#e8f0fe;color:#1967d2;width:44px;min-width:44px;padding:3px 2px;border-bottom:1px solid var(--border)">P</th>
-      <th style="text-align:center;font-size:11px;font-weight:500;background:#e8f0fe;color:#137333;width:44px;min-width:44px;padding:3px 2px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)">E</th>
+      <th style="text-align:center;font-size:11px;font-weight:500;background:var(--primary-soft);color:var(--primary-ink);width:44px;min-width:44px;padding:3px 2px;border-bottom:1px solid var(--border)">P</th>
+      <th style="text-align:center;font-size:11px;font-weight:500;background:var(--primary-soft);color:var(--ok);width:44px;min-width:44px;padding:3px 2px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)">E</th>
       ${MESES.map(() => `
-        <th style="text-align:center;font-size:11px;font-weight:500;background:var(--bg);color:#1967d2;width:38px;min-width:38px;padding:3px 2px;border-bottom:1px solid var(--border)">P</th>
-        <th style="text-align:center;font-size:11px;font-weight:500;background:var(--bg);color:#137333;width:38px;min-width:38px;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--border)">E</th>
+        <th style="text-align:center;font-size:11px;font-weight:500;background:var(--bg);color:var(--primary-ink);width:38px;min-width:38px;padding:3px 2px;border-bottom:1px solid var(--border)">P</th>
+        <th style="text-align:center;font-size:11px;font-weight:500;background:var(--bg);color:var(--ok);width:38px;min-width:38px;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--border)">E</th>
       `).join('')}
     </tr>
   </thead><tbody>`;
 
   const catColors = {
-    'Planificación':    { bg:'#e8f0fe', tc:'#1967d2' },
-    'Fortalecimiento':  { bg:'#e6f4ea', tc:'#137333' },
-    'Asistencia Técnica': { bg:'#fef7e0', tc:'#b06000' },
-    'Administrativo':   { bg:'#f3e8fd', tc:'#8430ce' },
+    'Planificación':    { bg:'var(--primary-soft)', tc:'var(--primary-ink)' },
+    'Fortalecimiento':  { bg:'var(--ok-bg)', tc:'var(--ok)' },
+    'Asistencia Técnica': { bg:'var(--warn-bg)', tc:'var(--warn)' },
+    'Administrativo':   { bg:'var(--purple-bg)', tc:'var(--purple)' },
   };
 
   // Acumuladores para la fila "Total general" (solo de las filas que se muestran)
   const sumP = MESES.map(() => 0), sumE = MESES.map(() => 0);
   let filasPoi = 0;
-  const colorE = (p, e) => e >= p && p > 0 ? 'var(--signal-dk)' : e > 0 ? '#b06000' : 'var(--muted)';
+  const colorE = (p, e) => e >= p && p > 0 ? 'var(--signal-dk)' : e > 0 ? 'var(--warn)' : 'var(--muted)';
   // Fila de totales reutilizable (subtotal por categoría y total general)
   const filaTotales = (etiqueta, arrP, arrE, fondo, colorTexto, bordeSup) => {
     const totP = arrP.reduce((a, b) => a + b, 0);
@@ -1423,10 +1426,10 @@ function renderPoi() {
     const celda = `text-align:center;padding:8px 4px;font-weight:500;font-size:13px;background:${fondo};border-top:${bordeSup}`;
     return `<tr style="height:${ROW_H}px">
       <td style="font-weight:500;font-size:13px;color:${colorTexto};padding:8px 14px;border-top:${bordeSup};border-right:1px solid var(--border);white-space:nowrap;${STICKY}background:${fondo}">${etiqueta}</td>
-      <td style="${celda};color:#1967d2">${totP || '—'}</td>
+      <td style="${celda};color:var(--primary-ink)">${totP || '—'}</td>
       <td style="${celda};color:${colorE(totP, totE)};border-right:1px solid var(--border)">${totE || '—'}</td>
       ${MESES.map((_, i) => `
-        <td style="${celda};color:#1967d2">${arrP[i] || '—'}</td>
+        <td style="${celda};color:var(--primary-ink)">${arrP[i] || '—'}</td>
         <td style="${celda};color:${colorE(arrP[i], arrE[i])};border-right:2px solid var(--border)">${arrE[i] || '—'}</td>`).join('')}
     </tr>`;
   };
@@ -1436,7 +1439,7 @@ function renderPoi() {
     // para no mostrar filas vacías de ejes sin ninguna relación con el año que se está viendo
     const ejesCat = ejesFilt.filter(e => e.tipo === cat && ejeRelevanteAlAnio(e.nombre));
     if (!ejesCat.length) return;
-    const { bg, tc } = catColors[cat] || { bg:'#f1f3f4', tc:'#202124' };
+    const { bg, tc } = catColors[cat] || { bg:'var(--hover)', tc:'var(--text)' };
     const catP = MESES.map(() => 0), catE = MESES.map(() => 0);
 
     html += `<tr style="height:${CAT_H}px">
@@ -1459,25 +1462,25 @@ function renderPoi() {
         catP[i] += p; catE[i] += e;
 
         let bg2 = '';
-        if (p > 0 && e >= p)       bg2 = 'background:#e6f4ea';
-        else if (p > 0 && e > 0)   bg2 = 'background:#fef7e0';
-        else if (p > 0 && e === 0) bg2 = 'background:#fce8e6';
+        if (p > 0 && e >= p)       bg2 = 'background:var(--ok-bg)';
+        else if (p > 0 && e > 0)   bg2 = 'background:var(--warn-bg)';
+        else if (p > 0 && e === 0) bg2 = 'background:var(--bad-bg)';
 
         messCells += `
           <td style="text-align:center;padding:3px 2px;border-bottom:1px solid var(--ink-10)">
             <input class="poi-input" type="number" min="0" max="99" data-key="${esc(key)}" value="${p||''}"/>
           </td>
           <td style="text-align:center;padding:3px 2px;border-right:2px solid var(--border);border-bottom:1px solid var(--ink-10)">
-            <span style="display:inline-block;min-width:20px;padding:2px 5px;border-radius:6px;font-size:12px;font-weight:500;${bg2};color:${e>0&&e>=p&&p>0?'var(--signal-dk)':e>0?'#b06000':'var(--muted)'}">${e > 0 ? e : '—'}</span>
+            <span style="display:inline-block;min-width:20px;padding:2px 5px;border-radius:6px;font-size:12px;font-weight:500;${bg2};color:${e>0&&e>=p&&p>0?'var(--signal-dk)':e>0?'var(--warn)':'var(--muted)'}">${e > 0 ? e : '—'}</span>
           </td>`;
       });
 
-      const totColor = totalE >= totalP && totalP > 0 ? 'var(--signal-dk)' : totalE > 0 ? '#b06000' : 'var(--muted)';
+      const totColor = totalE >= totalP && totalP > 0 ? 'var(--signal-dk)' : totalE > 0 ? 'var(--warn)' : 'var(--muted)';
 
       html += `<tr style="height:${ROW_H}px">
-        <td style="font-weight:500;font-size:13px;color:var(--text);padding:8px 14px;background:#fff;border-bottom:1px solid var(--ink-10);border-right:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:220px;max-width:220px;${STICKY}background:#fff" title="${esc(eje.nombre)}">${esc(eje.nombre)}</td>
-        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--ink-10);font-weight:500;font-size:13px;color:#1967d2;background:#f4f8fe;width:44px">${totalP || '—'}</td>
-        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--ink-10);font-weight:500;font-size:13px;color:${totColor};background:#f4f8fe;border-right:1px solid var(--border);width:44px">${totalE || '—'}</td>
+        <td style="font-weight:500;font-size:13px;color:var(--text);padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--ink-10);border-right:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:220px;max-width:220px;${STICKY}background:var(--surface)" title="${esc(eje.nombre)}">${esc(eje.nombre)}</td>
+        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--ink-10);font-weight:500;font-size:13px;color:var(--primary-ink);background:var(--blue-tint);width:44px">${totalP || '—'}</td>
+        <td style="text-align:center;padding:8px 4px;border-bottom:1px solid var(--ink-10);font-weight:500;font-size:13px;color:${totColor};background:var(--blue-tint);border-right:1px solid var(--border);width:44px">${totalE || '—'}</td>
         ${messCells}
       </tr>`;
       filasPoi++;
@@ -1489,7 +1492,7 @@ function renderPoi() {
 
   // ── Fila final: Total general del año (P y E por mes + total anual) ──
   if (filasPoi > 0) {
-    html += filaTotales(`Total general ${poiAnio}`, sumP, sumE, '#f1f3f4', 'var(--text)', '2px solid var(--border)');
+    html += filaTotales(`Total general ${poiAnio}`, sumP, sumE, 'var(--hover)', 'var(--text)', '2px solid var(--border)');
   }
 
   html += '</tbody></table>';
@@ -1681,8 +1684,8 @@ function renderEvidencias() {
         const prom        = actsActivas.length ? Math.round(actsActivas.reduce((s,r) => s+(r.avance||0),0)/actsActivas.length) : 0;
 
         const estadoBadge = prom === 100
-          ? `<span style="display:inline-flex;align-items:center;gap:5px;height:22px;background:#e6f4ea;color:#137333;font-size:11.5px;font-weight:500;padding:0 8px;border-radius:6px;white-space:nowrap"><i class="fa-solid fa-check"></i> 100%</span>`
-          : `<span style="display:inline-flex;align-items:center;gap:5px;height:22px;background:#fef7e0;color:#b06000;font-size:11.5px;font-weight:500;padding:0 8px;border-radius:6px;white-space:nowrap"><i class="fa-solid fa-hourglass-half"></i> ${prom}%</span>`;
+          ? `<span style="display:inline-flex;align-items:center;gap:5px;height:22px;background:var(--ok-bg);color:var(--ok);font-size:11.5px;font-weight:500;padding:0 8px;border-radius:6px;white-space:nowrap"><i class="fa-solid fa-check"></i> 100%</span>`
+          : `<span style="display:inline-flex;align-items:center;gap:5px;height:22px;background:var(--warn-bg);color:var(--warn);font-size:11.5px;font-weight:500;padding:0 8px;border-radius:6px;white-space:nowrap"><i class="fa-solid fa-hourglass-half"></i> ${prom}%</span>`;
 
         const ejeEsc  = esc(eje.nombre).replace(/'/g,"\'");
         const hitoEsc = esc(hito.nombre).replace(/'/g,"\'");
@@ -1691,46 +1694,46 @@ function renderEvidencias() {
         const evidenciaHTML = ev
           ? esPoi
             ? `<a href="${esc(ev.url||'#')}" target="_blank" rel="noopener"
-                style="font-size:13px;color:#1967d2;font-weight:500;text-decoration:none">
+                style="font-size:13px;color:var(--primary-ink);font-weight:500;text-decoration:none">
                 <i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,40)}${(ev.descripcion||'').length>40?'…':''}
               </a>`
             : `<button onclick="abrirEditarEvidencia(${ev.id})"
-                style="font-size:13px;height:32px;padding:0 14px 0 12px;border-radius:999px;border:1px solid #dadce0;background:#fff;color:#5f6368;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;max-width:100%">
-                <i class="fa-solid fa-gear"></i> <span style="color:#1967d2;font-weight:500"><i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,35)}${(ev.descripcion||'').length>35?'…':''}</span>
+                style="font-size:13px;height:32px;padding:0 14px 0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;max-width:100%">
+                <i class="fa-solid fa-gear"></i> <span style="color:var(--primary-ink);font-weight:500"><i class="fa-solid fa-link"></i> ${esc(ev.descripcion||'Ver documento').substring(0,35)}${(ev.descripcion||'').length>35?'…':''}</span>
               </button>`
           : esPoi
-            ? `<span style="font-size:13px;color:#80868b">Sin evidencia registrada</span>`
+            ? `<span style="font-size:13px;color:var(--text-3)">Sin evidencia registrada</span>`
             : `<button onclick="abrirNuevaEvidencia('${ejeEsc}','${hitoEsc}')"
-                style="font-size:13px;font-weight:500;height:32px;padding:0 14px 0 12px;border-radius:999px;border:1px solid transparent;background:#e8f0fe;color:#1967d2;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit">
+                style="font-size:13px;font-weight:500;height:32px;padding:0 14px 0 12px;border-radius:999px;border:1px solid transparent;background:var(--primary-soft);color:var(--primary-ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit">
                 <i class="fa-solid fa-plus"></i> Agregar enlace
               </button>`;
 
-        return `<tr style="border-bottom:1px solid #e8eaed">
-          <td style="padding:10px 16px;font-size:13px;color:#202124">${esc(hito.nombre)}</td>
+        return `<tr style="border-bottom:1px solid var(--line-soft)">
+          <td style="padding:10px 16px;font-size:13px;color:var(--text)">${esc(hito.nombre)}</td>
           <td style="padding:10px 16px;text-align:center">${estadoBadge}</td>
           <td style="padding:10px 16px">${evidenciaHTML}</td>
         </tr>`;
       }).join('');
 
       html += `
-        <div style="background:#fff;border-radius:12px;border:1px solid #dadce0;margin-bottom:16px;overflow:hidden">
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px 14px 20px;background:#fff;border-bottom:1px solid #dadce0">
+        <div style="background:var(--surface);border-radius:12px;border:1px solid var(--line);margin-bottom:16px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px 14px 20px;background:var(--surface);border-bottom:1px solid var(--line)">
             <div style="display:flex;align-items:center;gap:10px">
               <span style="width:10px;height:10px;border-radius:50%;background:${colorCat};display:inline-block;flex-shrink:0"></span>
-              <span style="font-weight:500;font-size:15px;color:#202124">${esc(eje.nombre)}</span>
-              <span style="font-size:12px;font-weight:500;background:#f1f3f4;padding:2px 10px;border-radius:999px;color:#5f6368;white-space:nowrap">${esc(cat)}</span>
+              <span style="font-weight:500;font-size:15px;color:var(--text)">${esc(eje.nombre)}</span>
+              <span style="font-size:12px;font-weight:500;background:var(--hover);padding:2px 10px;border-radius:999px;color:var(--text-2);white-space:nowrap">${esc(cat)}</span>
             </div>
             <div style="display:flex;gap:12px;align-items:center">
-              <span style="font-size:13px;color:#1967d2;font-weight:500;font-variant-numeric:tabular-nums">P: ${totalP || '—'}</span>
-              <span style="font-size:13px;color:#137333;font-weight:500;font-variant-numeric:tabular-nums">E: ${totalE || '—'}</span>
+              <span style="font-size:13px;color:var(--primary-ink);font-weight:500;font-variant-numeric:tabular-nums">P: ${totalP || '—'}</span>
+              <span style="font-size:13px;color:var(--ok);font-weight:500;font-variant-numeric:tabular-nums">E: ${totalE || '—'}</span>
             </div>
           </div>
           <table style="width:100%;border-collapse:collapse">
             <thead>
-              <tr style="background:#f8f9fa;border-bottom:1px solid #dadce0">
-                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:#5f6368;text-align:left;width:45%">Hito POI</th>
-                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:#5f6368;text-align:center;width:12%">Avance</th>
-                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:#5f6368;text-align:left">Evidencia</th>
+              <tr style="background:var(--bg);border-bottom:1px solid var(--line)">
+                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:var(--text-2);text-align:left;width:45%">Hito POI</th>
+                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:var(--text-2);text-align:center;width:12%">Avance</th>
+                <th style="padding:10px 16px;font-size:12px;font-weight:500;color:var(--text-2);text-align:left">Evidencia</th>
               </tr>
             </thead>
             <tbody>${hitosRows}</tbody>
@@ -1740,7 +1743,7 @@ function renderEvidencias() {
   });
 
   if (!hayContenido) {
-    html = `<div style="text-align:center;padding:48px 20px;color:#5f6368;font-size:13px;background:#fff;border:1px solid #dadce0;border-radius:12px"><i class="fa-regular fa-folder-open" style="display:block;font-size:36px;color:#bdc1c6;margin-bottom:10px"></i>No hay hitos POI para el año ${anioFiltro}.</div>`;
+    html = `<div style="text-align:center;padding:48px 20px;color:var(--text-2);font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:12px"><i class="fa-regular fa-folder-open" style="display:block;font-size:36px;color:#bdc1c6;margin-bottom:10px"></i>No hay hitos POI para el año ${anioFiltro}.</div>`;
   }
   lista.innerHTML = html;
 }
@@ -1880,7 +1883,7 @@ function renderComisiones() {
 
   const ejesConComisiones = Object.keys(porEje);
   if (!ejesConComisiones.length) {
-    lista.innerHTML = `<div style="text-align:center;padding:48px 20px;color:#5f6368;font-size:13px;background:#fff;border:1px solid #dadce0;border-radius:12px"><i class="fa-solid fa-plane" style="display:block;font-size:36px;color:#bdc1c6;margin-bottom:10px"></i>No hay viajes de comisión para ${anioFiltro}.</div>`;
+    lista.innerHTML = `<div style="text-align:center;padding:48px 20px;color:var(--text-2);font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:12px"><i class="fa-solid fa-plane" style="display:block;font-size:36px;color:#bdc1c6;margin-bottom:10px"></i>No hay viajes de comisión para ${anioFiltro}.</div>`;
     return;
   }
 
@@ -1896,12 +1899,12 @@ function renderComisiones() {
   // Estado del viaje según sus fechas (solo para mostrar; no se guarda)
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
   const ESTADOS_VIAJE = {
-    realizado:  { txt: 'Realizado',    bg: '#e6f4ea', fg: '#137333' },
-    encurso:    { txt: 'En curso',     bg: '#e8f0fe', fg: '#1967d2' },
-    porrealizar:{ txt: 'Por realizar', bg: '#fef7e0', fg: '#b06000' },
-    porconfirmar:{ txt: 'Por confirmar', bg: '#feefe3', fg: '#b3541e' },
-    suspendido: { txt: 'Suspendido',   bg: '#fce8e6', fg: '#c5221f' },
-    sinfechas:  { txt: 'Sin fechas',   bg: '#f1f3f4', fg: '#5f6368' },
+    realizado:  { txt: 'Realizado',    bg: 'var(--ok-bg)', fg: 'var(--ok)' },
+    encurso:    { txt: 'En curso',     bg: 'var(--primary-soft)', fg: 'var(--primary-ink)' },
+    porrealizar:{ txt: 'Por realizar', bg: 'var(--warn-bg)', fg: 'var(--warn)' },
+    porconfirmar:{ txt: 'Por confirmar', bg: 'var(--orange-bg)', fg: 'var(--orange)' },
+    suspendido: { txt: 'Suspendido',   bg: 'var(--bad-bg)', fg: 'var(--bad)' },
+    sinfechas:  { txt: 'Sin fechas',   bg: 'var(--hover)', fg: 'var(--text-2)' },
   };
   const estadoViaje = r => {
     if ((r.estado || '').toLowerCase().includes('bloqueado')) return 'suspendido';
@@ -1955,16 +1958,16 @@ function renderComisiones() {
       const fechaIni = r.fecha_inicio ? fmtDate(r.fecha_inicio) : '—';
       const fechaFin = r.fecha_fin    ? fmtDate(r.fecha_fin)    : '—';
 
-      return `<tr style="border-bottom:1px solid #e8eaed">
-        <td style="padding:10px 14px 10px 20px;font-size:13px;color:#202124;font-weight:400">${esc(r.subactividad)}</td>
-        <td style="padding:10px 14px;font-size:12px;color:#5f6368;white-space:nowrap;font-variant-numeric:tabular-nums">${fechaIni} → ${fechaFin}</td>
+      return `<tr style="border-bottom:1px solid var(--line-soft)">
+        <td style="padding:10px 14px 10px 20px;font-size:13px;color:var(--text);font-weight:400">${esc(r.subactividad)}</td>
+        <td style="padding:10px 14px;font-size:12px;color:var(--text-2);white-space:nowrap;font-variant-numeric:tabular-nums">${fechaIni} → ${fechaFin}</td>
         <td style="padding:10px 14px">${chipViaje(ev)}</td>
-        <td style="padding:10px 14px;font-size:12px;color:#5f6368">${esc(r.equipo_tecnico||'—')}</td>
-        <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:#202124;font-variant-numeric:tabular-nums">${personas}</td>
-        <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:#202124;font-variant-numeric:tabular-nums">${dias}</td>
-        <td style="padding:10px 14px;text-align:center;font-size:13px;color:#5f6368">${transp}</td>
-        <td style="padding:10px 14px;text-align:center;font-size:12px;color:#5f6368;font-variant-numeric:tabular-nums">S/. ${(r.comision_costo_diario||320)}</td>
-        <td style="padding:10px 20px 10px 14px;text-align:right;font-size:13px;font-weight:500;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${total.toLocaleString('es-PE')}</td>
+        <td style="padding:10px 14px;font-size:12px;color:var(--text-2)">${esc(r.equipo_tecnico||'—')}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:var(--text);font-variant-numeric:tabular-nums">${personas}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:var(--text);font-variant-numeric:tabular-nums">${dias}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:13px;color:var(--text-2)">${transp}</td>
+        <td style="padding:10px 14px;text-align:center;font-size:12px;color:var(--text-2);font-variant-numeric:tabular-nums">S/. ${(r.comision_costo_diario||320)}</td>
+        <td style="padding:10px 20px 10px 14px;text-align:right;font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${total.toLocaleString('es-PE')}</td>
       </tr>`;
     }).join('');
 
@@ -1973,44 +1976,44 @@ function renderComisiones() {
     personasUnicas.forEach(p => granPersonasSet.add(p));
 
     html += `
-      <div style="background:#fff;border-radius:12px;border:1px solid #dadce0;margin-bottom:16px;overflow:hidden">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px 14px 20px;background:#fff;border-bottom:1px solid #dadce0">
+      <div style="background:var(--surface);border-radius:12px;border:1px solid var(--line);margin-bottom:16px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:14px 16px 14px 20px;background:var(--surface);border-bottom:1px solid var(--line)">
           <div style="display:flex;align-items:center;gap:10px">
             <span style="width:10px;height:10px;border-radius:50%;background:${colorCat};display:inline-block;flex-shrink:0"></span>
-            <span style="font-weight:500;font-size:15px;color:#202124">${esc(ejeNombre)}</span>
-            <span style="font-size:12px;font-weight:500;background:#f1f3f4;padding:2px 10px;border-radius:999px;color:#5f6368;white-space:nowrap">${esc(cat)}</span>
+            <span style="font-weight:500;font-size:15px;color:var(--text)">${esc(ejeNombre)}</span>
+            <span style="font-size:12px;font-weight:500;background:var(--hover);padding:2px 10px;border-radius:999px;color:var(--text-2);white-space:nowrap">${esc(cat)}</span>
           </div>
           <div style="display:flex;gap:8px 16px;align-items:center;flex-wrap:wrap">
-            <span style="font-size:13px;color:#5f6368">${items.length} comisión${items.length>1?'es':''}</span>
-            <span style="font-size:12.5px;color:#137333;font-variant-numeric:tabular-nums">Realizado: ${soles(ejeRealizado)}</span>
-            <span style="font-size:12.5px;color:#b06000;font-variant-numeric:tabular-nums">Por realizar: ${soles(ejePendiente)}</span>
-            ${ejePorConfirmar ? `<span style="font-size:12.5px;color:#b3541e;font-variant-numeric:tabular-nums">Por confirmar: ${soles(ejePorConfirmar)}</span>` : ''}
-            ${ejeSuspendido ? `<span style="font-size:12.5px;color:#c5221f;font-variant-numeric:tabular-nums">Suspendido: ${soles(ejeSuspendido)}</span>` : ''}
-            <span style="font-size:14px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">Total: S/. ${ejeTotal.toLocaleString('es-PE')}</span>
+            <span style="font-size:13px;color:var(--text-2)">${items.length} comisión${items.length>1?'es':''}</span>
+            <span style="font-size:12.5px;color:var(--ok);font-variant-numeric:tabular-nums">Realizado: ${soles(ejeRealizado)}</span>
+            <span style="font-size:12.5px;color:var(--warn);font-variant-numeric:tabular-nums">Por realizar: ${soles(ejePendiente)}</span>
+            ${ejePorConfirmar ? `<span style="font-size:12.5px;color:var(--orange);font-variant-numeric:tabular-nums">Por confirmar: ${soles(ejePorConfirmar)}</span>` : ''}
+            ${ejeSuspendido ? `<span style="font-size:12.5px;color:var(--bad);font-variant-numeric:tabular-nums">Suspendido: ${soles(ejeSuspendido)}</span>` : ''}
+            <span style="font-size:14px;font-weight:500;color:var(--text);font-variant-numeric:tabular-nums">Total: S/. ${ejeTotal.toLocaleString('es-PE')}</span>
           </div>
         </div>
         <table style="width:100%;border-collapse:collapse">
           <thead>
-            <tr style="background:#f8f9fa;border-bottom:1px solid #dadce0">
-              <th style="padding:10px 14px 10px 20px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:23%">Actividad</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:15%">Fechas</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:9%">Estado del viaje</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left">Equipo técnico</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:7%">Pers.</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:6%">Días</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:8%">Transp.</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:9%">C/día</th>
-              <th style="padding:10px 20px 10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:right;width:11%">Total</th>
+            <tr style="background:var(--bg);border-bottom:1px solid var(--line)">
+              <th style="padding:10px 14px 10px 20px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:left;width:23%">Actividad</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:left;width:15%">Fechas</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:left;width:9%">Estado del viaje</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:left">Equipo técnico</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:center;width:7%">Pers.</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:center;width:6%">Días</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:center;width:8%">Transp.</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:center;width:9%">C/día</th>
+              <th style="padding:10px 20px 10px 14px;font-size:12px;font-weight:500;color:var(--text-2);white-space:nowrap;text-align:right;width:11%">Total</th>
             </tr>
           </thead>
           <tbody>${filas}</tbody>
           <tfoot>
-            <tr style="background:#f8f9fa;border-top:1px solid #dadce0">
-              <td colspan="4" style="padding:10px 14px 10px 20px;font-size:13px;font-weight:500;color:#5f6368">Subtotal ${esc(ejeNombre)}</td>
-              <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">${ejeTotalPersonas}</td>
-              <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">${ejeTotalDias}</td>
+            <tr style="background:var(--bg);border-top:1px solid var(--line)">
+              <td colspan="4" style="padding:10px 14px 10px 20px;font-size:13px;font-weight:500;color:var(--text-2)">Subtotal ${esc(ejeNombre)}</td>
+              <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:var(--text);font-variant-numeric:tabular-nums">${ejeTotalPersonas}</td>
+              <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:var(--text);font-variant-numeric:tabular-nums">${ejeTotalDias}</td>
               <td colspan="2"></td>
-              <td style="padding:10px 20px 10px 14px;text-align:right;font-size:14px;font-weight:500;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${ejeTotal.toLocaleString('es-PE')}</td>
+              <td style="padding:10px 20px 10px 14px;text-align:right;font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${ejeTotal.toLocaleString('es-PE')}</td>
             </tr>
           </tfoot>
         </table>
@@ -2019,18 +2022,18 @@ function renderComisiones() {
 
   // Gran total
   html += `
-    <div style="background:#e8f0fe;border-radius:12px;border:1px solid transparent;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 24px">
-      <span style="font-weight:500;font-size:16px;color:#1967d2"><i class="fa-solid fa-plane"></i> Gran total — Viajes de Comisión</span>
+    <div style="background:var(--primary-soft);border-radius:12px;border:1px solid transparent;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 24px">
+      <span style="font-weight:500;font-size:16px;color:var(--primary-ink)"><i class="fa-solid fa-plane"></i> Gran total — Viajes de Comisión</span>
       <div style="display:flex;gap:8px 24px;align-items:center;flex-wrap:wrap">
-        <span style="font-size:13px;color:#5f6368">${ejesConComisiones.length} eje${ejesConComisiones.length>1?'s':''} · ${granPersonasSet.size} persona${granPersonasSet.size!==1?'s':''} únicas</span>
-        <span style="font-size:13px;color:#5f6368;font-weight:400">S/. 320 × personas × días</span>
-        <span style="font-size:24px;font-weight:400;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${granTotal.toLocaleString('es-PE')}</span>
+        <span style="font-size:13px;color:var(--text-2)">${ejesConComisiones.length} eje${ejesConComisiones.length>1?'s':''} · ${granPersonasSet.size} persona${granPersonasSet.size!==1?'s':''} únicas</span>
+        <span style="font-size:13px;color:var(--text-2);font-weight:400">S/. 320 × personas × días</span>
+        <span style="font-size:24px;font-weight:400;color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${granTotal.toLocaleString('es-PE')}</span>
       </div>
-      <div style="flex-basis:100%;display:flex;gap:8px 12px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid #c6dafc">
-        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('realizado')} ${soles(granRealizado)}</span>
-        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porrealizar')} ${soles(granPendiente)}</span>
-        ${granPorConfirmar ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porconfirmar')} ${soles(granPorConfirmar)}</span>` : ''}
-        ${granSuspendido ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('suspendido')} ${soles(granSuspendido)}</span>` : ''}
+      <div style="flex-basis:100%;display:flex;gap:8px 12px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid var(--soft-hover-line)">
+        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;color:var(--text);font-variant-numeric:tabular-nums">${chipViaje('realizado')} ${soles(granRealizado)}</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;color:var(--text);font-variant-numeric:tabular-nums">${chipViaje('porrealizar')} ${soles(granPendiente)}</span>
+        ${granPorConfirmar ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;color:var(--text);font-variant-numeric:tabular-nums">${chipViaje('porconfirmar')} ${soles(granPorConfirmar)}</span>` : ''}
+        ${granSuspendido ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;color:var(--text);font-variant-numeric:tabular-nums">${chipViaje('suspendido')} ${soles(granSuspendido)}</span>` : ''}
       </div>
     </div>`;
 
@@ -2045,8 +2048,8 @@ function renderComisiones() {
   <div class="ev-modal-card">
     <div class="ev-modal-head">
       <div>
-        <div style="font-weight:400;font-size:20px;line-height:1.3;color:#202124" id="evModalTitle"><i class="fa-solid fa-paperclip"></i> Agregar evidencia</div>
-        <div style="font-size:13px;color:#5f6368;margin-top:2px" id="evHitoLabel"></div>
+        <div style="font-weight:400;font-size:20px;line-height:1.3;color:var(--text)" id="evModalTitle"><i class="fa-solid fa-paperclip"></i> Agregar evidencia</div>
+        <div style="font-size:13px;color:var(--text-2);margin-top:2px" id="evHitoLabel"></div>
       </div>
       <button class="ev-btn-close" onclick="closeEvModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -2060,7 +2063,7 @@ function renderComisiones() {
           <input type="url" id="evUrl" placeholder="https://drive.google.com/..." required
             oninput="actualizarLinkEvidencia()">
           <a id="evUrlLink" href="#" target="_blank" rel="noopener"
-            style="display:none;margin-top:8px;font-size:13px;font-weight:500;color:#1967d2;text-decoration:none">
+            style="display:none;margin-top:8px;font-size:13px;font-weight:500;color:var(--primary-ink);text-decoration:none">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir documento
           </a>
         </div>
@@ -2087,8 +2090,8 @@ function renderComisiones() {
 
 <!-- OVERLAY: Guardando POI programado -->
 <div id="poiSavingOverlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(32,33,36,.5);align-items:center;justify-content:center">
-  <div style="background:#fff;border:none;border-radius:16px;padding:26px 34px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:var(--shadow-2)">
+  <div style="background:var(--surface);border:none;border-radius:16px;padding:26px 34px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:var(--shadow-2)">
     <i class="fa-solid fa-spinner fa-spin" style="font-size:26px;color:var(--blue)"></i>
-    <div style="font-size:14px;font-weight:400;color:#202124">Guardando datos de POI programado, espere...</div>
+    <div style="font-size:14px;font-weight:400;color:var(--text)">Guardando datos de POI programado, espere...</div>
   </div>
 </div>

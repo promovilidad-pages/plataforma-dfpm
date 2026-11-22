@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="tema.css"/>
+  <script src="tema.js"></script>
   <style>
     /* Estilo Google Material (Workspace) — ver GUIA_ESTILO_GOOGLE.md
        Se conservan todos los nombres de clases y variables que usa el JS.
@@ -80,7 +82,7 @@
       cursor: pointer; transition: background .15s, border-color .15s; text-decoration: none; white-space: nowrap;
     }
     .btn-back i { font-size: 13px; }
-    .btn-back:hover { background: #f6fafe; border-color: #c6dafc; }
+    .btn-back:hover { background:var(--soft-hover); border-color:var(--soft-hover-line); }
 
     /* BARRA DE HERRAMIENTAS (filtros, vista, zoom, navegación) */
     .toolbar {
@@ -94,7 +96,7 @@
       cursor: pointer; outline: none;
       transition: border-color .15s, box-shadow .15s;
     }
-    select:hover { border-color: #bdc1c6; }
+    select:hover { border-color:var(--line-strong); }
     select:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
     /* Botón outlined en píldora */
     .btn-ctrl {
@@ -106,12 +108,12 @@
       transition: background .15s, border-color .15s, color .15s;
     }
     .btn-ctrl i { font-size: 13px; }
-    .btn-ctrl:hover { background: #f6fafe; border-color: #c6dafc; }
+    .btn-ctrl:hover { background:var(--soft-hover); border-color:var(--soft-hover-line); }
     .btn-ctrl:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
     /* Activo = tonal */
     .btn-ctrl.active { background: var(--primary-soft); border-color: transparent; color: var(--primary-ink); }
     body.ejes-ocultos .eje-panel { display: none; }
-    .btn-ctrl.active:hover { background: #d2e3fc; }
+    .btn-ctrl.active:hover { background:var(--primary-soft-2); }
     /* Grupo de botones de ícono dentro de un contorno en píldora */
     .zoom-group {
       display: inline-flex; align-items: center; gap: 2px;
@@ -125,7 +127,7 @@
       cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
       transition: background .15s, color .15s; white-space: nowrap;
     }
-    .zoom-btn:hover { background: rgba(60,64,67,.08); color: var(--text); }
+    .zoom-btn:hover { background:var(--hover-overlay); color: var(--text); }
     .zoom-val { font-size: 13px; font-weight: 500; color: var(--text-2); min-width: 40px; text-align: center; font-variant-numeric: tabular-nums; }
     .spacer { flex: 1; }
 
@@ -159,7 +161,7 @@
       transition: background .15s, color .15s; margin-bottom: 2px;
       line-height: 1.35;
     }
-    .eje-item:hover { background: rgba(60,64,67,.08); }
+    .eje-item:hover { background:var(--hover-overlay); }
     .eje-item.active { background: var(--primary-soft); color: var(--primary-ink); }
     .eje-pct { font-size: 12px; font-weight: 400; margin-top: 2px; font-variant-numeric: tabular-nums; }
 
@@ -208,7 +210,7 @@
       padding-left: 16px;
     }
     .label-cell.task-row { color: var(--text); font-weight: 400; padding-left: 28px; cursor: pointer; transition: background .15s, color .15s; }
-    .label-cell.task-row:hover { background: #f6fafe; color: var(--primary-ink); }
+    .label-cell.task-row:hover { background:var(--soft-hover); color: var(--primary-ink); }
     .label-cell.group-row:hover { background: var(--hover); }
 
     /* Panel del gantt — scroll horizontal invisible */
@@ -243,11 +245,11 @@
       font-variant-numeric: tabular-nums;
       position: sticky; top: 28px; z-index: 15;
     }
-    .gantt-cell { border-bottom: 1px solid var(--line-soft); border-right: 1px solid #f1f3f4; position: relative; overflow: visible; }
+    .gantt-cell { border-bottom: 1px solid var(--line-soft); border-right: 1px solid var(--line-soft); position: relative; overflow: visible; }
     .gantt-cell.group-row { background: var(--bg); border-bottom: 1px solid var(--line-soft); border-right: 1px solid var(--line-soft); }
-    .gantt-cell.weekend { background: rgba(60,64,67,0.05); }
-    .gantt-cell.alt-month { background: rgba(60,64,67,0.025); }
-    .gantt-cell.weekend.alt-month { background: rgba(60,64,67,0.07); }
+    .gantt-cell.weekend { background: var(--shade-1); }
+    .gantt-cell.alt-month { background: var(--shade-0); }
+    .gantt-cell.weekend.alt-month { background: var(--shade-2); }
     .ganttToday {
       display: none; /* reemplazado por overlay global */
     }
@@ -280,7 +282,7 @@
     /* ESTADO COLORES (sólidos, paleta Google) */
     .bar-done    { background: #1e8e3e; }
     .bar-process { background: #1a73e8; }
-    .bar-pending { background: #f9ab00; color: #202124; }  /* texto oscuro: el blanco no se lee sobre ámbar */
+    .bar-pending { background: #f9ab00; color:var(--text); }  /* texto oscuro: el blanco no se lee sobre ámbar */
     .bar-blocked { background: #d93025; }
 
     /* EMPTY */
@@ -311,18 +313,18 @@
 <body style="opacity:0">
 <style>
   #appLoaderGantt {
-    position:fixed;inset:0;z-index:9999;background:#fff;
+    position:fixed;inset:0;z-index:9999;background:var(--surface);
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
     transition:opacity .3s ease;
   }
   #appLoaderGantt.fade-out { opacity:0;pointer-events:none; }
   .gantt-spinner {
-    width:40px;height:40px;border:3px solid #e8eaed;
+    width:40px;height:40px;border:3px solid var(--line-soft);
     border-top-color:#1a73e8;border-radius:50%;
     animation:ganttSpin .7s linear infinite;
   }
   @keyframes ganttSpin { to { transform:rotate(360deg); } }
-  .gantt-loader-text { font-size:14px;color:#5f6368;font-family:inherit; }
+  .gantt-loader-text { font-size:14px;color:var(--text-2);font-family:inherit; }
 </style>
 
 <div id="appLoaderGantt">
@@ -347,6 +349,7 @@
     <a id="btnAyudaMemoria" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none"><i class="fa-solid fa-file-lines"></i> Ayuda Memoria</a>
     <a id="btnFichaActividad" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none"><i class="fa-solid fa-file-lines"></i> Ficha Actividad</a>
   </div>
+  <button type="button" class="btn-tema" aria-label="Cambiar a modo oscuro" title="Cambiar a modo oscuro"><i class="fa-solid fa-moon"></i></button>
 </div>
 
 <!-- HERRAMIENTAS -->
@@ -430,8 +433,8 @@
 
 <!-- MODAL DETALLE -->
 <div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(32,33,36,0.4);z-index:1000;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:12px;padding:24px 28px;width:90%;max-width:480px;box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);position:relative;max-height:85vh;overflow-y:auto">
-    <button onclick="closeDetail()" style="position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:none;border:none;font-size:18px;cursor:pointer;color:#5f6368"><i class="fa-solid fa-xmark"></i></button>
+  <div style="background:var(--surface);border-radius:12px;padding:24px 28px;width:90%;max-width:480px;box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);position:relative;max-height:85vh;overflow-y:auto">
+    <button onclick="closeDetail()" style="position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-2)"><i class="fa-solid fa-xmark"></i></button>
     <div id="detailContent"></div>
   </div>
 </div>
@@ -456,6 +459,13 @@ function fmtMonthEs(d) {
   return (m.charAt(0).toUpperCase() + m.slice(1)).replace('.','');
 }
 
+function estadoChip(e){
+  const n=(e||'').toLowerCase();
+  if(n.includes('bloque')) return {bg:'var(--bad-bg)',fg:'var(--bad)'};
+  if(n.includes('complet')) return {bg:'var(--ok-bg)',fg:'var(--ok)'};
+  if(n.includes('proceso')) return {bg:'var(--primary-soft)',fg:'var(--primary-ink)'};
+  return {bg:'var(--warn-bg)',fg:'var(--warn)'};
+}
 function estadoColor(e) {
   const n = (e||'').toLowerCase();
   if (n.includes('bloque'))  return 'var(--red)';
@@ -788,11 +798,11 @@ function renderGantt() {
           const esBloq = (t.estado||'').toLowerCase().includes('bloqueado');
           const isVencida = !esBloq && t.end<today2 && t.pct<100;
           const isPorVencer = !esBloq && !isVencida && t.end>=today2 && daysBetween(today2,t.end)<=7 && t.pct<100;
-          const alertBorder = isVencida ? 'box-shadow:0 0 0 1px #fff,0 0 0 3px #d93025;' : isPorVencer ? 'box-shadow:0 0 0 1px #fff,0 0 0 3px #e37400;' : '';
+          const alertBorder = isVencida ? 'box-shadow:0 0 0 1px var(--surface),0 0 0 3px #d93025;' : isPorVencer ? 'box-shadow:0 0 0 1px var(--surface),0 0 0 3px #e37400;' : '';
           const alertBadge = isVencida
-            ? `<div style="position:absolute;top:-5px;left:-3px;font-size:12px;line-height:1;pointer-events:none;z-index:5;background:#fff;border-radius:50%;padding:1px"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></div>`
+            ? `<div style="position:absolute;top:-5px;left:-3px;font-size:12px;line-height:1;pointer-events:none;z-index:5;background:var(--surface);border-radius:50%;padding:1px"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></div>`
             : isPorVencer
-            ? `<div style="position:absolute;top:-5px;left:-3px;font-size:12px;line-height:1;pointer-events:none;z-index:5;background:#fff;border-radius:50%;padding:1px"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></div>`
+            ? `<div style="position:absolute;top:-5px;left:-3px;font-size:12px;line-height:1;pointer-events:none;z-index:5;background:var(--surface);border-radius:50%;padding:1px"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></div>`
             : '';
           html += `<div class="gbar-wrap" style="overflow:visible">${alertBadge}<div class="gbar ${barClass(t.estado)}" style="left:2px;width:${w}px;cursor:pointer;${alertBorder}" title="${esc(t.name)} — ${t.estado} ${t.pct}%" onclick="showDetail(${t.row.id})">${t.pct}% · ${esc(t.name)}</div></div>`;
         }
@@ -894,24 +904,24 @@ window.showDetail = function(id) {
 
   content.innerHTML = `
     <div style="margin-bottom:16px">
-      <div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:4px;padding-right:36px">${esc(row.hito||'Sin hito')}</div>
-      <h3 style="font-size:20px;font-weight:400;color:#202124;line-height:1.3;padding-right:36px">${esc(row.subactividad||'')}</h3>
-      ${isVencida ? '<div style="margin-top:8px;font-size:13px;color:#d93025;font-weight:500"><i class="fa-solid fa-circle-exclamation"></i> Actividad vencida</div>' : ''}
-      ${isPorVencer ? '<div style="margin-top:8px;font-size:13px;color:#b06000;font-weight:500"><i class="fa-solid fa-triangle-exclamation"></i> Por vencer esta semana</div>' : ''}
+      <div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:4px;padding-right:36px">${esc(row.hito||'Sin hito')}</div>
+      <h3 style="font-size:20px;font-weight:400;color:var(--text);line-height:1.3;padding-right:36px">${esc(row.subactividad||'')}</h3>
+      ${isVencida ? '<div style="margin-top:8px;font-size:13px;color:var(--bad);font-weight:500"><i class="fa-solid fa-circle-exclamation"></i> Actividad vencida</div>' : ''}
+      ${isPorVencer ? '<div style="margin-top:8px;font-size:13px;color:var(--warn);font-weight:500"><i class="fa-solid fa-triangle-exclamation"></i> Por vencer esta semana</div>' : ''}
     </div>
     <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-      <span style="padding:3px 10px;border-radius:8px;background:${estadoColor(row.estado)}1f;color:${estadoColor(row.estado)};font-size:12px;font-weight:500">${esc(row.estado||'Pendiente')}</span>
-      <span style="padding:3px 10px;border-radius:8px;background:#f1f3f4;color:#3c4043;font-size:12px;font-weight:500">${row.avance||0}% avance</span>
-      ${row.prioridad ? `<span style="padding:3px 10px;border-radius:8px;background:#f1f3f4;color:#3c4043;font-size:12px;font-weight:500">${esc(row.prioridad)}</span>` : ''}
+      <span style="padding:3px 10px;border-radius:8px;background:${estadoChip(row.estado).bg};color:${estadoChip(row.estado).fg};font-size:12px;font-weight:500">${esc(row.estado||'Pendiente')}</span>
+      <span style="padding:3px 10px;border-radius:8px;background:var(--hover);color:var(--text);font-size:12px;font-weight:500">${row.avance||0}% avance</span>
+      ${row.prioridad ? `<span style="padding:3px 10px;border-radius:8px;background:var(--hover);color:var(--text);font-size:12px;font-weight:500">${esc(row.prioridad)}</span>` : ''}
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;font-size:14px">
-      ${row.responsable ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Responsable</div><div style="color:#202124">${esc(row.responsable)}</div></div>` : ''}
-      ${row.equipo_tecnico ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Equipo</div><div style="color:#202124">${esc(row.equipo_tecnico)}</div></div>` : ''}
-      ${row.ciudad ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Ciudad</div><div style="color:#202124">${esc(row.ciudad)}</div></div>` : ''}
-      ${row.fecha_inicio ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Fecha inicio</div><div style="color:#202124">${row.fecha_inicio}</div></div>` : ''}
-      ${row.fecha_fin ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Fecha fin</div><div style="color:#202124">${row.fecha_fin}</div></div>` : ''}
-      ${row.producto ? `<div style="grid-column:1/-1"><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Producto</div><div style="color:#202124">${esc(row.producto)}</div></div>` : ''}
-      ${row.comentarios ? `<div style="grid-column:1/-1"><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Comentarios</div><div style="color:#202124;white-space:pre-line">${esc(row.comentarios)}</div></div>` : ''}
+      ${row.responsable ? `<div><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Responsable</div><div style="color:var(--text)">${esc(row.responsable)}</div></div>` : ''}
+      ${row.equipo_tecnico ? `<div><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Equipo</div><div style="color:var(--text)">${esc(row.equipo_tecnico)}</div></div>` : ''}
+      ${row.ciudad ? `<div><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Ciudad</div><div style="color:var(--text)">${esc(row.ciudad)}</div></div>` : ''}
+      ${row.fecha_inicio ? `<div><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Fecha inicio</div><div style="color:var(--text)">${row.fecha_inicio}</div></div>` : ''}
+      ${row.fecha_fin ? `<div><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Fecha fin</div><div style="color:var(--text)">${row.fecha_fin}</div></div>` : ''}
+      ${row.producto ? `<div style="grid-column:1/-1"><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Producto</div><div style="color:var(--text)">${esc(row.producto)}</div></div>` : ''}
+      ${row.comentarios ? `<div style="grid-column:1/-1"><div style="font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:2px">Comentarios</div><div style="color:var(--text);white-space:pre-line">${esc(row.comentarios)}</div></div>` : ''}
     </div>
     ${row.evidencia ? `<div style="margin-top:16px"><a href="${esc(row.evidencia)}" target="_blank" style="color:var(--accent);font-size:14px;font-weight:500;text-decoration:none"><i class="fa-solid fa-link"></i> Ver evidencia</a></div>` : ''}
   `;

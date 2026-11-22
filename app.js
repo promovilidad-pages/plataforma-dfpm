@@ -189,7 +189,10 @@ function getAlertStatus(row) {
 }
 
 function estadoColor(e) {
-  const m = { 'completado':'#1e8e3e', 'en proceso':'#1a73e8', 'pendiente':'#e37400', 'bloqueado':'#d93025' };
+  const oscuro = document.documentElement.getAttribute('data-theme') === 'dark';
+  const m = oscuro
+    ? { 'completado':'#81c995', 'en proceso':'#8ab4f8', 'pendiente':'#fcad70', 'bloqueado':'#f28b82' }
+    : { 'completado':'#1e8e3e', 'en proceso':'#1a73e8', 'pendiente':'#e37400', 'bloqueado':'#d93025' };
   return m[(e||'').toLowerCase()] || '#5f6368';
 }
 
@@ -1040,7 +1043,7 @@ function actualizarEstadoDisplay() {
 
   // Color del display
   const colors = {
-    'Pendiente':  { bg:'var(--amber-lt)', color:'#b45309', border:'var(--amber)' },
+    'Pendiente':  { bg:'var(--amber-lt)', color:'var(--warn)', border:'var(--amber)' },
     'En proceso': { bg:'var(--blue-lt)',  color:'var(--blue)', border:'var(--blue)' },
     'Completado': { bg:'var(--signal-lt)',color:'var(--signal-dk)', border:'var(--signal)' },
     'Bloqueado':  { bg:'var(--red-lt)',   color:'var(--red)', border:'var(--red)' },
@@ -1312,9 +1315,9 @@ window.filterEquipoList = function(query) {
     const selected = current.includes(u);
     return `<div onclick="selectEquipoUser('${u.replace(/'/g,"\\'")}') "
       style="padding:9px 14px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;
-      background:${selected?'#eff6ff':'#fff'};color:${selected?'var(--blue)':'var(--text)'}"
-      onmouseover="this.style.background='#f5f7ff'"
-      onmouseout="this.style.background='${selected?'#eff6ff':'#fff'}'">
+      background:${selected?'var(--primary-soft)':'var(--surface)'};color:${selected?'var(--blue)':'var(--text)'}"
+      onmouseover="this.style.background='var(--soft-hover)'"
+      onmouseout="this.style.background='${selected?'var(--primary-soft)':'var(--surface)'}'">
       <span style="font-size:11px">${selected?'✓':''}</span>
       ${u}
     </div>`;
@@ -1351,9 +1354,9 @@ window.filterResponsableList = function(query) {
   if (!filtered.length) { dropdown.style.display='none'; return; }
   options.innerHTML = filtered.map(u =>
     `<div onclick="selectResponsable('${u.replace(/'/g,"\\'")}')"
-      style="padding:9px 14px;cursor:pointer;font-size:13px;background:#fff"
-      onmouseover="this.style.background='#f5f7ff'"
-      onmouseout="this.style.background='#fff'">
+      style="padding:9px 14px;cursor:pointer;font-size:13px;background:var(--surface)"
+      onmouseover="this.style.background='var(--soft-hover)'"
+      onmouseout="this.style.background='var(--surface)'">
       ${u}
     </div>`
   ).join('');
