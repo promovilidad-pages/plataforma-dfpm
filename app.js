@@ -189,8 +189,8 @@ function getAlertStatus(row) {
 }
 
 function estadoColor(e) {
-  const m = { 'completado':'#22c55e', 'en proceso':'#3b82f6', 'pendiente':'#f59e0b', 'bloqueado':'#ef4444' };
-  return m[(e||'').toLowerCase()] || '#64748b';
+  const m = { 'completado':'#1e8e3e', 'en proceso':'#1a73e8', 'pendiente':'#e37400', 'bloqueado':'#d93025' };
+  return m[(e||'').toLowerCase()] || '#5f6368';
 }
 
 function estadoEmoji(e) {
@@ -343,7 +343,7 @@ async function verHistorialEje(ejeNombre) {
 }
 
 function renderLogTabla(rows, mostrarActividad = false) {
-  const accionLabel = { edicion: '✏️ Edición', eliminacion: '🗑️ Eliminación', creacion: '➕ Creación' };
+  const accionLabel = { edicion: 'Edición', eliminacion: 'Eliminación', creacion: 'Creación' };
   const accionStyle = { edicion: 'color:var(--blue)', eliminacion: 'color:var(--red)', creacion: 'color:var(--signal-dk)' };
 
   return `
@@ -556,7 +556,7 @@ function renderList() {
     }).join('');
     return `
       <button class="btn-nueva-eje" onclick="abrirNuevaEstrategia()" title="Nueva estrategia">
-        ＋ Nueva estrategia
+        <i class="fa-solid fa-plus"></i> Nueva estrategia
       </button>
     ` + cardsHTML;
   };
@@ -572,10 +572,10 @@ function renderList() {
     if (!rows.length && !hitosDelEje.length) return `
       <div class="eje-right-header">
         <div><div class="eje-right-title">${esc(actName)}</div>
-        <div class="eje-right-sub" style="color:var(--text-muted)">Sin hitos aún — usa ＋ Hito para agregar</div></div>
+        <div class="eje-right-sub" style="color:var(--text-muted)">Sin hitos aún. Usa el botón Hito para agregar.</div></div>
         <div style="display:flex;gap:6px">
-          <button class="btn-add-inline" data-eje="${esc(actName)}" onclick="abrirNuevoHito(this.dataset.eje)">＋ Hito</button>
-          <button class="btn-eje-action" style="opacity:1;font-size:14px" data-eje="${esc(actName)}" onclick="abrirConfigEje(this.dataset.eje)">⚙️</button>
+          <button class="btn-add-inline" data-eje="${esc(actName)}" onclick="abrirNuevoHito(this.dataset.eje)"><i class="fa-solid fa-plus"></i> Hito</button>
+          <button class="btn-eje-action" style="opacity:1;font-size:14px" data-eje="${esc(actName)}" onclick="abrirConfigEje(this.dataset.eje)"><i class="fa-solid fa-gear"></i></button>
         </div>
       </div>`;
     const comp = rows.filter(r=>(r.estado||'').includes('Completado')).length;
@@ -616,7 +616,7 @@ function renderList() {
 
         const emptyHito = !realTasks.length ? `
           <div class="eje-task" style="color:var(--text-muted);font-style:italic;cursor:default">
-            Sin actividades — usa ＋ para agregar
+            Sin actividades. Usa + para agregar.
           </div>` : '';
         const tasksHTML = (emptyHito ? [emptyHito] : []).concat(realTasks.map(row => {
           if (!row.subactividad) return '';
@@ -646,16 +646,14 @@ function renderList() {
               <span>${esc(hitoName)}</span>
               <div style="display:flex;align-items:center;gap:6px">
                 <span class="shPct" style="font-size:11px;padding:2px 8px">${pctH}%</span>
-                <button class="btn-eje-action btn-eje-edit" style="opacity:1;padding:2px 5px;font                <button class="btn-eje-action" style="opacity:1;padding:2px 6px;font-size:13px"
-                  title="Configurar hito"
                 <button class="btn-add-inline btn-add-sm" title="Nueva actividad en este hito"
                   data-eje="${esc(actName)}" data-hito="${esc(hitoName)}"
-                  onclick="event.stopPropagation();abrirNuevaActividad(this.dataset.eje, this.dataset.hito)">＋</button>
+                  onclick="event.stopPropagation();abrirNuevaActividad(this.dataset.eje, this.dataset.hito)"><i class="fa-solid fa-plus"></i></button>
                 ${(currentPerfil?.rol==='admin' || hitosData.find(h=>h.eje_nombre===actName&&h.nombre===hitoName)?.creado_por===currentUser?.id) ? `
                 <button class="btn-eje-action" style="opacity:1;padding:2px 6px;font-size:13px"
                   title="Configurar hito"
                   data-eje="${esc(actName)}" data-hito="${esc(hitoName)}"
-                  onclick="event.stopPropagation();abrirConfigHito(this.dataset.eje, this.dataset.hito)">⚙️</button>` : ''}
+                  onclick="event.stopPropagation();abrirConfigHito(this.dataset.eje, this.dataset.hito)"><i class="fa-solid fa-gear"></i></button>` : ''}
               </div>
             </div>
             ${tasksHTML}
@@ -674,22 +672,21 @@ function renderList() {
           ${proc ? `<span class="badge bg-proc">${proc} en proceso</span>` : ''}
           ${pend ? `<span class="badge bg-pend">${pend} pendiente${pend>1?'s':''}</span>` : ''}
           ${bloq ? `<span class="badge" style="background:var(--red-lt);color:var(--red)">${bloq} bloqueada${bloq>1?'s':''}</span>` : ''}
-          <button class="btn-eje-action bt              <button class="btn-eje-action" style="opacity:1;font-size:14px" title="Configurar eje"
-              <button class="btn-add-inline" title="Nuevo hito"
+          <button class="btn-add-inline" title="Nuevo hito"
                 data-eje="${esc(actName)}"
-                onclick="event.stopPropagation();abrirNuevoHito(this.dataset.eje)">＋ Hito</button>
-          <button class="btn-add-inline" title="Reuniones del eje" style="background:#eef2ff;color:#4f46e5"
+                onclick="event.stopPropagation();abrirNuevoHito(this.dataset.eje)"><i class="fa-solid fa-plus"></i> Hito</button>
+          <button class="btn-add-inline" title="Reuniones del eje"
             data-eje="${esc(actName)}"
             onclick="event.stopPropagation();togglePanelReuniones(this.dataset.eje)"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones</button>
           ${(currentPerfil?.rol==='admin' || ejesData.find(e=>e.nombre===actName)?.creado_por===currentUser?.id) ? `
           <button class="btn-eje-action" style="opacity:1;font-size:14px"
                 title="Configurar eje"
                 data-eje="${esc(actName)}"
-                onclick="event.stopPropagation();abrirConfigEje(this.dataset.eje)">⚙️</button>` : ''}
+                onclick="event.stopPropagation();abrirConfigEje(this.dataset.eje)"><i class="fa-solid fa-gear"></i></button>` : ''}
           <button class="btn-eje-action" style="opacity:1;font-size:13px;padding:2px 8px"
             title="Ver historial del eje"
             data-eje="${esc(actName)}"
-            onclick="event.stopPropagation();verHistorialEje(this.dataset.eje)">🕓 Historial</button>
+            onclick="event.stopPropagation();verHistorialEje(this.dataset.eje)"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
         </div>
       </div>
       <div id="panelReuniones_${esc(actName).replace(/[^a-zA-Z0-9]/g,'_')}" class="panel-reuniones" style="display:none"></div>
@@ -816,7 +813,7 @@ document.getElementById('ejeForm').addEventListener('submit', async (e) => {
 
   ejeSeleccionado = nuevoNombre;
   // Restaurar modal para próxima edición
-  document.querySelector('#ejeModal .modalTitle').textContent = '⚙️ Configurar Eje de Trabajo';
+  document.querySelector('#ejeModal .modalTitle').textContent = 'Configurar Eje de Trabajo';
   document.getElementById('btnDeleteEje').style.display = '';
   closeModal('ejeModal');
   await loadActividades();
@@ -862,7 +859,7 @@ function openDetail(row) {
   document.getElementById('dFin').textContent    = fmtDate(row.fecha_fin);
 
   const est = document.getElementById('dEstado');
-  est.textContent = `${estadoEmoji(row.estado)} ${row.estado || '—'}`;
+  est.textContent = `${row.estado || '—'}`;
   est.style.background = estadoColor(row.estado) + '22';
   est.style.color = estadoColor(row.estado);
   est.style.border = `1px solid ${estadoColor(row.estado)}44`;
@@ -900,7 +897,7 @@ window.abrirNuevaEstrategia = function() {
   document.getElementById('ejeUrlAyuda').value       = '';
   document.getElementById('ejeUrlFicha').value       = '';
   document.getElementById('ejeModalSub').textContent = 'Nueva estrategia — ' + (categoriaSeleccionada || 'Planificación');
-  document.querySelector('#ejeModal .modalTitle').textContent = '⚙️ Nueva Estrategia';
+  document.querySelector('#ejeModal .modalTitle').textContent = 'Nueva Estrategia';
   document.getElementById('btnDeleteEje').style.display = 'none';
   document.getElementById('ejetipoGroup').style.display = 'none';
   openModal('ejeModal');
@@ -918,7 +915,7 @@ window.abrirNuevoHito = function(actividadGeneral) {
   document.getElementById('hitoNombre').value           = prefijo;
   document.getElementById('hitoEsPoi').checked          = false;
   document.getElementById('hitoModalSub').textContent   = `En: ${actividadGeneral}`;
-  document.querySelector('#hitoModal .modalTitle').textContent = '⚙️ Nuevo Hito';
+  document.querySelector('#hitoModal .modalTitle').textContent = 'Nuevo Hito';
   document.getElementById('btnDeleteHito').style.display = 'none';
   openModal('hitoModal');
   // Posicionar cursor al final del prefijo
@@ -1026,10 +1023,10 @@ function calcEstado(avance) {
 }
 
 const ESTADO_DISPLAY = {
-  'Pendiente':  '🟡 Pendiente',
-  'En proceso': '🔵 En proceso',
-  'Completado': '🟢 Completado',
-  'Bloqueado':  '🔴 Bloqueado',
+  'Pendiente':  'Pendiente',
+  'En proceso': 'En proceso',
+  'Completado': 'Completado',
+  'Bloqueado':  'Bloqueado',
 };
 
 function actualizarEstadoDisplay() {
@@ -1443,7 +1440,7 @@ function renderRepo(rows) {
             <td><span class="muted-text">${esc(r.participantes||'—')}</span></td>
             <td class="comment-cell">${esc(r.comentarios||'—')}</td>
             <td>
-              <button class="btn-icon-sm" onclick="openRepoEdit(${r.id})" title="Configurar">⚙️</button>
+              <button class="btn-icon-sm" onclick="openRepoEdit(${r.id})" title="Configurar"><i class="fa-solid fa-gear"></i></button>
             </td>
           </tr>
         `).join('')}
@@ -1812,7 +1809,7 @@ async function loadUsuarios() {
   if (!data?.length) { list.innerHTML = `<div class="empty-state">Sin usuarios registrados.</div>`; return; }
 
   const rolLabel = { admin: 'Admin', director: 'Director', tecnico: 'Técnico' };
-  const rolStyle = { admin: 'background:#FEE2E2;color:#991B1B', director: 'background:#EFF6FF;color:#1E40AF', tecnico: 'background:var(--signal-lt);color:var(--signal-dk)' };
+  const rolStyle = { admin: 'background:var(--bad-bg);color:var(--bad)', director: 'background:var(--primary-soft);color:var(--primary-ink)', tecnico: 'background:var(--ok-bg);color:var(--ok)' };
 
   list.innerHTML = `
     <table class="repo-table">
@@ -1825,12 +1822,12 @@ async function loadUsuarios() {
             <td><span class="tipo-chip" style="${rolStyle[u.rol]||''}">${rolLabel[u.rol]||u.rol}</span></td>
             <td>
               <span style="font-size:12px;font-weight:600;color:${u.activo === false ? 'var(--red)' : 'var(--signal-dk)'}">
-                ${u.activo === false ? '🔴 Desactivado' : '🟢 Activo'}
+                ${u.activo === false ? '<span class="badge bg-block">Desactivado</span>' : '<span class="badge bg-comp">Activo</span>'}
               </span>
             </td>
             <td>
               ${u.id !== currentUser.id
-                ? `<button class="btn-icon-sm" data-uid="${u.id}" onclick="abrirConfigUsuario('${u.id}')" title="Configurar">⚙️</button>`
+                ? `<button class="btn-icon-sm" data-uid="${u.id}" onclick="abrirConfigUsuario('${u.id}')" title="Configurar"><i class="fa-solid fa-gear"></i></button>`
                 : `<span style="font-size:11px;color:var(--text-muted)">Tú</span>`}
             </td>
           </tr>
@@ -1838,7 +1835,7 @@ async function loadUsuarios() {
       </tbody>
     </table>
     <div style="padding:12px 16px;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border)">
-      💡 Para crear o eliminar usuarios ve a <strong>Supabase → Authentication → Users</strong>
+      <i class="fa-solid fa-circle-info"></i> Para crear o eliminar usuarios ve a <strong>Supabase → Authentication → Users</strong>
     </div>
   `;
 }
@@ -2025,7 +2022,7 @@ function renderAuditoria(hayMas = false) {
     return;
   }
 
-  const accionLabel = { edicion: '✏️ Edición', eliminacion: '🗑️ Eliminación', creacion: '➕ Creación' };
+  const accionLabel = { edicion: 'Edición', eliminacion: 'Eliminación', creacion: 'Creación' };
   const accionStyle = { edicion: `color:var(--blue)`, eliminacion: `color:var(--red)`, creacion: `color:var(--signal-dk)` };
 
   const campoLabel = (c) => {
@@ -2213,7 +2210,7 @@ function bindEvents() {
     hideSavingOverlay();
 
     if (error) { alert('Error: ' + error.message); return; }
-    alert('✅ Contraseña actualizada correctamente.');
+    alert('Contraseña actualizada correctamente.');
     closeModal('claveModal');
     document.getElementById('claveForm').reset();
   });
@@ -2275,7 +2272,7 @@ window.abrirConfigEje = function(nombreActual) {
   document.getElementById('ejeUrlAyuda').value       = fila?.url_ayuda_memoria || '';
   document.getElementById('ejeUrlFicha').value       = fila?.url_ficha_actividad || '';
   document.getElementById('ejeModalSub').textContent = `${count} actividad${count!==1?'es':''} en este eje`;
-  document.querySelector('#ejeModal .modalTitle').textContent = '⚙️ Configurar Eje de Trabajo';
+  document.querySelector('#ejeModal .modalTitle').textContent = 'Configurar Eje de Trabajo';
   document.getElementById('btnDeleteEje').style.display = '';
   openModal('ejeModal');
 };
@@ -2289,7 +2286,7 @@ window.abrirConfigHito = function(actividadGeneral, nombreHito) {
   document.getElementById('hitoNombre').value           = nombreHito;
   document.getElementById('hitoEsPoi').checked          = hitoData?.es_poi || false;
   document.getElementById('hitoModalSub').textContent   = `${count} actividad${count!==1?'es':''} en este hito`;
-  document.querySelector('#hitoModal .modalTitle').textContent = '⚙️ Configurar Hito';
+  document.querySelector('#hitoModal .modalTitle').textContent = 'Configurar Hito';
   document.getElementById('btnDeleteHito').style.display = '';
   openModal('hitoModal');
 };
@@ -2369,7 +2366,7 @@ document.getElementById('hitoForm').addEventListener('submit', async (e) => {
   if (error) { alert('Error al guardar hito: ' + error.message); return; }
 
   // Restaurar modal para próxima vez
-  document.querySelector('#hitoModal .modalTitle').textContent = '⚙️ Configurar Hito';
+  document.querySelector('#hitoModal .modalTitle').textContent = 'Configurar Hito';
   document.getElementById('btnDeleteHito').style.display = '';
   closeModal('hitoModal');
   const ejeAntes = ejeSeleccionado;
@@ -2423,12 +2420,12 @@ function renderPanelReuniones(panel, ejeNombre, rows) {
         <td class="comment-cell">${esc(r.comentario || '—')}</td>
         <td>
           ${r.url
-            ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" class="link-ext" title="${esc(r.url)}">🔗 Ver</a>`
+            ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" class="link-ext" title="${esc(r.url)}"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver</a>`
             : '—'}
         </td>
         <td>
           <button class="btn-icon-sm" title="Editar reunión"
-              onclick="abrirEditarReunion(${r.id})">⚙️</button>
+              onclick="abrirEditarReunion(${r.id})"><i class="fa-solid fa-gear"></i></button>
         </td>
       </tr>`).join('')
     : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:12px">Sin reuniones registradas aún.</td></tr>`;
@@ -2436,9 +2433,9 @@ function renderPanelReuniones(panel, ejeNombre, rows) {
   panel.innerHTML = `
     <div class="panel-reuniones-inner">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <span style="font-weight:600;font-size:13px;color:#4f46e5"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones — ${esc(ejeNombre)}</span>
-        <button class="btn-add-inline" style="background:#4f46e5;color:#fff;font-size:12px"
-          onclick="abrirModalReunion('${esc(ejeNombre).replace(/'/g,"\'")}')">＋ Agregar reunión</button>
+        <span style="font-weight:500;font-size:14px;color:var(--text)"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones — ${esc(ejeNombre)}</span>
+        <button class="btn-add-inline"
+          onclick="abrirModalReunion('${esc(ejeNombre).replace(/'/g,"\'")}')"><i class="fa-solid fa-plus"></i> Agregar reunión</button>
       </div>
       <table class="repo-table" style="font-size:12px">
         <thead><tr>

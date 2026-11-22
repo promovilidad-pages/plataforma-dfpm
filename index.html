@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>PROMOVILIDAD — Dashboard</title>
+  <title>Plataforma DFPM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -21,18 +22,18 @@
   #appLoader.fade-out { opacity: 0; pointer-events: none; }
   .loader-spinner {
     width: 40px; height: 40px;
-    border: 3px solid #e5e7eb;
-    border-top-color: #00a651;
+    border: 3px solid #e8eaed;
+    border-top-color: #1a73e8;
     border-radius: 50%;
     animation: spin .7s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loader-text { font-size: 13px; color: #6b7280; font-family: inherit; letter-spacing: .3px; }
+  .loader-text { font-size: 14px; color: #5f6368; font-family: "Roboto", system-ui, sans-serif; }
 </style>
 <body>
 
 <div id="appLoader">
-  <img src="assets/logopmv.png" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
+  <img src="assets/logopmv.webp" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
   <div class="loader-spinner"></div>
   <div class="loader-text">Cargando plataforma...</div>
 </div>
@@ -43,7 +44,7 @@
     <div class="sidebar-header">
       <div class="brand-logo-wrap">
         <div style="display:flex;align-items:center;justify-content:center;gap:12px">
-          <img src="assets/logopmv.png" alt="PROMOVILIDAD"
+          <img src="assets/logopmv.webp" alt="PROMOVILIDAD"
             style="height:60px;width:auto;object-fit:contain"/>
         </div>
       </div>
@@ -55,7 +56,7 @@
         <div class="user-name" id="userName">Cargando...</div>
         <div class="user-role" id="userRole">—</div>
       </div>
-      <button class="btn-logout" id="btnLogout" title="Cerrar sesión">⏻</button>
+      <button class="btn-logout" id="btnLogout" title="Cerrar sesión" aria-label="Cerrar sesión"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
     </div>
 
     <nav class="sidebar-nav">
@@ -87,24 +88,24 @@
 
     <div class="sidebar-filters" id="sidebarFilters">
       <div class="filter-section">
-        <label class="filter-label">BUSCAR</label>
+        <label class="filter-label" for="q">Buscar</label>
         <input type="text" id="q" placeholder="Escribe para buscar..."/>
       </div>
       <div class="filter-section">
-        <label class="filter-label">FILTROS</label>
+        <label class="filter-label">Filtros</label>
         <select id="fEstado">
           <option value="">Todos los estados</option>
-          <option value="Pendiente">🟡 Pendiente</option>
-          <option value="En proceso">🔵 En proceso</option>
-          <option value="Completado">🟢 Completado</option>
-          <option value="Bloqueado">🔴 Bloqueado</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En proceso">En proceso</option>
+          <option value="Completado">Completado</option>
+          <option value="Bloqueado">Bloqueado</option>
         </select>
         <select id="fResp"><option value="">Responsable (Todos)</option></select>
         <select id="fCiudad"><option value="">Ciudad (Todas)</option></select>
         <select id="fActGen"><option value="">Actividad General (Todas)</option></select>
       </div>
       <div class="filter-section">
-        <label class="filter-label">FECHAS</label>
+        <label class="filter-label">Fechas</label>
         <div class="row-inputs">
           <input type="date" id="fDesde"/>
           <input type="date" id="fHasta"/>
@@ -117,13 +118,14 @@
   <main class="main-content">
 
     <header class="top-header">
+      <div class="header-left">
+      <button type="button" class="btn-menu" id="btnToggleSidebar" aria-label="Ocultar menú lateral" title="Ocultar menú lateral"><i class="fa-solid fa-bars"></i></button>
       <div class="header-title">
         <h2 id="viewTitle">Ejes de Trabajo</h2>
         <span class="date-badge" id="dateBadge">Cargando...</span>
       </div>
-      <div class="header-actions">
-        <button class="btn-ghost" id="btnRepo"><i class="fa-solid fa-folder-open"></i> Repositorio</button>
       </div>
+      <div class="header-actions"></div>
     </header>
 
     <!-- VISTA: ACTIVIDADES -->
@@ -214,7 +216,7 @@
               <div style="width:28px;height:28px;border-radius:50%;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">3</div>
               <div>
                 <div style="font-weight:600;font-size:13px;margin-bottom:4px">Opcional — Cambiar nombre o rol</div>
-                <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Si necesitas cambiar el nombre o asignar un rol distinto (Director, Admin), usa el ⚙️ del usuario en la lista de usuarios.</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Si necesitas cambiar el nombre o asignar un rol distinto (Director, Admin), usa el botón <i class="fa-solid fa-gear"></i> del usuario en la lista de usuarios.</div>
               </div>
             </div>
 
@@ -222,15 +224,15 @@
               <div style="width:28px;height:28px;border-radius:50%;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">4</div>
               <div style="flex:1">
                 <div style="font-weight:600;font-size:13px;margin-bottom:4px">Opcional — Cambiar contraseña de un usuario</div>
-                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;line-height:1.6">Tu propia contraseña la puedes cambiar desde el ⚙️ de tu usuario. Para cambiar la de otro usuario, en <strong>SQL Editor</strong> ejecuta:</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;line-height:1.6">Tu propia contraseña la puedes cambiar desde el botón <i class="fa-solid fa-gear"></i> de tu usuario. Para cambiar la de otro usuario, en <strong>SQL Editor</strong> ejecuta:</div>
                 <pre style="background:#0A0F1E;color:#7dd3a8;padding:14px 16px;border-radius:8px;font-size:12px;line-height:1.6;overflow-x:auto">UPDATE auth.users
 SET encrypted_password = crypt('<span style="color:#60a5fa">nuevaContraseña</span>', gen_salt('bf'))
 WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="76131b171f1a360604191b19001f1a1f1217125815191b">[email&#160;protected]</a></span>';</pre>
               </div>
             </div>
 
-            <div style="background:var(--signal-lt);border:1px solid rgba(0,193,124,0.2);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--signal-dk)">
-              ✅ Para <strong>eliminar</strong> un usuario ve a <strong>Supabase → Authentication → Users</strong> → selecciona el usuario → Delete.
+            <div style="background:var(--primary-soft);border-radius:8px;padding:12px 16px;font-size:13px;color:#174ea6">
+              <i class="fa-solid fa-circle-info"></i> Para <strong>eliminar</strong> un usuario ve a <strong>Supabase → Authentication → Users</strong> → selecciona el usuario → Delete.
             </div>
           </div>
         </div>
@@ -247,9 +249,9 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
             <input type="date" id="auditHasta" class="select-small" title="Hasta"/>
             <select id="auditFiltroAccion" class="select-small">
               <option value="">Todas las acciones</option>
-              <option value="creacion">➕ Creación</option>
-              <option value="edicion">✏️ Edición</option>
-              <option value="eliminacion">🗑️ Eliminación</option>
+              <option value="creacion">Creación</option>
+              <option value="edicion">Edición</option>
+              <option value="eliminacion">Eliminación</option>
             </select>
             <select id="auditFiltroUsuario" class="select-small">
               <option value="">Todos los usuarios</option>
@@ -266,15 +268,15 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
       <div class="content-feed" style="margin:0">
 
         <div class="feed-header">
-          <span>📖 Manual de uso — Plataforma DFPM</span>
+          <span>Manual de uso</span>
           <span class="count-badge">v2.0</span>
         </div>
 
         <div style="display:grid;grid-template-columns:220px 1fr;height:calc(100vh - 140px)">
 
           <!-- ÍNDICE LATERAL -->
-          <div style="border-right:1px solid var(--border);padding:20px 16px;overflow-y:auto;background:var(--ink-05)">
-            <div style="font-weight:700;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px">Contenido</div>
+          <div style="border-right:1px solid var(--border);padding:20px 12px;overflow-y:auto;background:var(--surface)">
+            <div style="font-weight:500;font-size:12px;color:var(--text-muted);margin:0 0 10px 14px">Contenido</div>
             <div style="display:flex;flex-direction:column;gap:4px">
               <a href="#m1" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">1. Iniciar sesión</a>
               <a href="#m2" class="manual-link" style="padding:6px 10px;border-radius:8px;display:block">2. Ejes, hitos y actividades</a>
@@ -304,7 +306,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
                 <div class="manual-paso"><span class="paso-num">2</span><span>Escribe tu <strong>correo electrónico</strong> y <strong>contraseña</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>Ingresar a la plataforma</strong>.</span></div>
               </div>
-              <div class="manual-tip">💡 Si no puedes ingresar, contacta al administrador para verificar que tu cuenta esté activa.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Si no puedes ingresar, contacta al administrador para verificar que tu cuenta esté activa.</span></div>
             </div>
 
             <!-- 2 -->
@@ -315,28 +317,28 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-subtitulo">2.1 Crear un Eje de Trabajo</div>
               <div class="manual-pasos">
                 <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona la pestaña de categoría (ej. Planificación) — el eje se creará automáticamente en esa categoría.</span></div>
-                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>＋ Nueva estrategia</strong> en el panel izquierdo.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>+ Nueva estrategia</strong> en el panel izquierdo.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Escribe el nombre y opcionalmente agrega URLs de Ayuda Memoria y Ficha de Actividad.</span></div>
               </div>
 
               <div class="manual-subtitulo">2.2 Crear un Hito</div>
               <div class="manual-pasos">
                 <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona el eje en el panel izquierdo.</span></div>
-                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>＋ Hito</strong> en el panel derecho.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>+ Hito</strong> en el panel derecho.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>El campo se pre-llena automáticamente con el número siguiente (ej. <strong>"3. "</strong>) — completa el texto después del número (ej. <strong>"3. Informe Etapa 1"</strong>).</span></div>
-                <div class="manual-paso"><span class="paso-num">4</span><span>Si el hito es un entregable del POI, marca <strong>📋 Este hito cuenta para el POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>Si el hito es un entregable del POI, marca <strong>Este hito cuenta para el POI</strong>.</span></div>
               </div>
-              <div class="manual-tip">⚠️ No borres ni cambies el número al inicio del nombre — ese número determina el orden y la numeración de sus actividades. Si necesitas reordenar, edita el hito con <strong>⚙️</strong> ajustando el número.</div>
+              <div class="manual-tip warn"><i class="fa-solid fa-triangle-exclamation"></i><span>No borres ni cambies el número al inicio del nombre — ese número determina el orden y la numeración de sus actividades. Si necesitas reordenar, edita el hito con <strong><i class="fa-solid fa-gear"></i></strong> ajustando el número.</span></div>
 
               <div class="manual-subtitulo">2.3 Crear una Actividad</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>＋</strong> al lado del hito correspondiente.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>+</strong> al lado del hito correspondiente.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>El campo nombre se pre-llena automáticamente con el prefijo jerárquico (ej. <strong>"2.3 "</strong>) — completa el texto a continuación (ej. <strong>"2.3 Elaboración del informe"</strong>).</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Completa el formulario: responsable, ciudad, fechas y % de avance.</span></div>
                 <div class="manual-paso"><span class="paso-num">4</span><span>El <strong>estado se calcula automáticamente</strong>: 0% = Pendiente · 1-99% = En proceso · 100% = Completado.</span></div>
-                <div class="manual-paso"><span class="paso-num">5</span><span>Si la actividad está pausada, marca <strong>🔴 Bloqueado</strong> — no contará en promedios ni alertas.</span></div>
+                <div class="manual-paso"><span class="paso-num">5</span><span>Si la actividad está pausada, marca <strong>Marcar como Bloqueado</strong> — no contará en promedios ni alertas.</span></div>
               </div>
-              <div class="manual-tip">⚠️ No borres el prefijo numérico al inicio — mantén siempre el formato <strong>"X.Y Nombre"</strong> para que el orden en pantalla sea correcto.</div>
+              <div class="manual-tip warn"><i class="fa-solid fa-triangle-exclamation"></i><span>No borres el prefijo numérico al inicio — mantén siempre el formato <strong>"X.Y Nombre"</strong> para que el orden en pantalla sea correcto.</span></div>
 
               <div class="manual-subtitulo">2.4 Editar o eliminar</div>
               <p>Haz clic sobre cualquier actividad para ver su detalle. Solo puedes editar o eliminar las que tú creaste, salvo que seas administrador.</p>
@@ -347,13 +349,13 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-titulo">3. Filtros y búsqueda</div>
               <p>El sidebar contiene todos los filtros disponibles en la vista <strong>Ejes de Trabajo</strong>.</p>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">🔍</span><span><strong>Buscar:</strong> filtra por nombre, responsable, ciudad, comentarios, etc.</span></div>
-                <div class="manual-paso"><span class="paso-num">📌</span><span><strong>Estado:</strong> Pendiente, En proceso, Completado o Bloqueado.</span></div>
-                <div class="manual-paso"><span class="paso-num">👤</span><span><strong>Responsable:</strong> muestra solo sus actividades.</span></div>
-                <div class="manual-paso"><span class="paso-num">🏙️</span><span><strong>Ciudad:</strong> filtra por una de las 30 ciudades del ámbito PROMOVILIDAD.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-magnifying-glass"></i></span><span><strong>Buscar:</strong> filtra por nombre, responsable, ciudad, comentarios, etc.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-circle-half-stroke"></i></span><span><strong>Estado:</strong> Pendiente, En proceso, Completado o Bloqueado.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-user"></i></span><span><strong>Responsable:</strong> muestra solo sus actividades.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-city"></i></span><span><strong>Ciudad:</strong> filtra por una de las 30 ciudades del ámbito PROMOVILIDAD.</span></div>
                 <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i></span><span><strong>Fechas:</strong> define un rango para acotar resultados.</span></div>
               </div>
-              <div class="manual-tip">💡 Haz clic en <strong>Limpiar filtros</strong> para restablecer todo.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Haz clic en <strong>Limpiar filtros</strong> para restablecer todo.</span></div>
             </div>
 
             <!-- 4 -->
@@ -365,8 +367,8 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
                 <div class="manual-paso"><span class="paso-num">2</span><span>Filtra por <strong>categoría</strong> y selecciona el <strong>Eje de Trabajo</strong> a visualizar.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Elige la vista: <strong>Días, Semanas o Meses</strong>.</span></div>
               </div>
-              <p>🟢 Completado · 🔵 En proceso · 🟡 Pendiente · 🔴 Bloqueado. Las actividades <strong><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> vencidas</strong> o <strong><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> por vencer</strong> se marcan automáticamente (las bloqueadas no generan alertas).</p>
-              <div class="manual-tip">💡 Si el eje tiene documentos vinculados, los botones de Ayuda Memoria y Ficha de Actividad se activarán en la parte superior.</div>
+              <p>Colores: verde = completado · azul = en proceso · amarillo = pendiente · rojo = bloqueado. Las actividades <strong><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> vencidas</strong> o <strong><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> por vencer</strong> se marcan automáticamente (las bloqueadas no generan alertas).</p>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Si el eje tiene documentos vinculados, los botones de Ayuda Memoria y Ficha de Actividad se activarán en la parte superior.</span></div>
             </div>
 
             <!-- 5 -->
@@ -376,9 +378,9 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-pasos">
                 <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong><i class="fa-solid fa-folder-open"></i> Repositorio</strong> en el sidebar.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong>+ Agregar</strong> e ingresa título, tipo, fecha, enlace y participantes.</span></div>
-                <div class="manual-paso"><span class="paso-num">3</span><span>Para editar o eliminar, usa el botón <strong>⚙️</strong> de la fila.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Para editar o eliminar, usa el botón <strong><i class="fa-solid fa-gear"></i></strong> de la fila.</span></div>
               </div>
-              <div class="manual-tip">💡 Usa el filtro <strong>Tipo</strong> para ver solo documentos de un tipo específico.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Usa el filtro <strong>Tipo</strong> para ver solo documentos de un tipo específico.</span></div>
             </div>
 
             <!-- 6 -->
@@ -393,23 +395,23 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <p>En el panel derecho de cada eje, el botón <strong><i class="fa-solid fa-clock-rotate-left"></i> Historial</strong> muestra todo lo ocurrido: creación, cambios de nombre, hitos y actividades.</p>
 
               <div class="manual-subtitulo">Auditoría global</div>
-              <p>La vista <strong>🕓 Auditoría</strong> muestra el historial completo de la plataforma, filtrable por fecha, tipo de acción y usuario. Los registros se conservan aunque el elemento haya sido eliminado.</p>
+              <p>La vista <strong>Auditoría</strong> muestra el historial completo de la plataforma, filtrable por fecha, tipo de acción y usuario. Los registros se conservan aunque el elemento haya sido eliminado.</p>
             </div>
 
             <!-- 7 -->
             <div class="manual-section" id="m7">
               <div class="manual-titulo">7. Panel de Reportes</div>
-              <p>Accede desde <strong>📊 Reportes</strong> en el sidebar — se abre en nueva pestaña. Tiene 5 pestañas:</p>
+              <p>Accede desde <strong>Reportes</strong> en el sidebar — se abre en nueva pestaña. Tiene 5 pestañas:</p>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">📊</span><span><strong>Resumen general:</strong> KPIs globales, avance por categoría y tabla de ejes con detalle de estados.</span></div>
-                <div class="manual-paso"><span class="paso-num">🗺️</span><span><strong>Matriz ciudades:</strong> cruza ejes vs. las 30 ciudades del ámbito PROMOVILIDAD mostrando % avance y cantidad de actividades por celda.</span></div>
-                <div class="manual-paso"><span class="paso-num">👤</span><span><strong>Por responsable:</strong> carga de trabajo y avance por persona.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-chart-column"></i></span><span><strong>Resumen general:</strong> KPIs globales, avance por categoría y tabla de ejes con detalle de estados.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-map"></i></span><span><strong>Matriz ciudades:</strong> cruza ejes vs. las 30 ciudades del ámbito PROMOVILIDAD mostrando % avance y cantidad de actividades por celda.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-user"></i></span><span><strong>Por responsable:</strong> carga de trabajo y avance por persona.</span></div>
                 <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></span><span><strong>Alertas:</strong> actividades vencidas y por vencer (las bloqueadas no aparecen).</span></div>
-                <div class="manual-paso"><span class="paso-num">📋</span><span><strong>POI:</strong> seguimiento programado vs. ejecutado (ver sección 8).</span></div>
-                <div class="manual-paso"><span class="paso-num">📎</span><span><strong>Evidencias POI:</strong> documentos de respaldo por hito POI (ver sección 12).</span></div>
-                <div class="manual-paso"><span class="paso-num">✈️</span><span><strong>Comisiones:</strong> resumen anual de viajes de comisión por eje, con personas, días y costo estimado.</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-clipboard-list"></i></span><span><strong>POI:</strong> seguimiento programado vs. ejecutado (ver sección 8).</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-paperclip"></i></span><span><strong>Evidencias POI:</strong> documentos de respaldo por hito POI (ver sección 12).</span></div>
+                <div class="manual-paso"><span class="paso-num"><i class="fa-solid fa-plane"></i></span><span><strong>Comisiones:</strong> resumen anual de viajes de comisión por eje, con personas, días y costo estimado.</span></div>
               </div>
-              <div class="manual-tip">💡 Usa el filtro de categoría en la parte superior para ver los reportes de una categoría específica.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Usa el filtro de categoría en la parte superior para ver los reportes de una categoría específica.</span></div>
             </div>
 
             <!-- 8 -->
@@ -425,30 +427,30 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
 
               <div class="manual-subtitulo">Marcar un hito como POI</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Abre el hito con el botón <strong>⚙️</strong>.</span></div>
-                <div class="manual-paso"><span class="paso-num">2</span><span>Marca la casilla <strong>📋 Este hito cuenta para el POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Abre el hito con el botón <strong><i class="fa-solid fa-gear"></i></strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">2</span><span>Marca la casilla <strong>Este hito cuenta para el POI</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Guarda. Cuando ese hito llegue al 100%, se contabilizará en el mes de su fecha de fin.</span></div>
               </div>
 
               <div class="manual-subtitulo">Ingresar valores programados</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📊 Reportes → pestaña POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>Reportes → pestaña POI</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>año</strong> y opcionalmente filtra por categoría.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Ingresa los valores en las celdas <strong>P</strong> de cada mes.</span></div>
-                <div class="manual-paso"><span class="paso-num">4</span><span>Haz clic en <strong>💾 Guardar programado</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">4</span><span>Haz clic en <strong>Guardar programado</strong>.</span></div>
               </div>
-              <div class="manual-tip">💡 Los colores indican: 🟢 Ejecutado ≥ Programado · 🟡 Ejecutado parcial · 🔴 Sin ejecutar (tenía programado). Un hito que inicia en diciembre 2025 y termina en marzo 2026 se contabiliza en <strong>marzo 2026</strong>.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Los colores indican: verde = ejecutado ≥ programado · amarillo = ejecutado parcial · rojo = sin ejecutar (tenía programado). Un hito que inicia en diciembre 2025 y termina en marzo 2026 se contabiliza en <strong>marzo 2026</strong>.</span></div>
             </div>
 
             <!-- 9 -->
             <div class="manual-section" id="m9">
               <div class="manual-titulo">9. Cambiar contraseña</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>🔑 Cambiar contraseña</strong> en el sidebar.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en <strong>Cambiar contraseña</strong> en el sidebar.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Escribe tu nueva contraseña (mínimo 6 caracteres) y confírmala.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>Guardar contraseña</strong>.</span></div>
               </div>
-              <div class="manual-tip">💡 Solo puedes cambiar tu propia contraseña. El administrador puede cambiar la de otros usuarios desde Supabase.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Solo puedes cambiar tu propia contraseña. El administrador puede cambiar la de otros usuarios desde Supabase.</span></div>
             </div>
 
             <!-- 10 -->
@@ -460,7 +462,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-pasos">
                 <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>supabase.com → Authentication → Users → Add user</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Ingresa email y contraseña y marca <strong>Auto Confirm User</strong>.</span></div>
-                <div class="manual-paso"><span class="paso-num">3</span><span>El perfil se crea automáticamente con rol <strong>Técnico</strong>. Desde la plataforma puedes cambiar nombre y rol con el botón <strong>⚙️</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>El perfil se crea automáticamente con rol <strong>Técnico</strong>. Desde la plataforma puedes cambiar nombre y rol con el botón <strong><i class="fa-solid fa-gear"></i></strong>.</span></div>
               </div>
 
               <div class="manual-subtitulo">Roles disponibles</div>
@@ -480,8 +482,8 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               </div>
 
               <div class="manual-subtitulo">Desactivar un usuario</div>
-              <p>Usa el botón <strong>⚙️</strong> del usuario y cambia su estado a <strong>🔴 Desactivado</strong>. Sus datos se conservan pero no podrá iniciar sesión.</p>
-              <div class="manual-tip">💡 Para eliminar permanentemente un usuario ve a <strong>Supabase → Authentication → Users</strong> → selecciona el usuario → Delete.</div>
+              <p>Usa el botón <strong><i class="fa-solid fa-gear"></i></strong> del usuario y cambia su estado a <strong>Desactivado</strong>. Sus datos se conservan pero no podrá iniciar sesión.</p>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Para eliminar permanentemente un usuario ve a <strong>Supabase → Authentication → Users</strong> → selecciona el usuario → Delete.</span></div>
             </div>
 
             <!-- 11 -->
@@ -492,25 +494,25 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               <div class="manual-pasos">
                 <div class="manual-paso"><span class="paso-num">1</span><span>Selecciona el eje de trabajo en el panel izquierdo.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Haz clic en <strong><i class="fa-solid fa-calendar-days" style="color:var(--blue)"></i> Reuniones</strong> — se despliega el panel de reuniones.</span></div>
-                <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>＋ Agregar reunión</strong> e ingresa nombre/asunto, fecha, comentario y URL del acta o grabación.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Haz clic en <strong>+ Agregar reunión</strong> e ingresa nombre/asunto, fecha, comentario y URL del acta o grabación.</span></div>
                 <div class="manual-paso"><span class="paso-num">4</span><span>Haz clic en <strong>Guardar reunión</strong>.</span></div>
               </div>
               <div class="manual-subtitulo">Editar o eliminar una reunión</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>En el panel de reuniones, haz clic en el botón <strong>⚙️</strong> de la reunión.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>En el panel de reuniones, haz clic en el botón <strong><i class="fa-solid fa-gear"></i></strong> de la reunión.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Modifica los datos y haz clic en <strong>Guardar cambios</strong>.</span></div>
-                <div class="manual-paso"><span class="paso-num">3</span><span>Para eliminar, haz clic en <strong>🗑️ Eliminar reunión</strong> — solo el creador o un administrador puede hacerlo.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Para eliminar, haz clic en <strong>Eliminar reunión</strong> — solo el creador o un administrador puede hacerlo.</span></div>
               </div>
-              <div class="manual-tip">💡 Si se elimina un eje completo, todas sus reuniones se eliminan automáticamente.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>Si se elimina un eje completo, todas sus reuniones se eliminan automáticamente.</span></div>
             </div>
 
             <!-- 12 -->
             <div class="manual-section" id="m12">
               <div class="manual-titulo">12. Evidencias POI</div>
-              <p>La pestaña <strong>📎 Evidencias POI</strong> en el Panel de Reportes permite registrar los documentos de respaldo (informes, oficios, actas) para cada hito marcado como POI.</p>
+              <p>La pestaña <strong>Evidencias POI</strong> en el Panel de Reportes permite registrar los documentos de respaldo (informes, oficios, actas) para cada hito marcado como POI.</p>
               <div class="manual-subtitulo">Agregar una evidencia</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📊 Reportes → pestaña Evidencias POI</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>Reportes → pestaña Evidencias POI</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>año</strong> y opcionalmente filtra por categoría.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Ubica el hito POI correspondiente y haz clic en <strong>+ Agregar enlace</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">4</span><span>Ingresa la URL del documento (Drive, etc.), la fecha de entrega y una descripción opcional.</span></div>
@@ -518,20 +520,20 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               </div>
               <div class="manual-subtitulo">Editar o eliminar una evidencia</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en el botón <strong>⚙️</strong> del hito que ya tiene evidencia registrada.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Haz clic en el botón <strong><i class="fa-solid fa-gear"></i></strong> del hito que ya tiene evidencia registrada.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Modifica los datos y haz clic en <strong>Guardar</strong>.</span></div>
-                <div class="manual-paso"><span class="paso-num">3</span><span>Para eliminar, haz clic en <strong>🗑️ Eliminar evidencia</strong> — solo el creador o un administrador puede hacerlo.</span></div>
+                <div class="manual-paso"><span class="paso-num">3</span><span>Para eliminar, haz clic en <strong>Eliminar evidencia</strong> — solo el creador o un administrador puede hacerlo.</span></div>
               </div>
-              <div class="manual-tip">💡 El usuario POI ve esta pestaña en modo solo lectura — puede abrir los enlaces pero no editar ni agregar evidencias.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>El usuario POI ve esta pestaña en modo solo lectura — puede abrir los enlaces pero no editar ni agregar evidencias.</span></div>
             </div>
 
             <!-- 13 -->
             <div class="manual-section" id="m13">
               <div class="manual-titulo">13. Viajes de comisión</div>
-              <p>Permite registrar y estimar el costo de los viajes de comisión asociados a cada actividad. El resumen consolidado se ve en <strong>📊 Reportes → pestaña Comisiones</strong>.</p>
+              <p>Permite registrar y estimar el costo de los viajes de comisión asociados a cada actividad. El resumen consolidado se ve en <strong>Reportes → pestaña Comisiones</strong>.</p>
               <div class="manual-subtitulo">Registrar un viaje de comisión</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Al crear o editar una actividad, marca <strong>✈️ Esta actividad es un viaje de comisión</strong> al final del formulario.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Al crear o editar una actividad, marca <strong>Esta actividad es un viaje de comisión</strong> al final del formulario.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>tipo de transporte</strong>: Bus, Aéreo o Ambos (solo informativo).</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>El <strong>N° de personas</strong> se calcula automáticamente desde el equipo técnico, y los <strong>días</strong> desde las fechas de inicio y fin (fecha fin - fecha inicio + 1).</span></div>
                 <div class="manual-paso"><span class="paso-num">4</span><span>El <strong>costo diario</strong> es S/. 320 por defecto (viáticos MTC) — puedes modificarlo si cambia la norma.</span></div>
@@ -539,12 +541,12 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
               </div>
               <div class="manual-subtitulo">Ver el reporte de comisiones</div>
               <div class="manual-pasos">
-                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>📊 Reportes → pestaña ✈️ Comisiones</strong>.</span></div>
+                <div class="manual-paso"><span class="paso-num">1</span><span>Ve a <strong>Reportes → pestaña Comisiones</strong>.</span></div>
                 <div class="manual-paso"><span class="paso-num">2</span><span>Selecciona el <strong>año</strong> y opcionalmente filtra por categoría.</span></div>
                 <div class="manual-paso"><span class="paso-num">3</span><span>Verás todas las comisiones agrupadas por eje con detalle de fechas, equipo, transporte y costo.</span></div>
                 <div class="manual-paso"><span class="paso-num">4</span><span>El <strong>subtotal de personas por eje</strong> muestra las personas únicas (sin repetir). El <strong>Gran Total</strong> resume el costo anual de todas las comisiones.</span></div>
               </div>
-              <div class="manual-tip">💡 El costo de transporte (bus o aéreo) no está incluido en el total — ese gasto lo gestiona Abastecimiento por separado.</div>
+              <div class="manual-tip"><i class="fa-regular fa-lightbulb"></i><span>El costo de transporte (bus o aéreo) no está incluido en el total — ese gasto lo gestiona Abastecimiento por separado.</span></div>
             </div>
             
           </div>
@@ -603,7 +605,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
 <div class="modal" id="claveModal" aria-hidden="true">
   <div class="modalCard">
     <div class="modalHead">
-      <div class="modalTitle">🔑 Cambiar contraseña</div>
+      <div class="modalTitle">Cambiar contraseña</div>
       <button class="btn-close" id="btnCloseClave"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modalBody">
@@ -630,7 +632,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">⚙️ Configurar Usuario</div>
+        <div class="modalTitle">Configurar Usuario</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="usuarioModalSub"></div>
       </div>
       <button class="btn-close" id="btnCloseUsuario"><i class="fa-solid fa-xmark"></i></button>
@@ -657,8 +659,8 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="form-group">
           <label>Estado de cuenta</label>
           <select id="uActivo">
-            <option value="1">🟢 Activo</option>
-            <option value="0">🔴 Desactivado</option>
+            <option value="1">Activo</option>
+            <option value="0">Desactivado</option>
           </select>
         </div>
         <div class="form-actions span2" style="justify-content:flex-end">
@@ -676,7 +678,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">⚙️ Configurar Eje de Trabajo</div>
+        <div class="modalTitle">Configurar Eje de Trabajo</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="ejeModalSub"></div>
       </div>
       <button class="btn-close" id="btnCloseEje"><i class="fa-solid fa-xmark"></i></button>
@@ -722,7 +724,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">⚙️ Configurar Hito</div>
+        <div class="modalTitle">Configurar Hito</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="hitoModalSub"></div>
       </div>
       <button class="btn-close" id="btnCloseHito"><i class="fa-solid fa-xmark"></i></button>
@@ -736,9 +738,9 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
           <input type="text" id="hitoNombre" required placeholder="Ej: Hito 1 - Diagnóstico"/>
         </div>
         <div class="form-group span2">
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600;font-size:13px">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:400;font-size:14px;color:var(--text-main)">
             <input type="checkbox" id="hitoEsPoi" style="width:16px;height:16px;cursor:pointer;accent-color:var(--blue)"/>
-            <span>📋 Este hito cuenta para el POI</span>
+            <span>Este hito cuenta para el POI</span>
           </label>
           <div style="font-size:11px;color:var(--text-muted);margin-top:4px;padding-left:26px">
             Al marcarlo, cuando este hito llegue al 100% se contabilizará como ejecutado en el reporte POI.
@@ -787,7 +789,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div style="position:relative">
           <input type="text" id="fResponsable" placeholder="Selecciona o escribe..." autocomplete="off"
             onfocus="showResponsableList()" oninput="filterResponsableList(this.value)"/>
-          <div id="responsableDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--blue);border-radius:10px;z-index:50;max-height:180px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);margin-top:2px">
+          <div id="responsableDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:8px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:var(--shadow-2);margin-top:4px;padding:4px 0">
             <div id="responsableOptions"></div>
           </div>
         </div>
@@ -797,7 +799,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
           <div style="position:relative">
             <input type="text" id="fEquipo" placeholder="Selecciona o escribe nombres..." autocomplete="off"
               onfocus="showEquipoList()" oninput="filterEquipoList(this.value)"/>
-            <div id="equipoDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--blue);border-radius:10px;z-index:50;max-height:180px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);margin-top:2px">
+            <div id="equipoDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:8px;z-index:50;max-height:220px;overflow-y:auto;box-shadow:var(--shadow-2);margin-top:4px;padding:4px 0">
               <div id="equipoOptions"></div>
             </div>
           </div>
@@ -854,13 +856,13 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         <div class="form-group">
           <label>Estado <span style="font-size:10px;color:var(--text-muted);font-weight:400">(automático por avance)</span></label>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <div id="fEstadoDisplay" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:600;color:var(--text-muted)">
-              🟡 Pendiente
+            <div id="fEstadoDisplay" style="height:40px;display:flex;align-items:center;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:500;color:var(--text-muted)">
+              Pendiente
             </div>
             <input type="hidden" id="fEstadoForm" value="Pendiente"/>
-            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-main)">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:400;color:var(--text-main)">
               <input type="checkbox" id="fBloqueado" style="width:15px;height:15px;cursor:pointer;accent-color:var(--red)"/>
-              <span>🔴 Marcar como Bloqueado</span>
+              <span>Marcar como Bloqueado</span>
             </label>
           </div>
         </div>
@@ -890,12 +892,12 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
         </div>
         <!-- COMISIÓN -->
         <div class="form-group span2" style="border-top:1.5px dashed var(--border);padding-top:14px;margin-top:4px">
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-main)">
-            <input type="checkbox" id="fEsComision" style="width:15px;height:15px;cursor:pointer;accent-color:#7c3aed"/>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:400;color:var(--text-main)">
+            <input type="checkbox" id="fEsComision" style="width:15px;height:15px;cursor:pointer;accent-color:var(--primary)"/>
             <span><i class="fa-solid fa-plane"></i> Esta actividad es un viaje de comisión</span>
           </label>
         </div>
-        <div id="comisionFields" style="display:none;contents">
+        <div id="comisionFields" style="display:none">
           <div class="form-group">
             <label>Tipo de transporte</label>
             <select id="fComisionTransporte">
@@ -910,17 +912,17 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
           </div>
           <div class="form-group">
             <label>N° personas <span style="font-size:10px;color:var(--text-muted)">(desde equipo técnico)</span></label>
-            <div id="fComisionPersonas" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:700;color:var(--text-main)">—</div>
+            <div id="fComisionPersonas" style="height:40px;display:flex;align-items:center;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:500;color:var(--text-main)">—</div>
             <input type="hidden" id="fComisionPersonasVal" value="0"/>
           </div>
           <div class="form-group">
             <label>Días <span style="font-size:10px;color:var(--text-muted)">(desde fechas inicio/fin)</span></label>
-            <div id="fComisionDias" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:700;color:var(--text-main)">—</div>
+            <div id="fComisionDias" style="height:40px;display:flex;align-items:center;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--ink-05);font-size:14px;font-weight:500;color:var(--text-main)">—</div>
             <input type="hidden" id="fComisionDiasVal" value="0"/>
           </div>
           <div class="form-group span2">
             <label>Total estimado (S/.) <span style="font-size:10px;color:var(--text-muted)">(personas × días × costo diario)</span></label>
-            <div id="fComisionTotal" style="padding:9px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--ink-05);font-size:15px;font-weight:700;color:#7c3aed">
+            <div id="fComisionTotal" style="height:40px;display:flex;align-items:center;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--primary-soft);font-size:15px;font-weight:500;color:var(--primary-ink)">
               S/. 0.00
             </div>
           </div>
@@ -993,7 +995,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">📝 Justificación requerida</div>
+        <div class="modalTitle">Justificación requerida</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="justModalSub"></div>
       </div>
       <button class="btn-close" id="btnCloseJust"><i class="fa-solid fa-xmark"></i></button>
@@ -1001,11 +1003,11 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
     <div class="modalBody">
       <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;line-height:1.6" id="justDetalle"></div>
       <div class="form-group" style="margin-bottom:0">
-        <label style="font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:7px">
+        <label style="font-size:12px;font-weight:500;color:var(--text-muted);display:block;margin-bottom:6px">
           Motivo del cambio *
         </label>
         <textarea id="justTexto" rows="4" placeholder="Explica el motivo del cambio de fecha o eliminación..."
-          style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;resize:vertical;outline:none;transition:border-color .2s"
+          style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;outline:none;transition:border-color .15s"
           onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
       </div>
       <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
@@ -1021,7 +1023,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard wide">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">🕓 Historial de cambios</div>
+        <div class="modalTitle">Historial de cambios</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="historialModalSub"></div>
       </div>
       <button class="btn-close" id="btnCloseHistorial"><i class="fa-solid fa-xmark"></i></button>
@@ -1077,7 +1079,7 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
   <div class="modalCard wide">
     <div class="modalHead">
       <div>
-        <div class="modalTitle">📊 Historial del Eje</div>
+        <div class="modalTitle">Historial del Eje</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="historialEjeModalSub"></div>
       </div>
       <button class="btn-close" id="btnCloseHistorialEje"><i class="fa-solid fa-xmark"></i></button>
@@ -1088,14 +1090,47 @@ WHERE email = '<span style="color:#60a5fa"><a href="/cdn-cgi/l/email-protection"
 </div>
 
 <!-- OVERLAY: Guardando (reutilizable para formularios) -->
-<div id="appSavingOverlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(10,15,30,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center">
-  <div style="background:var(--glass-bg-strong,#fff);border:1px solid var(--glass-border,rgba(255,255,255,0.4));border-radius:16px;padding:26px 34px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 24px 60px rgba(10,15,30,0.25)">
+<div id="appSavingOverlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(32,33,36,.5);align-items:center;justify-content:center">
+  <div style="background:var(--glass-bg-strong,#fff);border:none;border-radius:16px;padding:28px 36px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:var(--shadow-2)">
     <i class="fa-solid fa-spinner fa-spin" style="font-size:26px;color:var(--blue)"></i>
-    <div id="appSavingOverlayMsg" style="font-size:13px;font-weight:600;color:var(--text-main,#0f172a)">Guardando, espere...</div>
+    <div id="appSavingOverlayMsg" style="font-size:14px;font-weight:500;color:var(--text-main,#202124)">Guardando, espere...</div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
+<div class="nav-scrim" id="navScrim"></div>
+<script>
+  // Mostrar / ocultar la barra lateral (independiente de app.js)
+  (function () {
+    var body = document.body;
+    var btn = document.getElementById('btnToggleSidebar');
+    var scrim = document.getElementById('navScrim');
+    var esMovil = function () { return window.matchMedia('(max-width: 768px)').matches; };
+    try { if (localStorage.getItem('dfpm-sidebar') === 'oculta') body.classList.add('nav-collapsed'); } catch (e) {}
+
+    function actualizarEtiqueta() {
+      var abierta = esMovil() ? body.classList.contains('nav-open') : !body.classList.contains('nav-collapsed');
+      var txt = abierta ? 'Ocultar menú lateral' : 'Mostrar menú lateral';
+      btn.setAttribute('aria-label', txt); btn.title = txt;
+    }
+    btn.addEventListener('click', function () {
+      if (esMovil()) {
+        body.classList.toggle('nav-open');
+      } else {
+        body.classList.toggle('nav-collapsed');
+        try { localStorage.setItem('dfpm-sidebar', body.classList.contains('nav-collapsed') ? 'oculta' : 'visible'); } catch (e) {}
+      }
+      actualizarEtiqueta();
+    });
+    function cerrarMovil() { body.classList.remove('nav-open'); actualizarEtiqueta(); }
+    scrim.addEventListener('click', cerrarMovil);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && body.classList.contains('nav-open')) cerrarMovil(); });
+    document.querySelectorAll('.sidebar .nav-item').forEach(function (b) {
+      b.addEventListener('click', function () { if (esMovil()) cerrarMovil(); });
+    });
+    actualizarEtiqueta();
+  })();
+</script>
 </body>
 </html>
