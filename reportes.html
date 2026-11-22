@@ -1893,8 +1893,30 @@ function renderComisiones() {
 
   const transporteIcon = { 'Bus': '<i class="fa-solid fa-bus"></i>', 'Aéreo': '<i class="fa-solid fa-plane"></i>', 'Ambos': '<i class="fa-solid fa-bus"></i><i class="fa-solid fa-plane"></i>' };
 
+  // Estado del viaje según sus fechas (solo para mostrar; no se guarda)
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  const ESTADOS_VIAJE = {
+    realizado:  { txt: 'Realizado',    bg: '#e6f4ea', fg: '#137333' },
+    encurso:    { txt: 'En curso',     bg: '#e8f0fe', fg: '#1967d2' },
+    porrealizar:{ txt: 'Por realizar', bg: '#fef7e0', fg: '#b06000' },
+    suspendido: { txt: 'Suspendido',   bg: '#fce8e6', fg: '#c5221f' },
+    sinfechas:  { txt: 'Sin fechas',   bg: '#f1f3f4', fg: '#5f6368' },
+  };
+  const estadoViaje = r => {
+    if ((r.estado || '').toLowerCase().includes('bloqueado')) return 'suspendido';
+    const ini = r.fecha_inicio ? new Date(r.fecha_inicio + 'T00:00:00') : null;
+    const fin = r.fecha_fin    ? new Date(r.fecha_fin    + 'T00:00:00') : ini;
+    if (!ini) return 'sinfechas';
+    if (fin < hoy) return 'realizado';
+    if (ini > hoy) return 'porrealizar';
+    return 'encurso';
+  };
+  const chipViaje = k => { const e = ESTADOS_VIAJE[k]; return `<span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:500;white-space:nowrap;background:${e.bg};color:${e.fg}">${e.txt}</span>`; };
+  const soles = n => 'S/. ' + n.toLocaleString('es-PE');
+
   let html = '';
   let granTotalDias = 0, granTotal = 0;
+  let granRealizado = 0, granPendiente = 0, granSuspendido = 0;
   const granPersonasSet = new Set();
 
   ejesConComisiones.forEach(ejeNombre => {
@@ -1902,6 +1924,7 @@ function renderComisiones() {
     const colorCat = catColors[cat] || '#80868b';
 
     let ejeTotalDias = 0, ejeTotal = 0;
+    let ejeRealizado = 0, ejePendiente = 0, ejeSuspendido = 0;
     // Personas únicas del eje (union de todos los equipos técnicos)
     const personasUnicas = new Set();
     items.forEach(r => {
@@ -1916,6 +1939,10 @@ function renderComisiones() {
       const total    = r.comision_total || (personas * dias * costo);
       ejeTotalDias += dias;
       ejeTotal     += total;
+      const ev = estadoViaje(r);
+      if (ev === 'realizado') { ejeRealizado += total; granRealizado += total; }
+      else if (ev === 'suspendido') { ejeSuspendido += total; granSuspendido += total; }
+      else { ejePendiente += total; granPendiente += total; }
 
       const transp = transporteIcon[r.comision_transporte] || r.comision_transporte || '—';
       const fechaIni = r.fecha_inicio ? fmtDate(r.fecha_inicio) : '—';
@@ -1924,6 +1951,7 @@ function renderComisiones() {
       return `<tr style="border-bottom:1px solid #e8eaed">
         <td style="padding:10px 14px 10px 20px;font-size:13px;color:#202124;font-weight:400">${esc(r.subactividad)}</td>
         <td style="padding:10px 14px;font-size:12px;color:#5f6368;white-space:nowrap;font-variant-numeric:tabular-nums">${fechaIni} → ${fechaFin}</td>
+        <td style="padding:10px 14px">${chipViaje(ev)}</td>
         <td style="padding:10px 14px;font-size:12px;color:#5f6368">${esc(r.equipo_tecnico||'—')}</td>
         <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:#202124;font-variant-numeric:tabular-nums">${personas}</td>
         <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:400;color:#202124;font-variant-numeric:tabular-nums">${dias}</td>
@@ -1945,16 +1973,20 @@ function renderComisiones() {
             <span style="font-weight:500;font-size:15px;color:#202124">${esc(ejeNombre)}</span>
             <span style="font-size:12px;font-weight:500;background:#f1f3f4;padding:2px 10px;border-radius:999px;color:#5f6368;white-space:nowrap">${esc(cat)}</span>
           </div>
-          <div style="display:flex;gap:16px;align-items:center">
+          <div style="display:flex;gap:8px 16px;align-items:center;flex-wrap:wrap">
             <span style="font-size:13px;color:#5f6368">${items.length} comisión${items.length>1?'es':''}</span>
+            <span style="font-size:12.5px;color:#137333;font-variant-numeric:tabular-nums">Realizado: ${soles(ejeRealizado)}</span>
+            <span style="font-size:12.5px;color:#b06000;font-variant-numeric:tabular-nums">Por realizar: ${soles(ejePendiente)}</span>
+            ${ejeSuspendido ? `<span style="font-size:12.5px;color:#c5221f;font-variant-numeric:tabular-nums">Suspendido: ${soles(ejeSuspendido)}</span>` : ''}
             <span style="font-size:14px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">Total: S/. ${ejeTotal.toLocaleString('es-PE')}</span>
           </div>
         </div>
         <table style="width:100%;border-collapse:collapse">
           <thead>
             <tr style="background:#f8f9fa;border-bottom:1px solid #dadce0">
-              <th style="padding:10px 14px 10px 20px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:25%">Actividad</th>
-              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:16%">Fechas</th>
+              <th style="padding:10px 14px 10px 20px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:23%">Actividad</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:15%">Fechas</th>
+              <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left;width:9%">Estado del viaje</th>
               <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:left">Equipo técnico</th>
               <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:7%">Pers.</th>
               <th style="padding:10px 14px;font-size:12px;font-weight:500;color:#5f6368;white-space:nowrap;text-align:center;width:6%">Días</th>
@@ -1966,7 +1998,7 @@ function renderComisiones() {
           <tbody>${filas}</tbody>
           <tfoot>
             <tr style="background:#f8f9fa;border-top:1px solid #dadce0">
-              <td colspan="3" style="padding:10px 14px 10px 20px;font-size:13px;font-weight:500;color:#5f6368">Subtotal ${esc(ejeNombre)}</td>
+              <td colspan="4" style="padding:10px 14px 10px 20px;font-size:13px;font-weight:500;color:#5f6368">Subtotal ${esc(ejeNombre)}</td>
               <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">${ejeTotalPersonas}</td>
               <td style="padding:10px 14px;text-align:center;font-size:13px;font-weight:500;color:#202124;font-variant-numeric:tabular-nums">${ejeTotalDias}</td>
               <td colspan="2"></td>
@@ -1985,6 +2017,11 @@ function renderComisiones() {
         <span style="font-size:13px;color:#5f6368">${ejesConComisiones.length} eje${ejesConComisiones.length>1?'s':''} · ${granPersonasSet.size} persona${granPersonasSet.size!==1?'s':''} únicas</span>
         <span style="font-size:13px;color:#5f6368;font-weight:400">S/. 320 × personas × días</span>
         <span style="font-size:24px;font-weight:400;color:#202124;white-space:nowrap;font-variant-numeric:tabular-nums">S/. ${granTotal.toLocaleString('es-PE')}</span>
+      </div>
+      <div style="flex-basis:100%;display:flex;gap:8px 12px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid #c6dafc">
+        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('realizado')} ${soles(granRealizado)}</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porrealizar')} ${soles(granPendiente)} <span style="color:#5f6368;font-size:12px">(incluye en curso)</span></span>
+        ${granSuspendido ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('suspendido')} ${soles(granSuspendido)}</span>` : ''}
       </div>
     </div>`;
 
