@@ -2020,7 +2020,7 @@ function renderComisiones() {
       </div>
       <div style="flex-basis:100%;display:flex;gap:8px 12px;flex-wrap:wrap;padding-top:12px;margin-top:4px;border-top:1px solid #c6dafc">
         <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('realizado')} ${soles(granRealizado)}</span>
-        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porrealizar')} ${soles(granPendiente)} <span style="color:#5f6368;font-size:12px">(incluye en curso)</span></span>
+        <span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('porrealizar')} ${soles(granPendiente)}</span>
         ${granSuspendido ? `<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;background:#fff;font-size:13px;color:#202124;font-variant-numeric:tabular-nums">${chipViaje('suspendido')} ${soles(granSuspendido)}</span>` : ''}
       </div>
     </div>`;
