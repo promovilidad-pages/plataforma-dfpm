@@ -1226,7 +1226,10 @@ document.getElementById('actForm').addEventListener('submit', async (e) => {
       }
 
       btn.textContent = `Actualizando ID ${id}...`;
-      ({ error } = await sb.from('actividades').update(payload).eq('id', parseInt(id)));
+      // Al editar NO se cambia el dueño (creado_por) ni la fecha de registro:
+      // esos datos solo se fijan al crear la actividad.
+      const { creado_por: _creadoPor, fecha_registro: _fechaRegistro, ...payloadEdicion } = payload;
+      ({ error } = await sb.from('actividades').update(payloadEdicion).eq('id', parseInt(id)));
 
       if (!error && cambios.length && rowAnterior) {
         const nombreUsuario = currentPerfil?.nombre || currentUser.email;
