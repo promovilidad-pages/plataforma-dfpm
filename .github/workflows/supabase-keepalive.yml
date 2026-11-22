@@ -22,13 +22,20 @@ jobs:
           # Clave pública (anon): es la misma que ya está en app.js y en la web publicada.
           # Con las reglas RLS no permite leer datos sin iniciar sesión; solo genera actividad.
           SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuamZua25jaXlkeGZnbnloZm5mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNDcxMjQsImV4cCI6MjA4OTYyMzEyNH0.HRkZcoDpAbzO8U36Lo_5E1_i6aA7oWEX5lg4PO6SjlQ
+        # Si Supabase no responde (por ejemplo, error 522 por una falla momentánea de su lado),
+        # reintenta hasta 5 veces con 30 segundos de espera. Solo falla si ninguno funciona.
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" \
-            "$SUPABASE_URL/rest/v1/ejes?select=id&limit=1" \
-            -H "apikey: $SUPABASE_ANON_KEY" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
-          echo "Respuesta de Supabase: $code"
-          test "$code" = "200"
+          for intento in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+              "$SUPABASE_URL/rest/v1/ejes?select=id&limit=1" \
+              -H "apikey: $SUPABASE_ANON_KEY" \
+              -H "Authorization: Bearer $SUPABASE_ANON_KEY") || code="sin respuesta"
+            echo "Intento $intento — respuesta de Supabase: $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            [ "$intento" -lt 5 ] && sleep 30
+          done
+          echo "Supabase no respondió correctamente después de 5 intentos."
+          exit 1
 
       - name: Evitar que GitHub desactive esta tarea por inactividad
         # GitHub desactiva las tareas programadas si el repositorio pasa 60 días sin cambios.
