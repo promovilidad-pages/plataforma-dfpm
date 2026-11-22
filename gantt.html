@@ -5,131 +5,185 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Cronograma — PROMOVILIDAD</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
+    /* Estilo Google Material (Workspace) — ver GUIA_ESTILO_GOOGLE.md
+       Se conservan todos los nombres de clases y variables que usa el JS.
+       Las medidas que el JS usa para alinear filas (alto de fila 32/36 px,
+       cabecera 2 × 28 px) no se tocan. */
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #f8f9fb;
-      --white: #ffffff;
-      --border: #e8eaed;
-      --text: #0f1117;
-      --muted: #6b7280;
-      --accent: #0057B8;
-      --signal: #00C17C;
-      --amber: #F5A623;
-      --red: #E53E3E;
-      --blue: #3B6FFF;
-    }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+      /* Tokens de la guía */
+      --surface: #ffffff;
+      --line: #dadce0;
+      --line-soft: #e8eaed;
+      --text-2: #5f6368;
+      --text-3: #80868b;
+      --primary: #1a73e8;
+      --primary-hover: #1765cc;
+      --primary-soft: #e8f0fe;
+      --primary-ink: #1967d2;
+      --hover: #f1f3f4;
+      --shadow-1: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+      --shadow-2: 0 1px 3px rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
 
-    /* HEADER */
+      /* Variables antiguas (las usan los estilos en línea del HTML/JS) → paleta Google */
+      --bg: #f8f9fa;
+      --white: #ffffff;
+      --border: #dadce0;
+      --text: #202124;
+      --muted: #5f6368;
+      --accent: #1a73e8;
+      --signal: #1e8e3e;
+      --amber: #e37400;   /* ámbar legible para texto/íconos; la barra usa #f9ab00 */
+      --red: #d93025;
+      --blue: #1a73e8;
+    }
+    body {
+      font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+      font-variant-numeric: tabular-nums;
+      /* Columna: barra superior + herramientas + área del cronograma que ocupa el resto */
+      height: 100vh; display: flex; flex-direction: column;
+    }
+    button, input, select { font: inherit; }
+    :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    /* HEADER (barra superior, como reportes.html) */
     .header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line-soft);
+      padding: 10px 24px;
+      min-height: 64px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
+      flex-shrink: 0;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .header-logo { display: flex; align-items: center; gap: 10px; margin-right: 8px; }
-    .header-logo img { height: 32px; object-fit: contain; }
-    .header-title { font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; }
-    .header-sep { width: 1px; height: 28px; background: var(--border); }
+    .header-logo { display: flex; align-items: center; }
+    .header-logo img { height: 30px; width: auto; display: block; object-fit: contain; }
+    .header-title { font-size: 22px; font-weight: 400; color: var(--text); line-height: 1.25; letter-spacing: -.1px; white-space: nowrap; }
+    .header-sep { width: 1px; height: 28px; background: var(--line); }
+    .header-docs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .btn-back {
-      display: flex; align-items: center; gap: 6px;
-      padding: 7px 12px; border-radius: 8px;
-      background: none; border: 1px solid var(--border);
-      color: var(--muted); font-family: inherit; font-size: 13px;
-      cursor: pointer; transition: all .15s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 36px; padding: 0 16px 0 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--line);
+      color: var(--primary-ink); font-family: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: background .15s, border-color .15s; text-decoration: none; white-space: nowrap;
     }
-    .btn-back:hover { background: var(--bg); color: var(--text); }
-    select, .btn-ctrl {
-      padding: 7px 12px; border-radius: 8px;
-      border: 1px solid var(--border); background: var(--white);
-      color: var(--text); font-family: inherit; font-size: 13px;
-      cursor: pointer; outline: none; transition: border-color .15s;
+    .btn-back i { font-size: 13px; }
+    .btn-back:hover { background: #f6fafe; border-color: #c6dafc; }
+
+    /* BARRA DE HERRAMIENTAS (filtros, vista, zoom, navegación) */
+    .toolbar {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      padding: 12px 24px; flex-shrink: 0;
     }
-    select:focus, .btn-ctrl:focus { border-color: var(--accent); }
+    select {
+      height: 36px; padding: 0 10px; border-radius: 8px;
+      border: 1px solid var(--line); background: var(--surface);
+      color: var(--text); font-family: inherit; font-size: 13px; font-weight: 400;
+      cursor: pointer; outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    select:hover { border-color: #bdc1c6; }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+    /* Botón outlined en píldora */
     .btn-ctrl {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--white); transition: background .15s;
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 36px; padding: 0 16px 0 14px; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--surface);
+      color: var(--primary-ink); font-family: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer; outline: none; white-space: nowrap;
+      transition: background .15s, border-color .15s, color .15s;
     }
-    .btn-ctrl:hover { background: var(--bg); }
-    .btn-ctrl.active { background: #eff6ff; border-color: var(--accent); color: var(--accent); font-weight: 600; }
-    .zoom-group { display: flex; align-items: center; gap: 4px; }
+    .btn-ctrl i { font-size: 13px; }
+    .btn-ctrl:hover { background: #f6fafe; border-color: #c6dafc; }
+    .btn-ctrl:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    /* Activo = tonal */
+    .btn-ctrl.active { background: var(--primary-soft); border-color: transparent; color: var(--primary-ink); }
+    .btn-ctrl.active:hover { background: #d2e3fc; }
+    /* Grupo de botones de ícono dentro de un contorno en píldora */
+    .zoom-group {
+      display: inline-flex; align-items: center; gap: 2px;
+      height: 36px; padding: 0 3px; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--surface);
+    }
     .zoom-btn {
-      width: 32px; height: 32px; border-radius: 8px;
-      border: 1px solid var(--border); background: var(--white);
-      color: var(--text); font-size: 18px; font-weight: 300;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background .15s;
+      width: 30px; height: 30px; border-radius: 999px;
+      border: none; background: transparent;
+      color: var(--text-2); font-size: 13px; font-weight: 500;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s; white-space: nowrap;
     }
-    .zoom-btn:hover { background: var(--bg); }
-    .zoom-val { font-size: 12px; color: var(--muted); min-width: 36px; text-align: center; }
+    .zoom-btn:hover { background: rgba(60,64,67,.08); color: var(--text); }
+    .zoom-val { font-size: 13px; font-weight: 500; color: var(--text-2); min-width: 40px; text-align: center; font-variant-numeric: tabular-nums; }
     .spacer { flex: 1; }
 
-    /* LEYENDA */
+    /* LEYENDA (franja superior de la tarjeta) */
     .legend {
-      display: flex; gap: 16px; padding: 8px 20px;
-      background: var(--white); border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 6px 18px; padding: 10px 16px;
+      background: var(--surface); border-bottom: 1px solid var(--line-soft);
+      flex-wrap: wrap; flex-shrink: 0;
     }
-    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-    .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-2); white-space: nowrap; }
+    .leg-item i { font-size: 12px; }
+    .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
     /* LAYOUT */
-    .gantt-wrap { display: flex; height: calc(100vh - 97px); overflow: hidden; }
+    .gantt-wrap { display: flex; flex: 1; min-height: 0; gap: 12px; padding: 0 24px 16px 12px; overflow: hidden; }
 
-    /* PANEL IZQUIERDO — lista de ejes */
+    /* PANEL IZQUIERDO — lista de ejes (como navegación lateral) */
     .eje-panel {
-      width: 160px; flex-shrink: 0;
-      background: var(--white);
-      border-right: 1px solid var(--border);
+      width: 200px; flex-shrink: 0;
+      background: transparent;
       overflow-y: auto;
-      padding: 12px 8px;
+      padding: 4px 0 8px;
     }
     .eje-panel-title {
-      font-size: 10px; font-weight: 700; color: var(--muted);
-      letter-spacing: 1.2px; text-transform: uppercase;
-      padding: 4px 8px 8px;
+      font-size: 12px; font-weight: 500; color: var(--text-2);
+      padding: 4px 16px 8px;
     }
     .eje-item {
-      padding: 8px 10px; border-radius: 8px; cursor: pointer;
-      font-size: 12px; font-weight: 500; color: var(--muted);
+      padding: 9px 16px; border-radius: 16px; cursor: pointer;
+      font-size: 13.5px; font-weight: 500; color: var(--text);
       transition: background .15s, color .15s; margin-bottom: 2px;
-      line-height: 1.4;
+      line-height: 1.35;
     }
-    .eje-item:hover { background: var(--bg); color: var(--text); }
-    .eje-item.active { background: #eff6ff; color: var(--accent); font-weight: 600; }
-    .eje-pct { font-size: 10px; font-weight: 600; margin-top: 2px; }
+    .eje-item:hover { background: rgba(60,64,67,.08); }
+    .eje-item.active { background: var(--primary-soft); color: var(--primary-ink); }
+    .eje-pct { font-size: 12px; font-weight: 400; margin-top: 2px; font-variant-numeric: tabular-nums; }
 
-    /* GANTT AREA — dos paneles independientes */
-    .gantt-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-    .gantt-body  { flex: 1; display: flex; overflow: hidden; }
+    /* GANTT AREA — tarjeta blanca con la leyenda y los dos paneles */
+    .gantt-area {
+      flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    }
+    .gantt-body  { flex: 1; min-height: 0; display: flex; overflow: hidden; }
 
     /* Panel de labels — ancho fijo, nunca crece */
     .label-panel {
       width: 340px; min-width: 340px; max-width: 340px; flex-shrink: 0;
       overflow: hidden;
-      border-right: 2px solid var(--border);
-      box-shadow: 2px 0 6px rgba(0,0,0,0.08);
+      border-right: 1px solid var(--line);
       display: flex; flex-direction: column;
-      background: var(--white);
+      background: var(--surface);
     }
     .label-header {
       height: 56px; min-height: 56px;
-      background: #f1f3f5;
-      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
       display: flex; align-items: center;
-      padding: 0 12px;
-      font-size: 11px; font-weight: 700; color: var(--muted);
-      letter-spacing: .5px; text-transform: uppercase;
+      padding: 0 16px;
+      font-size: 12px; font-weight: 500; color: var(--text-2);
       flex-shrink: 0;
     }
     .label-rows { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
@@ -140,22 +194,21 @@
     .label-cell {
       width: 340px; min-width: 340px; max-width: 340px;
       padding: 0 12px 0 16px;
-      font-size: 12px; white-space: nowrap;
+      font-size: 12.5px; line-height: 1.3; white-space: nowrap;
       overflow: hidden; text-overflow: ellipsis;
-      border-bottom: 1px solid #f0f0f0;
-      background: var(--white);
+      border-bottom: 1px solid var(--line-soft);
+      background: var(--surface);
       vertical-align: middle;
     }
     .label-cell.group-row {
-      background: #f8f9fb;
-      font-weight: 700; color: var(--text);
-      border-bottom: 1px solid var(--border);
-      box-shadow: inset 3px 0 0 var(--accent);
-      padding-left: 10px;
+      background: var(--bg);
+      font-size: 13px; font-weight: 500; color: var(--text);
+      border-bottom: 1px solid var(--line-soft);
+      padding-left: 16px;
     }
-    .label-cell.task-row { color: var(--muted); padding-left: 20px; cursor: pointer; }
-    .label-cell.task-row:hover { background: #f0f7ff; color: var(--accent); }
-    .label-cell.group-row:hover { background: #e8f0fe; }
+    .label-cell.task-row { color: var(--text); font-weight: 400; padding-left: 28px; cursor: pointer; transition: background .15s, color .15s; }
+    .label-cell.task-row:hover { background: #f6fafe; color: var(--primary-ink); }
+    .label-cell.group-row:hover { background: var(--hover); }
 
     /* Panel del gantt — scroll horizontal invisible */
     .gantt-scroll-wrap { flex: 1; overflow-x: auto; overflow-y: auto; position: relative; }
@@ -165,67 +218,92 @@
     /* GANTT GRID — solo datos, sin columna de labels */
     .ganttGrid {
       border-collapse: collapse;
-      font-size: 12px;
+      font-size: 12px; line-height: 1.3;
       table-layout: fixed;
     }
     .ganttGrid td, .ganttGrid th { padding: 0; border: none; }
     .ganttMonth {
-      background: #f8f9fb;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 5px 8px;
-      font-size: 11px; font-weight: 700; color: var(--accent);
+      background: var(--bg);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line-soft);
+      padding: 0 10px;
+      font-size: 12px; font-weight: 500; color: var(--text);
       overflow: hidden; white-space: nowrap;
       text-align: left; vertical-align: middle;
       position: sticky; top: 0; z-index: 15;
     }
     .ganttTick {
-      background: var(--white);
-      border-right: 1px solid #f0f0f0;
-      border-bottom: 1px solid var(--border);
-      padding: 4px 2px;
-      font-size: 10px; color: var(--muted);
-      text-align: center; overflow: hidden;
+      background: var(--bg);
+      border-right: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line);
+      padding: 0 2px;
+      font-size: 11px; font-weight: 400; color: var(--text-2);
+      text-align: center; overflow: hidden; white-space: nowrap;
+      font-variant-numeric: tabular-nums;
       position: sticky; top: 28px; z-index: 15;
     }
-    .gantt-cell { border-bottom: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; position: relative; overflow: visible; }
-    .gantt-cell.group-row { background: #f8f9fb; border-bottom: 1px solid var(--border); border-right: 1px solid #e8eaed; }
-    .gantt-cell.weekend { background: rgba(0,0,0,0.015); }
-    .gantt-cell.alt-month { background: rgba(180,210,230,0.25); }
+    .gantt-cell { border-bottom: 1px solid var(--line-soft); border-right: 1px solid #f1f3f4; position: relative; overflow: visible; }
+    .gantt-cell.group-row { background: var(--bg); border-bottom: 1px solid var(--line-soft); border-right: 1px solid var(--line-soft); }
+    .gantt-cell.weekend { background: rgba(60,64,67,0.05); }
+    .gantt-cell.alt-month { background: rgba(60,64,67,0.025); }
+    .gantt-cell.weekend.alt-month { background: rgba(60,64,67,0.07); }
     .ganttToday {
       display: none; /* reemplazado por overlay global */
     }
     .today-overlay {
       position: absolute; top: 0; bottom: 0; width: 2px;
-      background: var(--red); opacity: .75; pointer-events: none;
+      background: var(--red); opacity: .7; pointer-events: none;
       z-index: 20; will-change: transform;
+    }
+    .today-overlay::after {
+      content: "Hoy"; position: absolute; top: 6px; left: 4px;
+      padding: 0 5px; border-radius: 4px; line-height: 16px;
+      background: var(--red); color: #fff;
+      font-size: 10px; font-weight: 500; white-space: nowrap;
     }
     .gbar-wrap { position: relative; width: 100%; height: 100%; overflow: visible; z-index: 2; }
     .gbar {
       position: absolute; top: 50%; transform: translateY(-50%);
-      height: 26px; border-radius: 6px;
+      height: 22px; border-radius: 6px;
       display: flex; align-items: center; padding: 0 8px;
-      font-size: 10px; font-weight: 600; color: #fff;
+      font-size: 11px; font-weight: 500; color: #fff;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      cursor: pointer; transition: opacity .15s, filter .15s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      cursor: pointer; transition: filter .15s, box-shadow .15s;
     }
-    .gbar:hover { opacity: .88; filter: brightness(1.05); }
+    .gbar:hover { filter: brightness(1.06); }
     .gbar.hito-mode {
-      height: 20px; border-radius: 4px;
+      height: 20px; border-radius: 6px;
     }
     .ganttLegend { display: none; }
 
-    /* ESTADO COLORES */
-    .bar-done    { background: linear-gradient(90deg, #00a86b, #00C17C); }
-    .bar-process { background: linear-gradient(90deg, #2563eb, #3B6FFF); }
-    .bar-pending { background: linear-gradient(90deg, #d97706, #F5A623); }
-    .bar-blocked { background: linear-gradient(90deg, #dc2626, #E53E3E); }
+    /* ESTADO COLORES (sólidos, paleta Google) */
+    .bar-done    { background: #1e8e3e; }
+    .bar-process { background: #1a73e8; }
+    .bar-pending { background: #f9ab00; color: #202124; }  /* texto oscuro: el blanco no se lee sobre ámbar */
+    .bar-blocked { background: #d93025; }
 
     /* EMPTY */
     .empty-gantt {
       display: flex; align-items: center; justify-content: center;
-      height: 200px; color: var(--muted); font-size: 14px;
+      height: 200px; color: var(--text-2); font-size: 14px;
+    }
+
+    /* RESPONSIVE (móvil): ejes en fila de chips y columna de actividades más angosta */
+    @media (max-width: 760px) {
+      .header { padding: 10px 16px; gap: 10px; }
+      .header-title { font-size: 19px; }
+      .header-sep { display: none; }
+      .toolbar { padding: 10px 16px; }
+      .gantt-wrap { flex-direction: column; flex: 1 0 auto; padding: 0 16px 16px; gap: 8px; }
+      .eje-panel { width: auto; overflow-x: auto; overflow-y: hidden; padding: 0 0 4px; }
+      .eje-panel-title { padding: 0 4px 6px; }
+      #ejeList { display: flex; gap: 8px; }
+      .eje-item { flex-shrink: 0; max-width: 240px; margin: 0; border: 1px solid var(--line); background: var(--surface); padding: 6px 14px; }
+      .eje-item.active { border-color: transparent; }
+      .gantt-area { min-height: 480px; }
+      .label-panel { width: 150px; min-width: 150px; max-width: 150px; }
+      .label-cell { width: 150px; min-width: 150px; max-width: 150px; padding-right: 8px; }
+      .label-cell.task-row { padding-left: 16px; }
     }
   </style>
 </head>
@@ -238,30 +316,40 @@
   }
   #appLoaderGantt.fade-out { opacity:0;pointer-events:none; }
   .gantt-spinner {
-    width:40px;height:40px;border:3px solid #e5e7eb;
-    border-top-color:#00a651;border-radius:50%;
+    width:40px;height:40px;border:3px solid #e8eaed;
+    border-top-color:#1a73e8;border-radius:50%;
     animation:ganttSpin .7s linear infinite;
   }
   @keyframes ganttSpin { to { transform:rotate(360deg); } }
-  .gantt-loader-text { font-size:13px;color:#6b7280;font-family:inherit;letter-spacing:.3px; }
+  .gantt-loader-text { font-size:14px;color:#5f6368;font-family:inherit; }
 </style>
 
 <div id="appLoaderGantt">
-  <img src="assets/logopmv.png" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
+  <img src="assets/logopmv.webp" alt="PROMOVILIDAD" style="height:48px;object-fit:contain;opacity:.85" onerror="this.style.display='none'"/>
   <div class="gantt-spinner"></div>
   <div class="gantt-loader-text">Cargando cronograma...</div>
 </div>
 
 <!-- HEADER -->
 <div class="header">
-  <a href="index.html" class="btn-back">◀ Volver</a>
+  <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>
   <div class="header-sep"></div>
   <div class="header-logo">
-    <img src="assets/logopmv.png" alt="PMV" onerror="this.style.display='none'"/>
+    <img src="assets/logopmv.webp" alt="PMV" onerror="this.style.display='none'"/>
   </div>
   <div class="header-title">Cronograma de Proyecto</div>
-  <div class="header-sep"></div>
 
+  <div class="spacer"></div>
+
+  <!-- Docs -->
+  <div class="header-docs">
+    <a id="btnAyudaMemoria" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none"><i class="fa-solid fa-file-lines"></i> Ayuda Memoria</a>
+    <a id="btnFichaActividad" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none"><i class="fa-solid fa-file-lines"></i> Ficha Actividad</a>
+  </div>
+</div>
+
+<!-- HERRAMIENTAS -->
+<div class="toolbar">
   <select id="ganttCategoria">
     <option value="Planificación">Planificación</option>
     <option value="Fortalecimiento">Fortalecimiento</option>
@@ -283,50 +371,43 @@
 
   <!-- Zoom -->
   <div class="zoom-group">
-    <button class="zoom-btn" onclick="changeZoom(-1)">−</button>
+    <button class="zoom-btn" onclick="changeZoom(-1)" title="Alejar"><i class="fa-solid fa-minus"></i></button>
     <span class="zoom-val" id="zoomVal">100%</span>
-    <button class="zoom-btn" onclick="changeZoom(1)">＋</button>
+    <button class="zoom-btn" onclick="changeZoom(1)" title="Acercar"><i class="fa-solid fa-plus"></i></button>
   </div>
 
   <div class="spacer"></div>
 
   <!-- Navegación horizontal -->
   <div class="zoom-group">
-    <button class="zoom-btn" title="Ir al inicio" onclick="scrollGantt('start')" style="font-size:13px">⏮</button>
-    <button class="zoom-btn" title="Desplazar izquierda" onclick="scrollGantt('left')" style="font-size:13px">◀</button>
-    <button class="zoom-btn" title="Ir a hoy" onclick="scrollGantt('today')" style="font-size:11px;width:auto;padding:0 8px">Hoy</button>
-    <button class="zoom-btn" title="Desplazar derecha" onclick="scrollGantt('right')" style="font-size:13px">▶</button>
-    <button class="zoom-btn" title="Ir al final" onclick="scrollGantt('end')" style="font-size:13px">⏭</button>
+    <button class="zoom-btn" title="Ir al inicio" onclick="scrollGantt('start')" style="font-size:13px"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="zoom-btn" title="Desplazar izquierda" onclick="scrollGantt('left')" style="font-size:13px"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="zoom-btn" title="Ir a hoy" onclick="scrollGantt('today')" style="font-size:13px;width:auto;padding:0 10px">Hoy</button>
+    <button class="zoom-btn" title="Desplazar derecha" onclick="scrollGantt('right')" style="font-size:13px"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="zoom-btn" title="Ir al final" onclick="scrollGantt('end')" style="font-size:13px"><i class="fa-solid fa-forward-step"></i></button>
   </div>
-
-  <div class="header-sep"></div>
-
-  <!-- Docs -->
-  <a id="btnAyudaMemoria" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none"><i class="fa-solid fa-file-lines"></i> Ayuda Memoria</a>
-  <a id="btnFichaActividad" class="btn-ctrl" href="#" target="_blank" style="text-decoration:none;opacity:0.4;pointer-events:none"><i class="fa-solid fa-file-lines"></i> Ficha Actividad</a>
-</div>
-
-<!-- LEYENDA -->
-<div class="legend">
-  <div class="leg-item"><div class="leg-dot" style="background:#00C17C"></div> Completado</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#3B6FFF"></div> En proceso</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#F5A623"></div> Pendiente</div>
-  <div class="leg-item"><div class="leg-dot" style="background:#E53E3E"></div> Bloqueado</div>
-  <div class="leg-item"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Vencida</div>
-  <div class="leg-item"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer</div>
-
 </div>
 
 <!-- LAYOUT -->
 <div class="gantt-wrap">
   <!-- Panel izquierdo ejes -->
   <div class="eje-panel" id="ejePanel">
-    <div class="eje-panel-title">Ejes de Trabajo</div>
+    <div class="eje-panel-title">Ejes de trabajo</div>
     <div id="ejeList"></div>
   </div>
 
   <!-- Gantt — dos paneles independientes -->
   <div class="gantt-area">
+    <!-- LEYENDA -->
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#1e8e3e"></div> Completado</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#1a73e8"></div> En proceso</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f9ab00"></div> Pendiente</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#d93025"></div> Bloqueado</div>
+      <div class="leg-item"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> Vencida</div>
+      <div class="leg-item"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i> Por vencer</div>
+    </div>
+
     <div class="gantt-body">
       <!-- Columna de labels: ancho fijo, nunca se toca -->
       <div class="label-panel">
@@ -344,9 +425,9 @@
 </div>
 
 <!-- MODAL DETALLE -->
-<div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:16px;padding:28px 32px;width:90%;max-width:480px;box-shadow:0 24px 60px rgba(0,0,0,0.2);position:relative;max-height:85vh;overflow-y:auto">
-    <button onclick="closeDetail()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280"><i class="fa-solid fa-xmark"></i></button>
+<div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(32,33,36,0.4);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:12px;padding:24px 28px;width:90%;max-width:480px;box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);position:relative;max-height:85vh;overflow-y:auto">
+    <button onclick="closeDetail()" style="position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:none;border:none;font-size:18px;cursor:pointer;color:#5f6368"><i class="fa-solid fa-xmark"></i></button>
     <div id="detailContent"></div>
   </div>
 </div>
@@ -689,7 +770,7 @@ function renderGantt() {
         const dur = getDur({start:row.hitoStart,end:row.hitoEnd});
         if (col===sc) {
           const w = (dur*zoom)-4;
-          html += `<div class="gbar-wrap"><div class="gbar hito-mode" style="left:2px;width:${w}px;background:linear-gradient(90deg,#0057B8,#00A3E0)" title="${esc(row.label)}">${row.hitoPct}% · ${esc(row.label)}</div></div>`;
+          html += `<div class="gbar-wrap"><div class="gbar hito-mode" style="left:2px;width:${w}px;background:#1967d2" title="${esc(row.label)}">${row.hitoPct}% · ${esc(row.label)}</div></div>`;
         }
       } else if (!isGroup) {
         const t = row.task;
@@ -701,11 +782,11 @@ function renderGantt() {
           const esBloq = (t.estado||'').toLowerCase().includes('bloqueado');
           const isVencida = !esBloq && t.end<today2 && t.pct<100;
           const isPorVencer = !esBloq && !isVencida && t.end>=today2 && daysBetween(today2,t.end)<=7 && t.pct<100;
-          const alertBorder = isVencida ? 'box-shadow:0 0 0 2px #E53E3E,0 1px 4px rgba(0,0,0,.15);' : isPorVencer ? 'box-shadow:0 0 0 2px #F5A623,0 1px 4px rgba(0,0,0,.15);' : '';
+          const alertBorder = isVencida ? 'box-shadow:0 0 0 1px #fff,0 0 0 3px #d93025;' : isPorVencer ? 'box-shadow:0 0 0 1px #fff,0 0 0 3px #e37400;' : '';
           const alertBadge = isVencida
-            ? `<div style="position:absolute;top:-11px;left:2px;font-size:11px;line-height:1;pointer-events:none;z-index:5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></div>`
+            ? `<div style="position:absolute;top:-5px;left:-3px;font-size:12px;line-height:1;pointer-events:none;z-index:5;background:#fff;border-radius:50%;padding:1px"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i></div>`
             : isPorVencer
-            ? `<div style="position:absolute;top:-11px;left:2px;font-size:11px;line-height:1;pointer-events:none;z-index:5;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></div>`
+            ? `<div style="position:absolute;top:-5px;left:-3px;font-size:12px;line-height:1;pointer-events:none;z-index:5;background:#fff;border-radius:50%;padding:1px"><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber)"></i></div>`
             : '';
           html += `<div class="gbar-wrap" style="overflow:visible">${alertBadge}<div class="gbar ${barClass(t.estado)}" style="left:2px;width:${w}px;cursor:pointer;${alertBorder}" title="${esc(t.name)} — ${t.estado} ${t.pct}%" onclick="showDetail(${t.row.id})">${t.pct}% · ${esc(t.name)}</div></div>`;
         }
@@ -793,10 +874,10 @@ window.showDetail = function(id) {
 
   const estadoColor = e => {
     const n=(e||'').toLowerCase();
-    if(n.includes('bloque')) return '#E53E3E';
-    if(n.includes('complet')) return '#00C17C';
-    if(n.includes('proceso')) return '#3B6FFF';
-    return '#F5A623';
+    if(n.includes('bloque')) return '#c5221f';
+    if(n.includes('complet')) return '#137333';
+    if(n.includes('proceso')) return '#1967d2';
+    return '#b06000';
   };
 
   const today = new Date(); today.setHours(0,0,0,0);
@@ -807,26 +888,26 @@ window.showDetail = function(id) {
 
   content.innerHTML = `
     <div style="margin-bottom:16px">
-      <div style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">${esc(row.hito||'Sin hito')}</div>
-      <h3 style="font-size:17px;font-weight:700;color:#0f1117;line-height:1.3">${esc(row.subactividad||'')}</h3>
-      ${isVencida ? '<div style="margin-top:6px;font-size:12px;color:#E53E3E;font-weight:600"><i class="fa-solid fa-circle-exclamation"></i> Actividad vencida</div>' : ''}
-      ${isPorVencer ? '<div style="margin-top:6px;font-size:12px;color:#F5A623;font-weight:600"><i class="fa-solid fa-triangle-exclamation"></i> Por vencer esta semana</div>' : ''}
+      <div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:4px;padding-right:36px">${esc(row.hito||'Sin hito')}</div>
+      <h3 style="font-size:20px;font-weight:400;color:#202124;line-height:1.3;padding-right:36px">${esc(row.subactividad||'')}</h3>
+      ${isVencida ? '<div style="margin-top:8px;font-size:13px;color:#d93025;font-weight:500"><i class="fa-solid fa-circle-exclamation"></i> Actividad vencida</div>' : ''}
+      ${isPorVencer ? '<div style="margin-top:8px;font-size:13px;color:#b06000;font-weight:500"><i class="fa-solid fa-triangle-exclamation"></i> Por vencer esta semana</div>' : ''}
     </div>
     <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-      <span style="padding:4px 10px;border-radius:99px;background:${estadoColor(row.estado)}22;color:${estadoColor(row.estado)};font-size:12px;font-weight:600">${esc(row.estado||'Pendiente')}</span>
-      <span style="padding:4px 10px;border-radius:99px;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600">${row.avance||0}% avance</span>
-      ${row.prioridad ? `<span style="padding:4px 10px;border-radius:99px;background:#f3f4f6;color:#374151;font-size:12px">${esc(row.prioridad)}</span>` : ''}
+      <span style="padding:3px 10px;border-radius:8px;background:${estadoColor(row.estado)}1f;color:${estadoColor(row.estado)};font-size:12px;font-weight:500">${esc(row.estado||'Pendiente')}</span>
+      <span style="padding:3px 10px;border-radius:8px;background:#f1f3f4;color:#3c4043;font-size:12px;font-weight:500">${row.avance||0}% avance</span>
+      ${row.prioridad ? `<span style="padding:3px 10px;border-radius:8px;background:#f1f3f4;color:#3c4043;font-size:12px;font-weight:500">${esc(row.prioridad)}</span>` : ''}
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
-      ${row.responsable ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Responsable</div><div style="color:#0f1117">${esc(row.responsable)}</div></div>` : ''}
-      ${row.equipo_tecnico ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Equipo</div><div style="color:#0f1117">${esc(row.equipo_tecnico)}</div></div>` : ''}
-      ${row.ciudad ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Ciudad</div><div style="color:#0f1117">${esc(row.ciudad)}</div></div>` : ''}
-      ${row.fecha_inicio ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Fecha inicio</div><div style="color:#0f1117">${row.fecha_inicio}</div></div>` : ''}
-      ${row.fecha_fin ? `<div><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Fecha fin</div><div style="color:#0f1117">${row.fecha_fin}</div></div>` : ''}
-      ${row.producto ? `<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Producto</div><div style="color:#0f1117">${esc(row.producto)}</div></div>` : ''}
-      ${row.comentarios ? `<div style="grid-column:1/-1"><div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Comentarios</div><div style="color:#0f1117;white-space:pre-line">${esc(row.comentarios)}</div></div>` : ''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;font-size:14px">
+      ${row.responsable ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Responsable</div><div style="color:#202124">${esc(row.responsable)}</div></div>` : ''}
+      ${row.equipo_tecnico ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Equipo</div><div style="color:#202124">${esc(row.equipo_tecnico)}</div></div>` : ''}
+      ${row.ciudad ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Ciudad</div><div style="color:#202124">${esc(row.ciudad)}</div></div>` : ''}
+      ${row.fecha_inicio ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Fecha inicio</div><div style="color:#202124">${row.fecha_inicio}</div></div>` : ''}
+      ${row.fecha_fin ? `<div><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Fecha fin</div><div style="color:#202124">${row.fecha_fin}</div></div>` : ''}
+      ${row.producto ? `<div style="grid-column:1/-1"><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Producto</div><div style="color:#202124">${esc(row.producto)}</div></div>` : ''}
+      ${row.comentarios ? `<div style="grid-column:1/-1"><div style="font-size:12px;font-weight:500;color:#5f6368;margin-bottom:2px">Comentarios</div><div style="color:#202124;white-space:pre-line">${esc(row.comentarios)}</div></div>` : ''}
     </div>
-    ${row.evidencia ? `<div style="margin-top:16px"><a href="${esc(row.evidencia)}" target="_blank" style="color:var(--accent);font-size:13px"><i class="fa-solid fa-link"></i> Ver evidencia</a></div>` : ''}
+    ${row.evidencia ? `<div style="margin-top:16px"><a href="${esc(row.evidencia)}" target="_blank" style="color:var(--accent);font-size:14px;font-weight:500;text-decoration:none"><i class="fa-solid fa-link"></i> Ver evidencia</a></div>` : ''}
   `;
 
   modal.style.display = 'flex';
